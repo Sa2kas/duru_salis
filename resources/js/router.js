@@ -1,8 +1,15 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router';
 import Home from "./views/Home"
-import Dashboard from "./views/Dashboard"
 import Login from "./views/Login"
+import Dashboard from "./views/Dashboard"
+import Dashboard2 from "./views/Dashboard2"
+import Dashboard3 from "./views/Dashboard3"
+import CalculatePrice from "./views/CalculatePrice"
+import Contacts from "./views/Contacts"
+import Orders from "./views/Orders"
+import OrdersData from "./views/OrdersData"
+import Users from "./views/Users"
 import store from './store';
 
 Vue.use(VueRouter);
@@ -21,6 +28,7 @@ const router = new VueRouter({
         { 
             path: '/login', 
             component: Login,
+            name: 'login',
             meta:{
                 middleware:"guest",
                 title:`Login`
@@ -32,6 +40,78 @@ const router = new VueRouter({
             component: Dashboard,
             meta:{
                 title:`Dashboard`,
+                middleware:"admin"
+            }
+        },
+        {
+            path: '/manager_dashboard',
+            name:"manager_dashboard",
+            component: Dashboard2,
+            meta:{
+                title:`Dashboard`,
+                middleware:"manager"
+            }
+        },
+        {
+            path: '/product_manager_dashboard',
+            name:"product_manager_dashboard",
+            component: Dashboard3,
+            meta:{
+                title:`Dashboard`,
+                middleware:"production_manager"
+            }
+        },
+        {
+            path: '/calculate_price',
+            name:"calculate_price",
+            component: CalculatePrice,
+            meta:{
+                title:`Price calculation`,
+                middleware:"guest"
+            }
+        },
+        {
+            path: '/contacts',
+            name:"contacts",
+            component: Contacts,
+            meta:{
+                title:`Contacts`,
+                middleware:"guest"
+            }
+        },
+        {
+            path: '/comments',
+            name:"commments",
+            component: Contacts,
+            meta:{
+                title:`Comments`,
+                middleware:"guest"
+            }
+        },
+        {
+            path: '/orders',
+            name:"orders",
+            component: Orders,
+            meta:{
+                title:`Orders`,
+                middleware:"worker"
+            }
+        },
+        {
+            path: '/orders_data',
+            name:"orders_data",
+            component: OrdersData,
+            meta:{
+                title:`Orders data`,
+                middleware:"admin"
+            }
+        },
+        {
+            path: '/users',
+            name:"users",
+            component: Users,
+            meta:{
+                title:`Users`,
                 middleware:"admin"
             }
         }
@@ -49,9 +129,30 @@ router.beforeEach((to, from, next) => {
             if(store.state.auth.user.role_id == 1){
                 next()
             }else{
-                alert('pasol nx')
+                alert('admin bando patekt ten kur negalima')
             }
             break;
+        case 'manager':
+            if(store.state.auth.user.role_id == 2){
+                next()
+            }else{
+                alert('manager bando patekt ten kur negalima')
+            }
+            break;  
+        case 'production_manager':
+            if(store.state.auth.user.role_id == 3){
+                next()
+            }else{
+                alert('production manager bando patekt ten kur negalima')
+            }
+            break;   
+        case 'worker':
+            if(store.state.auth.user.role_id == 3 || store.state.auth.user.role_id == 2 || store.state.auth.user.role_id == 1){
+                next()
+            }else{
+                alert('worker bando patekt ten kur negalima')
+            }
+            break;        
     }
 })
 

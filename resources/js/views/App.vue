@@ -1,21 +1,21 @@
 <template>
   <div class="page">
-    <div class="page-header">
+    <div class="page-header" v-show="routeName != 'login'" >
       <vue-header/>
     </div>
-    <div class="page-body">
+    <div class="page-body" :style="[routeName != 'home' ? {'padding-top':'70px'} : {}]">
       <router-view></router-view>
     </div>
-    <div class="page-footer">
+    <div class="page-footer" v-show="routeName != 'login'">
       <vue-footer/>
     </div>
   </div>
 </template>
 
 <script>
-import VueHeader from '../components/Header.vue'
-import VueFooter from '../components/Footer.vue'
-export default {
+  import VueHeader from '../components/Header.vue'
+  import VueFooter from '../components/Footer.vue'
+  export default {
     components: {
         VueHeader,
         VueFooter
@@ -23,7 +23,12 @@ export default {
     data(){
         return {           
         }
+    },
+    computed: {
+      routeName() {
+        return this.$route.name;
     }
+  }
 }
 </script>
 <style scoped>
@@ -32,36 +37,17 @@ export default {
   display: flex;
 }
 .page-header {
-  position: absolute;
   width: 100%;
+  z-index: 3;
+  position: fixed;
 }
+
 .page-body {
   min-height: calc(100vh - 40px);
-  max-width: 100%;
+  width: 100%;
 }
 .page-footer {
   max-width: 100%;
+  z-index: 10;
 }
-/* @media only screen and (max-width: 1100px) {
-  .page-left-side {
-    display: none;
-  }
-  .content-header {
-    display: none;
-  }
-  .page-header {
-    display: unset;
-  }
-  .page-body {
-  margin-top: 76px;
-  }
-  .page-content {
-    width: 100vw;
-  }
-}
-@media only screen and (max-width: 500px) {
-  .page-content {
-    padding: unset;
-  }
-} */
 </style>

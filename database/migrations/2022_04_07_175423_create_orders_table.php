@@ -22,6 +22,7 @@ class CreateOrdersTable extends Migration
             $table->unsignedBigInteger('photo_id');
             $table->foreign('photo_id')->references('id')->on('photos');
             $table->date('last_time_edited');
+            $table->boolean('reported')->default(false);
             $table->softDeletes();
             $table->timestamps();
         });

@@ -1,27 +1,27 @@
 <template>
-  <div>
+  <div class="login-page">
     <div class="login-container">
       <div class="login-left">
         <!-- <img class="teltonika" src="/icons/teltonika.svg" alt="teltonika"> -->
-        <div class="login-title">Authorization Required</div>
+        <div class="login-title">{{$t('login.auth_req')}}</div>
         <div class="login-info">
-          Please enter your email and password
+          {{$t('login.info')}}
         </div>
       </div>
       <div class="login-right">
         <form :model="form" onsubmit="return false">
           <div class="form-div">
-            <input v-model="form.email" @pressEnter="handleLogin" :placeholder="'Please input email'"/>
-            <label class="form-label">Email</label>
+            <input class="login-input" v-model="form.email" @pressEnter="handleLogin" :placeholder="'Please input email'"/>
+            <label class="form-label">{{$t('login.email')}}</label>
           </div>
           <div class="form-div">
-            <input id="password" v-model="form.password" @pressEnter="handleLogin" type="password" :placeholder="'Please input password'"/>
-            <label class="form-label">Password</label>
+            <input class="login-input" id="password" v-model="form.password" @pressEnter="handleLogin" type="password" :placeholder="'Please input password'"/>
+            <label class="form-label">{{$t('login.password')}}</label>
           </div>
           <div id="error">
-            Invalid email and/or password! Please try again.
+            {{$t('login.error')}}
           </div>
-          <button id="login" @click="handleLogin">Login</button>
+          <button id="login" @click="handleLogin">{{$t('login.login')}}</button>
         </form>
       </div>
     </div>
@@ -85,6 +85,9 @@ export default {
 </script>
 
 <style>
+.login-page {
+  display: block;
+}
 .login-container {
   margin: 0;
   position: absolute;
@@ -97,21 +100,22 @@ export default {
 }
 .login-left {
   width: 360px;
-  background-color: #0054a6;
+  /* background-color: #0054a6; */
+  background-image: url('/images/login.jpg');
+  background-repeat: no-repeat;
+  background-size: cover, contain;
+  background-position: 0 center;
   padding: 50px 40px;
   border-radius: 7px;
 }
 .login-right {
   width: 422.5px;
-  height: 386px;
+  height: 224px;
   background-color: #ffffff;
-  padding: 80px 60px;
+  padding: 100px 20px 60px 20px;
   margin: 20px 0;
   border: 1.25px solid #e4e4e4;
   border-radius: 0 7px 7px 0;
-}
-.teltonika {
-  margin-bottom: 34px;
 }
 .login-title {
   letter-spacing: 0.12em;
@@ -122,8 +126,10 @@ export default {
   margin-bottom: 19px;
   display: block;
   color: #ffffff;
+  text-shadow: 0 0 5px #000;
 }
 .login-info {
+  text-shadow: 0 0 5px #000;
   color: #ffffff;
   display: block;
   font-family: "Open Sans", sans-serif;
@@ -132,19 +138,17 @@ export default {
   margin-bottom: 20px;
   line-height: 19px;
 }
-form-model-item {
-  margin: 10px 0;
-}
 .form-div {
   position: relative;
   width: 300px;
   height: 40px;
   margin-bottom: 20px;
   margin-left: auto;
+  margin-right: auto;
 }
-input {
-  width: 300px;
-  height: 40px;
+.login-input {
+  width: 250px;
+  height: 30px;
   margin-bottom: 20px;
   color: #000;
   font-size: 11px;
@@ -156,7 +160,7 @@ input {
   border-radius: 7px;
   position: relative;
 }
-input:focus {
+.login-input:focus {
   outline: none;
   box-shadow: 0px 0px 5px rgba(24, 143, 255, 0.5);
   border: 1.5px solid rgba(24, 143, 255, 0.5);
@@ -176,7 +180,8 @@ input:focus {
 .form-label {
   position: absolute;
   /* sito nereik, bet tada neatrodo taip nukirsta */
-  background: linear-gradient(to right, #ffffff00 0%, #ffffff 5px, #ffffff calc(100% - 5px), #ffffff00 100%);
+  /* background: linear-gradient(to right, #ffffff00 0%, #ffffff 5px, #ffffff calc(100% - 5px), #ffffff00 100%); */
+  background-color: #ffffff;
   color: #9090a5;
   font-size: 12px;
   display: inline-block;
@@ -202,20 +207,24 @@ input:focus {
 }
 #login {
   background-color: #ffffff;
-  padding: 2.8px 14px;
-  border: 1.25px solid #0054a6;
+  padding: 0.2em 0.5em;
+  border: 1.5px solid rgba(68, 68, 68, 0.5);
   border-radius: 5px;
   cursor: pointer;
   display: block;
   font-family: "Oswald", sans-serif;
-  font-weight: 400;
+  font-weight: 300;
   font-size: 14px;
-  letter-spacing: 0.11em;
+  letter-spacing: 0.04em;
   margin: 0 auto;
   text-transform: uppercase;
-  color: #0054a6;
+  color: #444;
 }
-@media only screen and (max-width: 700px) {
+#login:hover {
+    border: 1.5px solid rgba(15, 47, 117, 0.7);
+    box-shadow: 0 0 5px rgba(15, 47, 117, 0.2);
+}
+@media only screen and (max-width: 920px) {
   .login-container {
     display: block;
     position: relative;
@@ -227,15 +236,19 @@ input:focus {
     height: 100%;
   }
   .login-left {
-    width: 100%;
+    width: initial;
     border-radius: 0;
-    padding: 50px 40px 20px 40px;
+    padding: 50px 40px 50px 40px;
   }
   .login-right {
     border: unset;
     width: max-content;
     margin-left: auto;
     margin-right: auto;
+    padding: 60px 20px 40px 20px;
+  }
+  .form-div {
+    margin-left: unset;
   }
 }
 @media only screen and (max-width: 500px) {

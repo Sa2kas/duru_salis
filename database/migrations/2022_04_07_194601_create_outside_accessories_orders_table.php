@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateOutsideDoorAccessoriesOrdersTable extends Migration
+class CreateOutsideAccessoriesOrdersTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,12 +13,12 @@ class CreateOutsideDoorAccessoriesOrdersTable extends Migration
      */
     public function up()
     {
-        Schema::create('outside_door_accessories_orders', function (Blueprint $table) {
+        Schema::create('outside_accessories_orders', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('order_id');
             $table->foreign('order_id')->references('id')->on('orders');
-            $table->unsignedBigInteger('outside_accessory_id');
-            $table->foreign('outside_accessory_id')->references('id')->on('outside_door_accessories');
+            $table->unsignedBigInteger('outside_door_accessory_id');
+            $table->foreign('outside_door_accessory_id')->references('id')->on('outside_door_accessories');
             $table->timestamps();
         });
     }
@@ -30,6 +30,6 @@ class CreateOutsideDoorAccessoriesOrdersTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('outside_door_accessories_orders');
+        Schema::dropIfExists('outside_accessories_orders');
     }
 }

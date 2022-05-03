@@ -6,7 +6,6 @@
     </div>
 </template>
 <script>
-import { computed } from '@vue/runtime-core'
 export default {
     data () {
         return {
@@ -21,7 +20,7 @@ export default {
 </script>
 <style>
     .footer {
-        border-top: 1px solid #a85727;
+        border-top: 1px solid rgba(168, 86, 39, 0.5);
         background-color: #fff;
         height: 40px;
         color: #a85727;

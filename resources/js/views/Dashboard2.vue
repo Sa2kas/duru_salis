@@ -1,7 +1,7 @@
 <template>
     <div class="dashboard">
         <h2>
-            Admin dashboard
+            Manager dashboard
         </h2>
         <input type="text" v-model="paramTypeForm.title">
         <input type="checkbox" v-model="paramTypeForm.allow_many">

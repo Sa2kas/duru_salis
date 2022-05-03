@@ -32,6 +32,12 @@ export default {
                     case 1:
                         router.push({name:'dashboard'})
                         break;
+                    case 2:
+                        router.push({name:'manager_dashboard'})
+                        break;
+                    case 3:
+                        router.push({name:'product_manager_dashboard'})
+                        break;   
                 }               
             }).catch(({response:{data}})=>{
                 commit('SET_USER',{})

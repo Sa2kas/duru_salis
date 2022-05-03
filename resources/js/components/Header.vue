@@ -1,7 +1,7 @@
 <template>
     <div class="header">
         <div class="header-menu">
-            <div class="leftLines" @click="showL = !showL;showR = !showR">
+            <div class="leftLines" @click="showL = !showL;showR = false">
                 <div :class="showL ? 'activeLeft' : ''">
                     <span id="firstSpan" class="span"></span>
                     <span id="secondSpan" class="span"></span>
@@ -14,28 +14,44 @@
         </div>
         <div class="header-actions">
             <div class="languages">
-                <div class="language">LT </div>| 
-                <div class="language"> EN</div>
+                <div :class="$i18n.locale == 'lt' ? 'language-selected' : 'language'" @click="changeLang('lt')">LT </div>| 
+                <div :class="$i18n.locale == 'en' ? 'language-selected' : 'language'" @click="changeLang('en')"> EN</div>
             </div>
             <div class="login-logout">
                 <router-link v-if="!authenticated" :to="'/login'">
-                    <button class="header-button">prisijungti</button>                
+                    <button class="header-button">{{ $t("header.login") }}</button>                
                 </router-link>
-                <button v-else class="header-button" @click="logout">atsijungti</button>
+                <button v-else class="header-button" @click="logout">{{ $t("header.logout") }}</button>
             </div>
         </div>
         <div class="showHideRight" @click="showR = !showR;showL = false">
         ...
-        </div>    
+        </div>
+        <div class="small-left-side">
+            <div class="fixed-nav" :style="[!showL ? {'max-width': '0px', 'min-width': '0px'} : {}]">
+                <left-side/>
+            </div>
+        </div>
+        <div class="small-right-side" :style="[!showR ? {'max-width': '0px', 'min-width': '0px'} : {}]">
+            <right-side/>            
+        </div>
+        <div class="menu-overlay" :style="[showR || showL ? {'visibility': 'visible', 'opacity': '0.6'} : {}]" @click="showR = false;showL = false"/>
     </div>
 </template>
 <script>
 import { mapActions } from 'vuex'
+import LeftSide from '../components/LeftSide.vue'
+import RightSide from '../components/RightSide.vue'
 export default {
+    components: {
+        LeftSide,
+        RightSide
+    },
     data () {
         return {
             showL: false,
-            showR: false
+            showR: false,
+            language: ''
         }
     }, 
     computed: {
@@ -47,6 +63,9 @@ export default {
         },
         userRole(){
             return this.user ? this.user.role_id : 0
+        },
+        routeName() {
+            return this.$route.name;
         }
     },
     methods:{
@@ -55,6 +74,22 @@ export default {
         }),
         logout(){
             this.signOut()
+        },
+        changeLang(lang) {
+            this.language = lang
+            this.$i18n.locale = this.language
+        }
+    },
+    mounted() {
+        if (localStorage.language) {
+            this.language = localStorage.language 
+            this.$i18n.locale = localStorage.language        
+        }
+    },
+    watch: {
+        language(newLanguage) {
+            localStorage.language = newLanguage
+            this.$i18n.locale = localStorage.language
         }
     }
 }
@@ -72,6 +107,7 @@ export default {
         padding: 0 1vw;
         z-index: 1;
         opacity: 0.96;
+        position: relative, fixed;
     }
     .header-menu {
         width: 35%;
@@ -80,9 +116,11 @@ export default {
     .leftLines {
         margin-top: 25px;
         margin-left: 1vw;
+        cursor: pointer;
+        z-index: 5;
     }
     .span {
-        background: #0f3075;
+        background: rgba(68, 68, 68, 0.9);
         display: block;
         width: 25px;
         height: 2px;
@@ -132,15 +170,15 @@ export default {
         cursor: pointer;
         height: 22px;
     }
+    .language-selected {
+        margin: 0 0.2em;
+        cursor: pointer;
+        height: 22px;
+        color: #a85727;
+        border-bottom: 1.5px solid rgba(168, 86, 39, 0.5);
+    }
     .login-logout {
         padding: 0 0.2em;
-    }
-    .login-logout:hover {
-        color: #a85727;
-    }
-    .language:hover {
-        color: #a85727;
-        border-bottom: 1.5px solid rgba(168, 86, 39, 0.7);
     }
     .header-button {
         border: 1.5px solid rgba(168, 86, 39, 0.5);
@@ -159,6 +197,50 @@ export default {
         border: 1.5px solid rgba(168, 86, 39, 0.7);
         box-shadow: 0 0 5px rgba(168, 86, 39, 0.2);
     }
+    .small-left-side {
+        position: fixed;
+        /* width: 100vw; */
+        /* max-width: 0px; */
+        z-index: 4;
+        height: 100vh;
+        display: flex;
+    }
+    .fixed-nav {
+        height: calc(100vh - 65px);
+        overflow: hidden;
+        position: absolute;
+        min-width: 350px;
+        max-width: 350vw;
+        transition: max-width .3s ease-in, min-width .3s ease-in;
+        display: flex;
+        top: 64px;
+        left: -1vw;
+    }
+    .small-right-side {
+        top: 64px;
+        z-index: 1;
+        transition: max-width .3s ease-in, min-width .3s ease-in;
+        position: absolute;
+        right: 0;
+        justify-content: space-between;
+        display: flex;
+        height: calc(100vh - 65px);
+        min-width: 300px;
+        max-width: 300px;
+        background: #f7f7f7;
+    }
+    .menu-overlay {
+        transition: visibility .3s linear,opacity .3s linear;
+        visibility: hidden;
+        background: #000;
+        opacity: 0;
+        width: 100%;
+        height: calc(100vh - 65px);
+        display: block;
+        top: 65px;
+        left: 0;
+        position: fixed;
+    }
     @media only screen and (max-width: 800px) {
         .header-actions {
             display: none;
@@ -170,6 +252,7 @@ export default {
             margin-top: 30px;
             width: fit-content;
             font-size: 30px;
+            cursor: pointer;
         }
         .header-menu {
             width: 10%;

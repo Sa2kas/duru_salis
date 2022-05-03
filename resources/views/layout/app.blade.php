@@ -12,5 +12,7 @@
         <app></app>
     </div>
     <script src="{{ mix('/js/app.js') }}"></script>
+    <script src="https://unpkg.com/vue/dist/vue.js"></script>
+    <script src="https://unpkg.com/vue-i18n@8"></script>
 </body>
 </html>

@@ -2,11 +2,24 @@
     <div class="home">
         <div class="main-page-image" id="home-image">
             <h1>
-                Išsirinkite savo svajonių duris
+                {{ $t("home.title") }}
             </h1>
         </div>
-        <h3 @click="scroll()"><span></span>Slinkti</h3>
-        <div id="after-image"></div>
+        <h3 @click="scroll()"><span></span>{{ $t("home.scroll") }}</h3>
+        <div id="after-image">
+            <h1 style="margin: 0">
+                Kaip išsirinkti
+            </h1>
+            <h2>
+                Apie lauko duris
+            </h2>
+            <h2>
+                Apie vidaus duris
+            </h2>
+            <h2>
+                Apie spynas
+            </h2>
+        </div>
     </div>
 </template>
 <script>
@@ -16,7 +29,11 @@ export default {
         ExampleComponent
     },
     data(){
-        return {         
+        return {    
+            langs: [
+                'ja',
+                'en'
+            ]     
         }
     },
     methods: {
@@ -63,8 +80,8 @@ export default {
         
     #after-image {
         width: 100%;
-        height: 715px;
-        background-color:rgba(132, 96, 35, 0.2);
+        min-height: calc(100vh - 40px);
+        background-color: rgba(168, 86, 39, 0.05)
     }
     .home h3 {
         position: absolute;
@@ -99,7 +116,6 @@ export default {
         border-bottom: 2px solid #fff;
         transform: rotate(-45deg);
         animation: sdb01 1.5s infinite;
-        box-sizing: border-box;
     }
     @keyframes sdb01 {
         0% {
