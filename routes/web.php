@@ -18,7 +18,7 @@ use App\Http\Controllers\LoginController;
 Route::get('/{any}', [AppController::class, 'index'])->where('any', '.*');
 
 Route::post('/login', [LoginController::class, 'authenticate']);
-
+Route::post('/logout', [LoginController::class, 'logout']);
 
 
 

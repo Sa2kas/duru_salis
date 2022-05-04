@@ -38,7 +38,29 @@
               <td class="td" v-for="(column, indexC) in item.columns" :key="indexC">
                 <div class="data-header">{{column.title}}</div>
                 <slot name="tableData" v-bind:data="data" v-bind:column="column">
-                  <div class="table-data">{{data[column.dataIndex]}}</div>
+                  <div v-if="column.dataIndex == 'allow_many'" class="table-data">
+                    <span v-if="data[column.dataIndex] == 0">
+                      Not allowed
+                    </span>
+                    <span v-if="data[column.dataIndex] == 1">
+                      Allowed
+                    </span>
+                  </div>
+                  <div v-else class="table-data">{{data[column.dataIndex]}}</div>
+                  <span v-if="column.dataIndex == 'actions'">
+                    <button class="iconButton" @click="showModal(data);edit = true"><img src="/icons/edit.png" alt=""></button>
+                    <button class="iconButton" @click="deleteData(data)"><img src="/icons/delete.png" alt=""></button>
+                  </span>
+                  <modal 
+                    v-show="isModalVisible"
+                    @close="closeModal()"
+                    :name="edit == true ? 'Redaguoti' : 'Pridėti'">
+                    <template>
+                      <slot name="editItem"></slot>
+                      <button @click="closeModal">Cancel</button>
+                      <button @click="submitItem">Submit</button>
+                    </template>
+                  </modal>
                 </slot>
               </td>
             </tr>
@@ -53,25 +75,27 @@
           @pagechanged="onPageChange"
           />
       </div>
+      <button @click="showModal();edit = false">prideti</button>
       </expand-collapse>
-    <!-- </div> -->
   </div>
 </template>
 <script>
-import ExpandCollapse from './VuciExpandCollapse.vue'
-import VuciPagination from './VuciPagination.vue'
+import ExpandCollapse from './ExpandCollapse.vue'
+import VuciPagination from './Pagination.vue'
+import Modal from './Modal.vue'
 export default {
   components: {
     VuciPagination,
-    ExpandCollapse
+    ExpandCollapse,
+    Modal
   },
   data () {
     return {
       currentPage: 1,
       perPage: 10,
-      numberOptions: false,
       search: '',
-      objectArray: this.item.data
+      edit: false,
+      isModalVisible: false
     }
   },
   props: {
@@ -86,7 +110,8 @@ export default {
     },
     name: {
       type: String,
-      required: true
+      required: false,
+      default: 'lentele'
     },
     showHeader: {
       type: Boolean,
@@ -106,6 +131,29 @@ export default {
     },
     searchData () {
       this.$emit('clicked', this.search)
+    },
+    showModal (modalData) {
+      this.isModalVisible = true
+      if (modalData) {
+        this.editData(modalData)
+      }
+    },
+    closeModal () {
+      this.refresh()
+      this.isModalVisible = false
+    },
+    deleteData (element) {
+      this.$emit('delete', element)
+    },
+    editData (element) {
+      this.$emit('edit', element)
+    },
+    refresh () {
+      this.$emit('refresh')
+    },
+    submitItem () {
+      this.$emit('submitItem')
+      this.isModalVisible = false
     }
   },
   computed: {
@@ -148,7 +196,7 @@ export default {
     position: relative;
     flex-grow: 1;
     margin-left: 5px;
-    height: 27px;
+    height: 24px;
     background-image: url(/icons/arrow_down.svg);
     background-repeat: no-repeat;
     background-size: 12px 8px;
@@ -216,8 +264,8 @@ export default {
     display: flex;
     float: right;
     font-size: 11px;
-    padding: 0.5em 1em;
-    height: 27px;
+    padding: 0.3em 1em;
+    height: 22px;
   }
   input:focus {
     outline: none;
@@ -270,6 +318,17 @@ export default {
   .row-div:hover {
     background-color: #f7f7f7;
   }
+  .iconButton {
+    padding: 0;
+    background: none;
+    border: none;
+    margin: 1px 3px;
+    cursor: pointer;
+  }
+  .iconButton img{
+    height: 24px;
+    width: 24px;
+  }
   .empty-table {
     padding: 8px;
     font-family: "Open Sans", sans-serif;
@@ -317,6 +376,7 @@ export default {
       border-radius: 7px;
       border: 1px solid #e4e4e4;
       margin-top: 15px;
+      max-width: 99.5%;
     }
     .td {
       border: unset;

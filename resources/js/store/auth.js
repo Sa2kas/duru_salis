@@ -45,9 +45,13 @@ export default {
             })
         },
         logout({commit}){
-            commit('SET_USER',{})
-            commit('SET_AUTHENTICATED',false)
-            router.push({name:'home'})
+            axios.post('/logout')
+            .then(response => {
+                commit('SET_USER',{})
+                commit('SET_AUTHENTICATED',false)
+                router.push({name:'home'})
+            })
+           
         }
     }
 }

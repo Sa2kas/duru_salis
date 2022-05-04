@@ -1,6 +1,6 @@
 <template>
   <div class="modal">
-    <div class="modal-overlay" @click="close"></div>
+    <div class="modal-overlay" @click="close"/>
     <div class="modal-container">
       <div class="modal-header">
         <div class="modal-close">
@@ -11,7 +11,7 @@
         <h3 class="table-title">
           {{name}}
         </h3>
-        <slot v-bind="editModal"></slot>
+        <slot></slot>
       </div>
     </div>
   </div>
@@ -36,6 +36,10 @@ export default {
     name: {
       type: String,
       required: true
+    },
+    item: {
+      type: Object,
+      require: true
     }
   }
 }
@@ -65,9 +69,10 @@ export default {
 }
 .modal-container {
   left: -50%;
-  min-width: 80vw;
+  /* min-width: 80vw; */
   cursor: auto;
-  width: 40vw;
+  width: 50vw;
+  max-width: 1000px;
   position: relative;
   border-radius: 7px;
   z-index: 2;

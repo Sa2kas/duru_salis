@@ -13,12 +13,28 @@
           {{fw}}
         </div>
       </div> -->
-      <div class="links-item">
-        <div class="links-item-data">
-        <router-link v-if="!authenticated" :to="'/login'">
-            <slot>{{ $t("header.login") }}</slot>                
+      <div class="links-item" >
+        <div class="languages">
+          <div :class="$i18n.locale == 'lt' ? 'language-selected' : 'language'" @click="changeLang('lt')">LT </div>| 
+          <div :class="$i18n.locale == 'en' ? 'language-selected' : 'language'" @click="changeLang('en')"> EN</div>
+        </div>               
+      </div>
+      <div class="links-item" v-if="!authenticated">
+        <router-link :to="'/login'">
+          <div class="links-item-data">{{ $t("header.login") }}</div>                
         </router-link>
-        <slot v-else @click="logout">{{ $t("header.logout") }}</slot>
+      </div>
+      <div  v-else>
+        <div class="links-item">
+          rolė: 
+          <div class="links-item-data"  @click="logout()">
+            {{ user.name }}
+          </div>
+        </div>
+        <div class="links-item">
+          <div class="links-item-data"  @click="logout()">
+            {{ $t("header.logout") }}
+          </div>
         </div>
       </div>
     </div>
@@ -91,6 +107,12 @@ export default {
   color: #6f6f6f;
   display: flex;
   flex-direction: column;
+}
+.links-item .languages {
+  margin: 0;
+}
+.links-item .language:first-child, .language-selected:first-child {
+  margin-left: 0;
 }
 .links-item-data {
   color: #0054a6;

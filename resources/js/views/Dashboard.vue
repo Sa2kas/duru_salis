@@ -1,51 +1,56 @@
 <template>
     <div class="dashboard">
-        <h2>
+        <h2 style="padding-top: 0px, margin-top: 0px">
             Admin dashboard
         </h2>
-        <input type="text" v-model="paramTypeForm.title">
-        <input type="checkbox" v-model="paramTypeForm.allow_many">
-        <button @click="clearParamTypeForm">Cancel</button>
-        <button @click="submitParamType">Submit</button>
-        <table>
-            <thead>
-                 <tr>
-                    <th>#</th>
-                    <th>Title</th>
-                    <th>Allow many</th>
-                    <th></th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr v-for="type in paramTypes" :key="type.id">
-                    <td>
-                        {{type.id}}
-                    </td>
-                    <td>
-                        {{type.title}}
-                    </td>
-                    <td>
-                        {{type.allow_many}}
-                    </td>
-                    <td>
-                        <button @click="editParamType(type)">Edit</button>
-                        <button @click="deleteType(type)">Delete</button>
-                    </td>
-                </tr>
-            </tbody>           
-        </table>
+        <vue-table
+        :item="items"
+        name="Parametru tipai"
+        :showHeader="true"
+        @clicked="getSearchedData"
+        @delete="deleteType"
+        @edit="editParamType"
+        @refresh="handleClose"
+        @submitItem="submitParamType">
+            <template v-slot:editItem>
+                <input type="text" v-model="paramTypeForm.title">
+                <input type="checkbox" v-model="paramTypeForm.allow_many">
+                <!-- <button @click="handleClose">Cancel</button>
+                <button @click="submitParamType">Submit</button> -->
+            </template>
+        </vue-table>
     </div>
 </template>
 <script>
+import VueTable from '../components/Table.vue'
 export default {
+    components: {
+        VueTable
+    },
     data() {
         return {
+            editableData: {},
             paramTypeForm: {
                 title: '',
                 allow_many: false,
             },
             origTypeForm: {},
             paramTypes: [],
+            search: '',
+            items: {
+                columns: [
+                    { dataIndex: 'id', title: '#' },
+                    { dataIndex: 'title', title: 'title' },
+                    { dataIndex: 'allow_many', title: 'allow many' },
+                    { dataIndex: 'actions', title: 'actions' },
+                ],
+                data: []
+            }
+        }
+    },
+    computed: {
+        dataSource () {
+            return this.paramTypes.filter(elem => !this.search || elem.title.includes(this.search))
         }
     },
     created(){
@@ -53,15 +58,20 @@ export default {
         this.origTypeForm = _.cloneDeep(this.paramTypeForm);
     },
     methods: {
+        getSearchedData (search) {
+            this.search = search
+            this.items.data = this.dataSource
+        },
         fetchData(){
             axios.get('/api/param-types')
             .then(response => {
                 this.paramTypes = response.data.data;
+                this.items.data = response.data.data;
             });
         },
         deleteType(type){
             axios.delete('/api/param-types/' + type.id)
-            .then(response => {
+            .then((response) => {
                 let item = this.paramTypes.find(el => el.id == type.id)
                 let index = this.paramTypes.indexOf(item)
                 this.paramTypes.splice(index, 1);
@@ -84,14 +94,18 @@ export default {
                 }else{
                     this.paramTypes.push(response.data.data)
                 }
-                this.clearParamTypeForm();
+                this.handleClose();
             })
+        },
+        handleClose() {
+            this.paramTypeForm = _.cloneDeep(this.origTypeForm);
+            this.fetchData();
         }
     }
 }
 </script>
 <style>
     .dashboard {
-        min-height: calc(100vh - 40px);
+        padding: 53px 1vw 0 1vw;
     }
 </style>

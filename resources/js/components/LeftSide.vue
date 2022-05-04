@@ -54,8 +54,43 @@
           Meniu
       </div>
       <div class="right-side-title">
-          <router-link v-if="!authenticated" :to="'/'">
+          <router-link :to="'/'">
             Pagrindinis
+          </router-link>
+      </div>
+      <div v-if="!authenticated" class="right-side-title">
+          <router-link :to="'/calculate_price'">
+            Apskaičiuoti užsakymą
+          </router-link>
+      </div>
+      <div class="right-side-title" v-if="userRole == 1">
+          <router-link :to="'/dashboard'">
+            Admin dashboard
+          </router-link>
+      </div>
+      <div class="right-side-title" v-if="userRole == 2">
+          <router-link :to="'/dashboard2'">
+            Manager dashboard
+          </router-link>
+      </div>
+      <div class="right-side-title" v-if="userRole == 3">
+          <router-link :to="'/dashboard3'">
+            Product manager dashboard
+          </router-link>
+      </div>
+      <div class="right-side-title" v-if="authenticated">
+          <router-link :to="'/orders'">
+            Užsakymai
+          </router-link>
+      </div>
+      <div class="right-side-title" v-if="userRole == 1">
+          <router-link :to="'/orders_data'">
+            Duomenys užsakymams
+          </router-link>
+      </div>
+      <div class="right-side-title" v-if="userRole == 1">
+          <router-link :to="'/users'">
+            Naudotojai
           </router-link>
       </div>
       <div class="right-side-title">
@@ -63,29 +98,9 @@
             Kontaktai
           </router-link>
       </div>
-        <div class="right-side-title">
+      <div class="right-side-title">
           <router-link :to="'/comments'">
-            Komentarai
-          </router-link>
-      </div>
-      <div class="right-side-title" v-if="userRole == 1 || userRole == 2 || userRole == 3">
-          <router-link :to="'/orders'">
-            Užsakymai
-          </router-link>
-      </div>
-        <div class="right-side-title" v-if="userRole == 1">
-          <router-link :to="'/orders_data'">
-            Duomenys užsakymams
-          </router-link>
-      </div>
-        <div class="right-side-title" v-if="userRole == 1">
-          <router-link :to="'/users'">
-            Naudotojai
-          </router-link>
-      </div>
-        <div class="right-side-title">
-          <router-link :to="'/calculate_price'">
-            Apskaičiuoti užsakymą
+            Atsiliepimai
           </router-link>
       </div>
     </div>
@@ -126,6 +141,9 @@ export default {
     // }
     authenticated(){
         return this.$store.getters['auth/authenticated'];
+    },
+    user(){
+        return this.$store.getters['auth/user'];
     },
     userRole(){
         return this.user ? this.user.role_id : 0

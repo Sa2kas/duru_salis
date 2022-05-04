@@ -3,7 +3,7 @@
     <div class="page-header" v-show="routeName != 'login'" >
       <vue-header/>
     </div>
-    <div class="page-body" :style="[routeName != 'home' ? {'padding-top':'70px'} : {}]">
+    <div class="page-body">
       <router-view></router-view>
     </div>
     <div class="page-footer" v-show="routeName != 'login'">

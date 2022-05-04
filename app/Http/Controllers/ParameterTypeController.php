@@ -83,8 +83,9 @@ class ParameterTypeController extends Controller
      * @param  \App\Models\ParameterType  $parameterType
      * @return \Illuminate\Http\Response
      */
-    public function destroy(ParameterType $parameterType)
+    public function destroy($parameterType)
     {
-        //
+        ParameterType::find($parameterType)->delete();
+        return ParameterTypeResource::collection(ParameterType::get());
     }
 }

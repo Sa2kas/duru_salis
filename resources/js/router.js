@@ -129,28 +129,28 @@ router.beforeEach((to, from, next) => {
             if(store.state.auth.user.role_id == 1){
                 next()
             }else{
-                alert('admin bando patekt ten kur negalima')
+                alert('bando patekt i admin')
             }
             break;
         case 'manager':
             if(store.state.auth.user.role_id == 2){
                 next()
             }else{
-                alert('manager bando patekt ten kur negalima')
+                alert('bando patekt i manager')
             }
             break;  
         case 'production_manager':
             if(store.state.auth.user.role_id == 3){
                 next()
             }else{
-                alert('production manager bando patekt ten kur negalima')
+                alert('bando patekt i production manager')
             }
             break;   
         case 'worker':
             if(store.state.auth.user.role_id == 3 || store.state.auth.user.role_id == 2 || store.state.auth.user.role_id == 1){
                 next()
             }else{
-                alert('worker bando patekt ten kur negalima')
+                alert('bando patekt i worker')
             }
             break;        
     }
