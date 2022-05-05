@@ -16,9 +16,11 @@ class DoorTypeSeeder extends Seeder
         DB::table('door_types')->insert([
             [
                 'title' => 'lauko',
+                'title_en' => 'outside',
             ],
             [
                 'title' => 'buto',
+                'title_en' => 'inside',
             ]      
         ]);
     }

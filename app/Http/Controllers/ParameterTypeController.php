@@ -38,6 +38,7 @@ class ParameterTypeController extends Controller
     {
         $paramType = !empty($request->input('id')) ? ParameterType::findOrFail($request->input('id')) : new ParameterType;
         $paramType->title = $request->input('title');
+        $paramType->title_en = $request->input('title_en');
         $paramType->allow_many = $request->input('allow_many');
         $paramType->save();
         return new ParameterTypeResource($paramType);

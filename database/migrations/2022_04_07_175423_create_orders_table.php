@@ -15,13 +15,16 @@ class CreateOrdersTable extends Migration
     {
         Schema::create('orders', function (Blueprint $table) {
             $table->id();
+            $table->string('customer');
+            $table->string('address');
+            $table->unsignedBigInteger('door_id');
+            $table->foreign('door_id')->references('id')->on('doors');
             $table->unsignedBigInteger('status_id');
             $table->foreign('status_id')->references('id')->on('statuses');
-            $table->unsignedBigInteger('door_type_id');
-            $table->foreign('door_type_id')->references('id')->on('door_types');
-            $table->unsignedBigInteger('photo_id');
-            $table->foreign('photo_id')->references('id')->on('photos');
-            $table->date('last_time_edited');
+            $table->float('price')->nullable();      
+            $table->float('advance')->nullable();       
+            $table->date('order_date');
+            $table->string('signed_by');
             $table->boolean('reported')->default(false);
             $table->softDeletes();
             $table->timestamps();

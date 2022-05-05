@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateOutsideDoorAccessoryTypesTable extends Migration
+class CreateDoorTypesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,9 +13,10 @@ class CreateOutsideDoorAccessoryTypesTable extends Migration
      */
     public function up()
     {
-        Schema::create('outside_door_accessory_types', function (Blueprint $table) {
+        Schema::create('door_types', function (Blueprint $table) {
             $table->id();
             $table->string('title');
+            $table->string('title_en');
             $table->timestamps();
         });
     }
@@ -27,6 +28,6 @@ class CreateOutsideDoorAccessoryTypesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('outside_door_accessory_types');
+        Schema::dropIfExists('door_types');
     }
 }

@@ -14,6 +14,7 @@
         @submitItem="submitParamType">
             <template v-slot:editItem>
                 <input type="text" v-model="paramTypeForm.title">
+                <input type="text" v-model="paramTypeForm.title_en">
                 <input type="checkbox" v-model="paramTypeForm.allow_many">
                 <!-- <button @click="handleClose">Cancel</button>
                 <button @click="submitParamType">Submit</button> -->
@@ -32,6 +33,7 @@ export default {
             editableData: {},
             paramTypeForm: {
                 title: '',
+                title_en: '',
                 allow_many: false,
             },
             origTypeForm: {},
@@ -41,6 +43,7 @@ export default {
                 columns: [
                     { dataIndex: 'id', title: '#' },
                     { dataIndex: 'title', title: 'title' },
+                    { dataIndex: 'title_en', title: 'title_en' },
                     { dataIndex: 'allow_many', title: 'allow many' },
                     { dataIndex: 'actions', title: 'actions' },
                 ],
@@ -50,7 +53,7 @@ export default {
     },
     computed: {
         dataSource () {
-            return this.paramTypes.filter(elem => !this.search || elem.title.includes(this.search))
+            return this.paramTypes.filter(elem => !this.search || elem.title.includes(this.search) || elem.title_en.includes(this.search))
         }
     },
     created(){

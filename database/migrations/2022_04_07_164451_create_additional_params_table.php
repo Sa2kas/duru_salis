@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateParametersTable extends Migration
+class CreateAdditionalParamsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,15 +13,16 @@ class CreateParametersTable extends Migration
      */
     public function up()
     {
-        Schema::create('parameters', function (Blueprint $table) {
+        Schema::create('additional_params', function (Blueprint $table) {
             $table->id();
             $table->string('title');
             $table->string('title_en');
+            $table->boolean('glass_packet')->default(false);
             $table->float('price')->nullable();
-            $table->unsignedBigInteger('parameter_type_id');
-            $table->foreign('parameter_type_id')->references('id')->on('parameter_types');
-            $table->unsignedBigInteger('door_type_id');
-            $table->foreign('door_type_id')->references('id')->on('door_types');
+            $table->unsignedBigInteger('additional_param_type_id');
+            $table->foreign('additional_param_type_id')->references('id')->on('additional_param_types');
+            $table->unsignedBigInteger('panel_id');
+            $table->foreign('panel_id')->references('id')->on('panels');
             $table->timestamps();
         });
     }
@@ -33,6 +34,6 @@ class CreateParametersTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('parameters');
+        Schema::dropIfExists('additional_params');
     }
 }

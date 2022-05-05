@@ -1,11 +1,10 @@
 <?php
 
 namespace Database\Seeders;
-
-use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Database\Seeder;
 
-class OutsideDoorAccessoryTypeSeeder extends Seeder
+class AdditionalParamTypeSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -14,16 +13,19 @@ class OutsideDoorAccessoryTypeSeeder extends Seeder
      */
     public function run()
     {
-        DB::table('outside_door_accessory_types')->insert([
+        DB::table('additional_param_types')->insert([
             [
                 'title' => 'Viršduris',
+                'title_en' => 'Overhead',
             ],
             [
                 'title' => 'Šoninė nevarstoma dalis',
+                'title_en' => 'Side non-swinging part',
             ],
             [
                 'title' => 'Antra varčia (dvivėrės durys)',
-            ], 
+                'title_en' => 'Second leaf (double door)',
+            ]      
         ]);
     }
 }

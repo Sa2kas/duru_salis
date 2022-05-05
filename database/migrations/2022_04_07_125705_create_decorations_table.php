@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateParameterTypesTable extends Migration
+class CreateDecorationsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,11 +13,13 @@ class CreateParameterTypesTable extends Migration
      */
     public function up()
     {
-        Schema::create('parameter_types', function (Blueprint $table) {
+        Schema::create('decorations', function (Blueprint $table) {
             $table->id();
             $table->string('title');
             $table->string('title_en');
-            $table->boolean('allow_many')->default(false);
+            $table->float('price')->nullable();
+            $table->unsignedBigInteger('panel_id');
+            $table->foreign('panel_id')->references('id')->on('panels');
             $table->timestamps();
         });
     }
@@ -29,6 +31,6 @@ class CreateParameterTypesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('parameter_types');
+        Schema::dropIfExists('decorations');
     }
 }

@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateParameterTypesTable extends Migration
+class CreateAdditionalParamTypesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,11 +13,10 @@ class CreateParameterTypesTable extends Migration
      */
     public function up()
     {
-        Schema::create('parameter_types', function (Blueprint $table) {
+        Schema::create('additional_param_types', function (Blueprint $table) {
             $table->id();
             $table->string('title');
             $table->string('title_en');
-            $table->boolean('allow_many')->default(false);
             $table->timestamps();
         });
     }
@@ -29,6 +28,6 @@ class CreateParameterTypesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('parameter_types');
+        Schema::dropIfExists('additional_param_types');
     }
 }

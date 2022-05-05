@@ -51,16 +51,6 @@
                     <button class="iconButton" @click="showModal(data);edit = true"><img src="/icons/edit.png" alt=""></button>
                     <button class="iconButton" @click="deleteData(data)"><img src="/icons/delete.png" alt=""></button>
                   </span>
-                  <modal 
-                    v-show="isModalVisible"
-                    @close="closeModal()"
-                    :name="edit == true ? 'Redaguoti' : 'Pridėti'">
-                    <template>
-                      <slot name="editItem"></slot>
-                      <button @click="closeModal">Cancel</button>
-                      <button @click="submitItem">Submit</button>
-                    </template>
-                  </modal>
                 </slot>
               </td>
             </tr>
@@ -77,6 +67,16 @@
       </div>
       <button @click="showModal();edit = false">prideti</button>
       </expand-collapse>
+      <modal 
+        v-show="isModalVisible"
+        @close="closeModal()"
+        :name="edit == true ? 'Redaguoti' : 'Pridėti'">
+        <template>
+          <slot name="editItem"></slot>
+          <button @click="closeModal">Cancel</button>
+          <button @click="submitItem">Submit</button>
+        </template>
+      </modal>
   </div>
 </template>
 <script>

@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateDoorTypesTable extends Migration
+class CreateDoorParametersTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,9 +13,12 @@ class CreateDoorTypesTable extends Migration
      */
     public function up()
     {
-        Schema::create('door_types', function (Blueprint $table) {
+        Schema::create('door_parameters', function (Blueprint $table) {
             $table->id();
-            $table->string('title');
+            $table->unsignedBigInteger('door_id');
+            $table->foreign('door_id')->references('id')->on('doors');
+            $table->unsignedBigInteger('parameter_id');
+            $table->foreign('parameter_id')->references('id')->on('parameters');
             $table->timestamps();
         });
     }
@@ -27,6 +30,6 @@ class CreateDoorTypesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('door_types');
+        Schema::dropIfExists('door_parameters');
     }
 }
