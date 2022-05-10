@@ -2,11 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Color;
+use App\Models\AdditionalParam;
 use Illuminate\Http\Request;
-use App\Http\Resources\Color as ColorResource;
+use App\Http\Resources\AdditionalParam as AdditionalParamResource;
 
-class ColorController extends Controller
+class AdditionalParamController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -16,7 +16,7 @@ class ColorController extends Controller
     public function index()
     {
         //
-        return ColorResource::collection(Color::get());
+        return AdditionalParamResource::collection(AdditionalParam::get());
     }
 
     /**
@@ -38,22 +38,24 @@ class ColorController extends Controller
     public function store(Request $request)
     {
         //
-        $param = !empty($request->input('id')) ? Color::findOrFail($request->input('id')) : new Color;
+        $param = !empty($request->input('id')) ? AdditionalParam::findOrFail($request->input('id')) : new AdditionalParam;
         $param->title = $request->input('title');
         $param->title_en = $request->input('title_en');
-        $param->photo = $request->input('photo');
+        $param->glass_packet = $request->input('glass_packet');
+        $param->price = $request->input('price');
+        $param->additional_param_type_id = $request->input('additional_param_type_id');
         $param->panel_id = $request->input('panel_id');
         $param->save();
-        return new ColorResource($param);
+        return new AdditionalParamResource($param);
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\Color  $color
+     * @param  \App\Models\AdditionalParam  $additionalParam
      * @return \Illuminate\Http\Response
      */
-    public function show(Color $color)
+    public function show(AdditionalParam $additionalParam)
     {
         //
     }
@@ -61,10 +63,10 @@ class ColorController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Models\Color  $color
+     * @param  \App\Models\AdditionalParam  $additionalParam
      * @return \Illuminate\Http\Response
      */
-    public function edit(Color $color)
+    public function edit(AdditionalParam $additionalParam)
     {
         //
     }
@@ -73,10 +75,10 @@ class ColorController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Color  $color
+     * @param  \App\Models\AdditionalParam  $additionalParam
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Color $color)
+    public function update(Request $request, AdditionalParam $additionalParam)
     {
         //
     }
@@ -84,13 +86,13 @@ class ColorController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\Color  $color
+     * @param  \App\Models\AdditionalParam  $additionalParam
      * @return \Illuminate\Http\Response
      */
-    public function destroy($color)
+    public function destroy($additionalParam)
     {
         //
-        Color::find($color)->delete();
-        return ColorResource::collection(Color::get());
+        AdditionalParam::find($additionalParam)->delete();
+        return AdditionalParamResource::collection(AdditionalParam::get());
     }
 }

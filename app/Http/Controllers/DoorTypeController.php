@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\DoorType;
 use Illuminate\Http\Request;
+use App\Http\Resources\DoorType as DoorTypeResource;
 
 class DoorTypeController extends Controller
 {
@@ -15,6 +16,7 @@ class DoorTypeController extends Controller
     public function index()
     {
         //
+        return DoorTypeResource::collection(DoorType::get());
     }
 
     /**
@@ -36,6 +38,14 @@ class DoorTypeController extends Controller
     public function store(Request $request)
     {
         //
+        $param = !empty($request->input('id')) ? Parameter::findOrFail($request->input('id')) : new Parameter;
+        $param->title = $request->input('title');
+        $param->title_en = $request->input('title_en');
+        $param->price = $request->input('price');
+        $param->parameter_type_id = $request->input('parameter_type_id');
+        $param->door_type_id = $request->input('door_type_id');
+        $param->save();
+        return new ParameterResource($param);
     }
 
     /**
@@ -78,8 +88,10 @@ class DoorTypeController extends Controller
      * @param  \App\Models\DoorType  $doorType
      * @return \Illuminate\Http\Response
      */
-    public function destroy(DoorType $doorType)
+    public function destroy($doorType)
     {
         //
+        DoorType::find($doorType)->delete();
+        return DoorTypeResource::collection(DoorType::get());
     }
 }

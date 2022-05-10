@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Status;
 use Illuminate\Http\Request;
+use App\Http\Resources\Parameter as StatusResource;
 
 class StatusController extends Controller
 {
@@ -15,6 +16,7 @@ class StatusController extends Controller
     public function index()
     {
         //
+        return StatusResource::collection(Status::get());
     }
 
     /**
@@ -36,6 +38,14 @@ class StatusController extends Controller
     public function store(Request $request)
     {
         //
+        $param = !empty($request->input('id')) ? Parameter::findOrFail($request->input('id')) : new Parameter;
+        $param->title = $request->input('title');
+        $param->title_en = $request->input('title_en');
+        $param->price = $request->input('price');
+        $param->parameter_type_id = $request->input('parameter_type_id');
+        $param->door_type_id = $request->input('door_type_id');
+        $param->save();
+        return new ParameterResource($param);
     }
 
     /**
@@ -78,8 +88,10 @@ class StatusController extends Controller
      * @param  \App\Models\Status  $status
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Status $status)
+    public function destroy($status)
     {
         //
+        Status::find($status)->delete();
+        return StatusResource::collection(Status::get());
     }
 }

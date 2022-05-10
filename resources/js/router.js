@@ -7,6 +7,7 @@ import Dashboard2 from "./views/Dashboard2"
 import Dashboard3 from "./views/Dashboard3"
 import CalculatePrice from "./views/CalculatePrice"
 import Contacts from "./views/Contacts"
+import Comments from "./views/Comments"
 import Orders from "./views/Orders"
 import OrdersData from "./views/OrdersData"
 import Users from "./views/Users"
@@ -82,7 +83,7 @@ const router = new VueRouter({
         {
             path: '/comments',
             name:"commments",
-            component: Contacts,
+            component: Comments,
             meta:{
                 title:`Comments`,
                 middleware:"guest"

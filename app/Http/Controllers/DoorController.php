@@ -2,10 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\DoorTrim;
+use App\Models\Door;
 use Illuminate\Http\Request;
+use App\Http\Resources\Door as DoorResource;
 
-class DoorTrimController extends Controller
+class DoorController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -15,6 +16,7 @@ class DoorTrimController extends Controller
     public function index()
     {
         //
+        return DoorResource::collection(Door::get());
     }
 
     /**
@@ -36,15 +38,23 @@ class DoorTrimController extends Controller
     public function store(Request $request)
     {
         //
+        $param = !empty($request->input('id')) ? Parameter::findOrFail($request->input('id')) : new Parameter;
+        $param->title = $request->input('title');
+        $param->title_en = $request->input('title_en');
+        $param->price = $request->input('price');
+        $param->parameter_type_id = $request->input('parameter_type_id');
+        $param->door_type_id = $request->input('door_type_id');
+        $param->save();
+        return new ParameterResource($param);
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\DoorTrim  $doorTrim
+     * @param  \App\Models\Door  $door
      * @return \Illuminate\Http\Response
      */
-    public function show(DoorTrim $doorTrim)
+    public function show(Door $door)
     {
         //
     }
@@ -52,10 +62,10 @@ class DoorTrimController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Models\DoorTrim  $doorTrim
+     * @param  \App\Models\Door  $door
      * @return \Illuminate\Http\Response
      */
-    public function edit(DoorTrim $doorTrim)
+    public function edit(Door $door)
     {
         //
     }
@@ -64,10 +74,10 @@ class DoorTrimController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\DoorTrim  $doorTrim
+     * @param  \App\Models\Door  $door
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, DoorTrim $doorTrim)
+    public function update(Request $request, Door $door)
     {
         //
     }
@@ -75,11 +85,13 @@ class DoorTrimController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\DoorTrim  $doorTrim
+     * @param  \App\Models\Door  $door
      * @return \Illuminate\Http\Response
      */
-    public function destroy(DoorTrim $doorTrim)
+    public function destroy($door)
     {
         //
+        Door::find($door)->delete();
+        return DoorResource::collection(Door::get());
     }
 }

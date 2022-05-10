@@ -2,11 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Color;
+use App\Models\DoorParameter;
 use Illuminate\Http\Request;
-use App\Http\Resources\Color as ColorResource;
+use App\Http\Resources\DoorParameter as DoorParameterResource;
 
-class ColorController extends Controller
+class DoorParameterController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -16,7 +16,7 @@ class ColorController extends Controller
     public function index()
     {
         //
-        return ColorResource::collection(Color::get());
+        return DoorParameterResource::collection(DoorParameter::get());
     }
 
     /**
@@ -38,22 +38,23 @@ class ColorController extends Controller
     public function store(Request $request)
     {
         //
-        $param = !empty($request->input('id')) ? Color::findOrFail($request->input('id')) : new Color;
+        $param = !empty($request->input('id')) ? Parameter::findOrFail($request->input('id')) : new Parameter;
         $param->title = $request->input('title');
         $param->title_en = $request->input('title_en');
-        $param->photo = $request->input('photo');
-        $param->panel_id = $request->input('panel_id');
+        $param->price = $request->input('price');
+        $param->parameter_type_id = $request->input('parameter_type_id');
+        $param->door_type_id = $request->input('door_type_id');
         $param->save();
-        return new ColorResource($param);
+        return new ParameterResource($param);
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\Color  $color
+     * @param  \App\Models\DoorParameter  $doorParameter
      * @return \Illuminate\Http\Response
      */
-    public function show(Color $color)
+    public function show(DoorParameter $doorParameter)
     {
         //
     }
@@ -61,10 +62,10 @@ class ColorController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Models\Color  $color
+     * @param  \App\Models\DoorParameter  $doorParameter
      * @return \Illuminate\Http\Response
      */
-    public function edit(Color $color)
+    public function edit(DoorParameter $doorParameter)
     {
         //
     }
@@ -73,10 +74,10 @@ class ColorController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Color  $color
+     * @param  \App\Models\DoorParameter  $doorParameter
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Color $color)
+    public function update(Request $request, DoorParameter $doorParameter)
     {
         //
     }
@@ -84,13 +85,13 @@ class ColorController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\Color  $color
+     * @param  \App\Models\DoorParameter  $doorParameter
      * @return \Illuminate\Http\Response
      */
-    public function destroy($color)
+    public function destroy($doorParameter)
     {
         //
-        Color::find($color)->delete();
-        return ColorResource::collection(Color::get());
+        DoorParameter::find($doorParameter)->delete();
+        return DoorParameterResource::collection(DoorParameter::get());
     }
 }

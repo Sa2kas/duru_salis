@@ -1,18 +1,6 @@
 <template>
   <div class="right-side">
     <div class="links">
-      <!-- <div class="links-item">
-        user
-        <div class="links-item-data">
-          {{username}}
-        </div>
-      </div>
-      <div class="links-item">
-        fw version
-        <div class="links-item-data">
-          {{fw}}
-        </div>
-      </div> -->
       <div class="links-item" >
         <div class="languages">
           <div :class="$i18n.locale == 'lt' ? 'language-selected' : 'language'" @click="changeLang('lt')">LT </div>| 
@@ -47,19 +35,9 @@ export default {
   data () {
     return {
       username: '',
-      fw: ''
     }
   },
-//   timers: {
-//     getFW: { time: 2000, autostart: true, immediate: true, repeat: true }
-//   },
   methods: {
-    // logout () {
-    //   this.$router.push('/login')
-    // },
-    // getFW () {
-    //   this.$system.getInfo().then(({ release }) => { this.fw = release.revision })
-    // }
     ...mapActions({
         signOut:'auth/logout'
     }),
@@ -67,23 +45,20 @@ export default {
         this.signOut()
     },
   },
-//   created () {
-//     this.username = this.$session.username()
-//   }
-    computed: {
-        authenticated(){
-            return this.$store.getters['auth/authenticated'];
-        },
-        user(){
-            return this.$store.getters['auth/user'];
-        },
-        userRole(){
-            return this.user ? this.user.role_id : 0
-        },
-        routeName() {
-            return this.$route.name;
-        }
-    },
+  computed: {
+      authenticated(){
+          return this.$store.getters['auth/authenticated'];
+      },
+      user(){
+          return this.$store.getters['auth/user'];
+      },
+      userRole(){
+          return this.user ? this.user.role_id : 0
+      },
+      routeName() {
+          return this.$route.name;
+      }
+  },
 }
 </script>
 <style>
@@ -108,17 +83,22 @@ export default {
   display: flex;
   flex-direction: column;
 }
+.links-item a {
+  text-decoration: none;
+  color: #723B1B;
+}
+.links-item:hover a {
+  text-decoration: none;
+  color: #221108;
+}
 .links-item .languages {
   margin: 0;
 }
 .links-item .language:first-child, .language-selected:first-child {
   margin-left: 0;
 }
-.links-item-data {
-  color: #0054a6;
-}
 .side-line {
-  background: rgba(168, 86, 39, 0.9);
+  background: #723B1B;
   width: 56px;
   height: 100%;
 }

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Order;
 use Illuminate\Http\Request;
+use App\Http\Resources\Order as OrderResource;
 
 class OrderController extends Controller
 {
@@ -15,6 +16,7 @@ class OrderController extends Controller
     public function index()
     {
         //
+        return OrderResource::collection(Order::get());
     }
 
     /**
@@ -36,6 +38,14 @@ class OrderController extends Controller
     public function store(Request $request)
     {
         //
+        $param = !empty($request->input('id')) ? Parameter::findOrFail($request->input('id')) : new Parameter;
+        $param->title = $request->input('title');
+        $param->title_en = $request->input('title_en');
+        $param->price = $request->input('price');
+        $param->parameter_type_id = $request->input('parameter_type_id');
+        $param->door_type_id = $request->input('door_type_id');
+        $param->save();
+        return new ParameterResource($param);
     }
 
     /**
@@ -78,8 +88,10 @@ class OrderController extends Controller
      * @param  \App\Models\Order  $order
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Order $order)
+    public function destroy($order)
     {
         //
+        Order::find($order)->delete();
+        return OrderResource::collection(Order::get());
     }
 }

@@ -2,11 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Color;
+use App\Models\AdditionalParamType;
 use Illuminate\Http\Request;
-use App\Http\Resources\Color as ColorResource;
+use App\Http\Resources\AdditionalParamType as AdditionalParamTypeResource;
 
-class ColorController extends Controller
+class AdditionalParamTypeController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -16,7 +16,7 @@ class ColorController extends Controller
     public function index()
     {
         //
-        return ColorResource::collection(Color::get());
+        return AdditionalParamTypeResource::collection(AdditionalParamType::get());
     }
 
     /**
@@ -38,22 +38,20 @@ class ColorController extends Controller
     public function store(Request $request)
     {
         //
-        $param = !empty($request->input('id')) ? Color::findOrFail($request->input('id')) : new Color;
+        $param = !empty($request->input('id')) ? AdditionalParamType::findOrFail($request->input('id')) : new AdditionalParamType;
         $param->title = $request->input('title');
         $param->title_en = $request->input('title_en');
-        $param->photo = $request->input('photo');
-        $param->panel_id = $request->input('panel_id');
         $param->save();
-        return new ColorResource($param);
+        return new AdditionalParamTypeResource($param);
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\Color  $color
+     * @param  \App\Models\AdditionalParamType  $additionalParamType
      * @return \Illuminate\Http\Response
      */
-    public function show(Color $color)
+    public function show(AdditionalParamType $additionalParamType)
     {
         //
     }
@@ -61,10 +59,10 @@ class ColorController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Models\Color  $color
+     * @param  \App\Models\AdditionalParamType  $additionalParamType
      * @return \Illuminate\Http\Response
      */
-    public function edit(Color $color)
+    public function edit(AdditionalParamType $additionalParamType)
     {
         //
     }
@@ -73,10 +71,10 @@ class ColorController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Color  $color
+     * @param  \App\Models\AdditionalParamType  $additionalParamType
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Color $color)
+    public function update(Request $request, AdditionalParamType $additionalParamType)
     {
         //
     }
@@ -84,13 +82,13 @@ class ColorController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\Color  $color
+     * @param  \App\Models\AdditionalParamType  $additionalParamType
      * @return \Illuminate\Http\Response
      */
-    public function destroy($color)
+    public function destroy($additionalParamType)
     {
         //
-        Color::find($color)->delete();
-        return ColorResource::collection(Color::get());
+        AdditionalParamType::find($additionalParamType)->delete();
+        return AdditionalParamTypeResource::collection(AdditionalParamType::get());
     }
 }

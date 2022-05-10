@@ -2,10 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\LowerLock;
+use App\Models\Pattern;
 use Illuminate\Http\Request;
+use App\Http\Resources\Pattern as PatternResource;
 
-class LowerLockController extends Controller
+class PatternController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -15,6 +16,7 @@ class LowerLockController extends Controller
     public function index()
     {
         //
+        return PatternResource::collection(Pattern::get());
     }
 
     /**
@@ -36,15 +38,23 @@ class LowerLockController extends Controller
     public function store(Request $request)
     {
         //
+        $param = !empty($request->input('id')) ? Parameter::findOrFail($request->input('id')) : new Parameter;
+        $param->title = $request->input('title');
+        $param->title_en = $request->input('title_en');
+        $param->price = $request->input('price');
+        $param->parameter_type_id = $request->input('parameter_type_id');
+        $param->door_type_id = $request->input('door_type_id');
+        $param->save();
+        return new ParameterResource($param);
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\LowerLock  $lowerLock
+     * @param  \App\Models\Pattern  $pattern
      * @return \Illuminate\Http\Response
      */
-    public function show(LowerLock $lowerLock)
+    public function show(Pattern $pattern)
     {
         //
     }
@@ -52,10 +62,10 @@ class LowerLockController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Models\LowerLock  $lowerLock
+     * @param  \App\Models\Pattern  $pattern
      * @return \Illuminate\Http\Response
      */
-    public function edit(LowerLock $lowerLock)
+    public function edit(Pattern $pattern)
     {
         //
     }
@@ -64,10 +74,10 @@ class LowerLockController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\LowerLock  $lowerLock
+     * @param  \App\Models\Pattern  $pattern
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, LowerLock $lowerLock)
+    public function update(Request $request, Pattern $pattern)
     {
         //
     }
@@ -75,11 +85,13 @@ class LowerLockController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\LowerLock  $lowerLock
+     * @param  \App\Models\Pattern  $pattern
      * @return \Illuminate\Http\Response
      */
-    public function destroy(LowerLock $lowerLock)
+    public function destroy($pattern)
     {
         //
+        Pattern::find($pattern)->delete();
+        return PatternResource::collection(Pattern::get());
     }
 }

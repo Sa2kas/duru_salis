@@ -2,10 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\OutsideDoorAccessory;
+use App\Models\Panel;
 use Illuminate\Http\Request;
+use App\Http\Resources\Panel as PanelResource;
 
-class OutsideDoorAccessoryController extends Controller
+class PanelController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -15,6 +16,7 @@ class OutsideDoorAccessoryController extends Controller
     public function index()
     {
         //
+        return PanelResource::collection(Panel::get());
     }
 
     /**
@@ -36,15 +38,23 @@ class OutsideDoorAccessoryController extends Controller
     public function store(Request $request)
     {
         //
+        $param = !empty($request->input('id')) ? Parameter::findOrFail($request->input('id')) : new Parameter;
+        $param->title = $request->input('title');
+        $param->title_en = $request->input('title_en');
+        $param->price = $request->input('price');
+        $param->parameter_type_id = $request->input('parameter_type_id');
+        $param->door_type_id = $request->input('door_type_id');
+        $param->save();
+        return new ParameterResource($param);
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\OutsideDoorAccessory  $outsideDoorAccessory
+     * @param  \App\Models\Panel  $panel
      * @return \Illuminate\Http\Response
      */
-    public function show(OutsideDoorAccessory $outsideDoorAccessory)
+    public function show(Panel $panel)
     {
         //
     }
@@ -52,10 +62,10 @@ class OutsideDoorAccessoryController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Models\OutsideDoorAccessory  $outsideDoorAccessory
+     * @param  \App\Models\Panel  $panel
      * @return \Illuminate\Http\Response
      */
-    public function edit(OutsideDoorAccessory $outsideDoorAccessory)
+    public function edit(Panel $panel)
     {
         //
     }
@@ -64,10 +74,10 @@ class OutsideDoorAccessoryController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\OutsideDoorAccessory  $outsideDoorAccessory
+     * @param  \App\Models\Panel  $panel
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, OutsideDoorAccessory $outsideDoorAccessory)
+    public function update(Request $request, Panel $panel)
     {
         //
     }
@@ -75,11 +85,13 @@ class OutsideDoorAccessoryController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\OutsideDoorAccessory  $outsideDoorAccessory
+     * @param  \App\Models\Panel  $panel
      * @return \Illuminate\Http\Response
      */
-    public function destroy(OutsideDoorAccessory $outsideDoorAccessory)
+    public function destroy($panel)
     {
         //
+        Panel::find($panel)->delete();
+        return PanelResource::collection(Panel::get());
     }
 }

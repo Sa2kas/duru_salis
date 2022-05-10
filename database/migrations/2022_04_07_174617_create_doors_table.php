@@ -24,15 +24,15 @@ class CreateDoorsTable extends Migration
             $table->foreign('panel_id')->references('id')->on('panels');
             $table->unsignedBigInteger('decoration_id');
             $table->foreign('decoration_id')->references('id')->on('decorations');
-            $table->unsignedBigInteger('pattern_id');
+            $table->string('main_lock');
+            $table->string('safe_lock');
+            $table->string('installation');
+            $table->unsignedBigInteger('pattern_id')->nullable();
             $table->foreign('pattern_id')->references('id')->on('patterns');
             $table->unsignedBigInteger('color_id');
             $table->foreign('color_id')->references('id')->on('colors');
-            $table->unsignedBigInteger('parameter_id');
-            $table->foreign('parameter_id')->references('id')->on('parameters');
-            $table->unsignedBigInteger('additional_param_id');
-            $table->foreign('additional_param_id')->references('id')->on('additional_params');
             $table->integer('quantity');
+            $table->float('price');
             $table->timestamps();
         });
     }

@@ -1,17 +1,18 @@
 <template>
     <div class="dashboard">
         <h2 style="padding-top: 0px, margin-top: 0px">
-            Admin dashboard
+            Admin dashboard (Order parameters data)
         </h2>
         <vue-table
-        :item="items"
-        name="Parametru tipai"
-        :showHeader="true"
-        @clicked="getSearchedData"
-        @delete="deleteType"
-        @edit="editParamType"
-        @refresh="handleClose"
-        @submitItem="submitParamType">
+            :item="items.parameterTypes"
+            :index="0"
+            name="Parametrų tipai"
+            :showHeader="true"
+            @clicked="getSearchedData"
+            @delete="deleteType"
+            @edit="editParamType"
+            @refresh="handleClose"
+            @submitItem="submitParamType">
             <template v-slot:editItem>
                 <input type="text" v-model="paramTypeForm.title">
                 <input type="text" v-model="paramTypeForm.title_en">
@@ -19,6 +20,12 @@
                 <!-- <button @click="handleClose">Cancel</button>
                 <button @click="submitParamType">Submit</button> -->
             </template>
+        </vue-table>
+        <vue-table
+            :item="items.parameters"
+            :index="1"
+            name="Parametrai"
+            :showHeader="true">
         </vue-table>
     </div>
 </template>
@@ -30,24 +37,44 @@ export default {
     },
     data() {
         return {
-            editableData: {},
             paramTypeForm: {
                 title: '',
                 title_en: '',
                 allow_many: false,
             },
-            origTypeForm: {},
+            paramForm: {
+                title: '',
+                title_en: '',
+                price: 0,
+                parameter_type_id: '',
+                door_type_id: ''
+            },
+            origPTForm: {},
             paramTypes: [],
+            params: [],
             search: '',
             items: {
-                columns: [
-                    { dataIndex: 'id', title: '#' },
-                    { dataIndex: 'title', title: 'title' },
-                    { dataIndex: 'title_en', title: 'title_en' },
-                    { dataIndex: 'allow_many', title: 'allow many' },
-                    { dataIndex: 'actions', title: 'actions' },
-                ],
-                data: []
+                parameterTypes : {
+                    columns: [
+                        { dataIndex: 'id', title: '#' },
+                        { dataIndex: 'title', title: 'title' },
+                        { dataIndex: 'title_en', title: 'english title' },
+                        { dataIndex: 'allow_many', title: 'allow many' },
+                        { dataIndex: 'actions', title: 'actions' },
+                    ],
+                    data: []
+                },
+                parameters: {
+                    columns: [
+                        { dataIndex: 'id', title: '#' },
+                        { dataIndex: 'title', title: 'title' },
+                        { dataIndex: 'title_en', title: 'title_en' },
+                        { dataIndex: 'price', title: 'price' },
+                        { dataIndex: 'parameter_type_id', title: 'parameter type' },
+                        { dataIndex: 'door_type_id', title: 'door type' },
+                    ],
+                    data: []
+                }
             }
         }
     },
@@ -57,19 +84,27 @@ export default {
         }
     },
     created(){
-        this.fetchData();
-        this.origTypeForm = _.cloneDeep(this.paramTypeForm);
+        this.fetchPTData();
+        this.fetchPData();
+        this.origPTForm = _.cloneDeep(this.paramTypeForm);
     },
     methods: {
         getSearchedData (search) {
             this.search = search
-            this.items.data = this.dataSource
+            this.items.parameterTypes.data = this.dataSource
         },
-        fetchData(){
+        fetchPTData(){
             axios.get('/api/param-types')
             .then(response => {
                 this.paramTypes = response.data.data;
-                this.items.data = response.data.data;
+                this.items.parameterTypes.data = response.data.data;
+            });
+        },
+        fetchPData(){
+            axios.get('/api/params')
+            .then(response => {
+                this.params = response.data.data;
+                this.items.parameters.data = response.data.data;
             });
         },
         deleteType(type){
@@ -84,7 +119,7 @@ export default {
             this.paramTypeForm = type;
         },
         clearParamTypeForm(){
-            this.paramTypeForm = _.cloneDeep(this.origTypeForm);
+            this.paramTypeForm = _.cloneDeep(this.origPTForm);
         },
         submitParamType(){
             axios.post('/api/param-types', this.paramTypeForm)
@@ -101,8 +136,8 @@ export default {
             })
         },
         handleClose() {
-            this.paramTypeForm = _.cloneDeep(this.origTypeForm);
-            this.fetchData();
+            this.paramTypeForm = _.cloneDeep(this.origPTForm);
+            this.fetchPTData();
         }
     }
 }

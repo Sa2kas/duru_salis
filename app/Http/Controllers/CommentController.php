@@ -2,10 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Mounting;
+use App\Models\Comment;
 use Illuminate\Http\Request;
+use App\Http\Resources\Comment as CommentResource;
 
-class MountingController extends Controller
+class CommentController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -15,6 +16,7 @@ class MountingController extends Controller
     public function index()
     {
         //
+        return CommentResource::collection(Comment::get());
     }
 
     /**
@@ -36,15 +38,21 @@ class MountingController extends Controller
     public function store(Request $request)
     {
         //
+        $param = !empty($request->input('id')) ? Comment::findOrFail($request->input('id')) : new Comment;
+        $param->name = $request->input('name');
+        $param->stars = $request->input('stars');
+        $param->order_id = $request->input('order_id');
+        $param->save();
+        return new CommentResource($param);
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\Mounting  $mounting
+     * @param  \App\Models\Comment  $comment
      * @return \Illuminate\Http\Response
      */
-    public function show(Mounting $mounting)
+    public function show(Comment $comment)
     {
         //
     }
@@ -52,10 +60,10 @@ class MountingController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Models\Mounting  $mounting
+     * @param  \App\Models\Comment  $comment
      * @return \Illuminate\Http\Response
      */
-    public function edit(Mounting $mounting)
+    public function edit(Comment $comment)
     {
         //
     }
@@ -64,10 +72,10 @@ class MountingController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Mounting  $mounting
+     * @param  \App\Models\Comment  $comment
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Mounting $mounting)
+    public function update(Request $request, Comment $comment)
     {
         //
     }
@@ -75,11 +83,13 @@ class MountingController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\Mounting  $mounting
+     * @param  \App\Models\Comment  $comment
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Mounting $mounting)
+    public function destroy($comment)
     {
         //
+        Comment::find($comment)->delete();
+        return CommentResource::collection(Comment::get());
     }
 }

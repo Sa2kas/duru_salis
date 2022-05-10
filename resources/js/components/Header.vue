@@ -106,7 +106,7 @@ export default {
         justify-content: space-between;
         padding: 0 1vw;
         z-index: 1;
-        opacity: 0.96;
+        opacity: 0.975;
         position: relative, fixed;
     }
     .header-menu {
@@ -174,19 +174,19 @@ export default {
         margin: 0 0.2em;
         cursor: pointer;
         height: 22px;
-        color: #a85727;
-        border-bottom: 1.5px solid rgba(168, 86, 39, 0.5);
+        color: #723B1B;
+        border-bottom: 1.5px solid rgba(114, 59, 27, 0.7);
     }
     .login-logout {
         padding: 0 0.2em;
     }
     .header-button {
-        border: 1.5px solid rgba(168, 86, 39, 0.5);
+        border: 1.5px solid rgba(114, 59, 27, 0.5);
         border-radius: 5px;
         margin: 0 0.2em;
         padding: 0.2em 0.5em;
         text-transform: uppercase;
-        color: #a85727;
+        color: #723B1B;
         background-color: #fff;
         font-size: 14px;
         font-family: "Oswald", sans-serif;
@@ -194,8 +194,8 @@ export default {
         letter-spacing: 0.02em;
     }
     .header-button:hover {
-        border: 1.5px solid rgba(168, 86, 39, 0.7);
-        box-shadow: 0 0 5px rgba(168, 86, 39, 0.2);
+        border: 1.5px solid rgba(114, 59, 27, 0.7);
+        box-shadow: 0 0 5px rgba(114, 59, 27, 0.2);
     }
     .small-left-side {
         position: fixed;

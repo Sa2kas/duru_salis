@@ -4,6 +4,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\ParameterTypeController;
+use App\Http\Controllers\ParameterController;
 
 /*
 |--------------------------------------------------------------------------
@@ -25,6 +26,9 @@ Route::middleware('auth:sanctum')->group(function() {
     Route::post('/param-types', [ParameterTypeController::class, 'store']);
     Route::delete('/param-types/{id}', [ParameterTypeController::class, 'destroy']);
     
+    Route::get('/params', [ParameterController::class, 'index']);
+    Route::post('/params', [ParameterController::class, 'store']);
+    Route::delete('/params/{id}', [ParameterController::class, 'destroy']);
 });
 
 

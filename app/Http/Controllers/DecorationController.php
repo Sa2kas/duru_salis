@@ -2,10 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Accessory;
+use App\Models\Decoration;
 use Illuminate\Http\Request;
+use App\Http\Resources\Decoration as DecorationResource;
 
-class AccessoryController extends Controller
+class DecorationController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -15,6 +16,7 @@ class AccessoryController extends Controller
     public function index()
     {
         //
+        return DecorationResource::collection(Decoration::get());
     }
 
     /**
@@ -36,15 +38,23 @@ class AccessoryController extends Controller
     public function store(Request $request)
     {
         //
+        $param = !empty($request->input('id')) ? Parameter::findOrFail($request->input('id')) : new Parameter;
+        $param->title = $request->input('title');
+        $param->title_en = $request->input('title_en');
+        $param->price = $request->input('price');
+        $param->parameter_type_id = $request->input('parameter_type_id');
+        $param->door_type_id = $request->input('door_type_id');
+        $param->save();
+        return new ParameterResource($param);
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\Accessory  $accessory
+     * @param  \App\Models\Decoration  $decoration
      * @return \Illuminate\Http\Response
      */
-    public function show(Accessory $accessory)
+    public function show(Decoration $decoration)
     {
         //
     }
@@ -52,10 +62,10 @@ class AccessoryController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Models\Accessory  $accessory
+     * @param  \App\Models\Decoration  $decoration
      * @return \Illuminate\Http\Response
      */
-    public function edit(Accessory $accessory)
+    public function edit(Decoration $decoration)
     {
         //
     }
@@ -64,10 +74,10 @@ class AccessoryController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Accessory  $accessory
+     * @param  \App\Models\Decoration  $decoration
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Accessory $accessory)
+    public function update(Request $request, Decoration $decoration)
     {
         //
     }
@@ -75,11 +85,13 @@ class AccessoryController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\Accessory  $accessory
+     * @param  \App\Models\Decoration  $decoration
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Accessory $accessory)
+    public function destroy($decoration)
     {
         //
+        Decoration::find($decoration)->delete();
+        return DecorationResource::collection(Decoration::get());
     }
 }

@@ -191,6 +191,7 @@ export default {
   .active {
     font-family: "Open Sans", sans-serif;
     font-weight: 600;
-    font-size: 17px;
+    font-size: 15px;
+    color: #723B1B;
 }
 </style>

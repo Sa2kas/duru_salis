@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Photo;
 use Illuminate\Http\Request;
+use App\Http\Resources\Photo as PhotoResource;
 
 class PhotoController extends Controller
 {
@@ -15,6 +16,7 @@ class PhotoController extends Controller
     public function index()
     {
         //
+        return PhotoResource::collection(Photo::get());
     }
 
     /**
@@ -36,6 +38,14 @@ class PhotoController extends Controller
     public function store(Request $request)
     {
         //
+        $param = !empty($request->input('id')) ? Parameter::findOrFail($request->input('id')) : new Parameter;
+        $param->title = $request->input('title');
+        $param->title_en = $request->input('title_en');
+        $param->price = $request->input('price');
+        $param->parameter_type_id = $request->input('parameter_type_id');
+        $param->door_type_id = $request->input('door_type_id');
+        $param->save();
+        return new ParameterResource($param);
     }
 
     /**
@@ -78,8 +88,10 @@ class PhotoController extends Controller
      * @param  \App\Models\Photo  $photo
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Photo $photo)
+    public function destroy($photo)
     {
         //
+        Photo::find($photo)->delete();
+        return PhotoResource::collection(Photo::get());
     }
 }

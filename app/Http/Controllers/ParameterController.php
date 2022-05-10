@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Parameter;
 use Illuminate\Http\Request;
+use App\Http\Resources\Parameter as ParameterResource;
 
 class ParameterController extends Controller
 {
@@ -14,7 +15,7 @@ class ParameterController extends Controller
      */
     public function index()
     {
-        //
+        return ParameterResource::collection(Parameter::get());
     }
 
     /**
@@ -35,7 +36,14 @@ class ParameterController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $param = !empty($request->input('id')) ? Parameter::findOrFail($request->input('id')) : new Parameter;
+        $param->title = $request->input('title');
+        $param->title_en = $request->input('title_en');
+        $param->price = $request->input('price');
+        $param->parameter_type_id = $request->input('parameter_type_id');
+        $param->door_type_id = $request->input('door_type_id');
+        $param->save();
+        return new ParameterResource($param);
     }
 
     /**
@@ -78,8 +86,9 @@ class ParameterController extends Controller
      * @param  \App\Models\Parameter  $parameter
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Parameter $parameter)
+    public function destroy($parameter)
     {
-        //
+        Parameter::find($parameter)->delete();
+        return ParameterResource::collection(Parameter::get());
     }
 }

@@ -20,10 +20,10 @@ export default {
 </script>
 <style>
     .footer {
-        border-top: 1px solid rgba(168, 86, 39, 0.5);
+        border-top: 1px solid rgba(114, 59, 27, 0.5);
         background-color: #fff;
         height: 40px;
-        color: #a85727;
+        color: #723B1B;
         text-align: center;
         width: 100%;
     }
