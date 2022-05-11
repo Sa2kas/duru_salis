@@ -38,14 +38,21 @@ class DoorController extends Controller
     public function store(Request $request)
     {
         //
-        $param = !empty($request->input('id')) ? Parameter::findOrFail($request->input('id')) : new Parameter;
-        $param->title = $request->input('title');
-        $param->title_en = $request->input('title_en');
-        $param->price = $request->input('price');
-        $param->parameter_type_id = $request->input('parameter_type_id');
+        $param = !empty($request->input('id')) ? Door::findOrFail($request->input('id')) : new Door;
+        $param->length = $request->input('length');
+        $param->width = $request->input('width');
         $param->door_type_id = $request->input('door_type_id');
+        $param->panel_id = $request->input('panel_id');
+        $param->decoration_id = $request->input('decoration_id');
+        $param->main_lock = $request->input('main_lock');
+        $param->safe_lock = $request->input('safe_lock');
+        $param->intallation = $request->input('installation');
+        $param->patern_id = $request->input('patern_id');
+        $param->color_id = $request->input('color_id');
+        $param->quantity = $request->input('quantity');
+        $param->price = $request->input('price');
         $param->save();
-        return new ParameterResource($param);
+        return new Door($param);
     }
 
     /**

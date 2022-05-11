@@ -1,6 +1,7 @@
 <template>
     <div class="door-component">
         <div class="border">
+            {{doorForm}}
             <div class="door-form">
                 <div class="door-form-item">
                     <div class="door-form-label">
@@ -31,7 +32,9 @@
                         Durų tipas
                     </div>
                     <div class="door-form-data">
-                        <input type="text" class="door-input">
+                        <select style="width: 180px; height: 28px" v-model="doorForm.door_type_id"  class="door-input">
+                            <option v-for="doorType in doorTypes" :key="doorType.id" :value="doorType.id">{{doorType.title}}</option>
+                        </select>
                     </div>
                 </div>
                 <div class="door-form-item">
@@ -117,14 +120,36 @@
 export default {
     data () {
     return {
-        doorTypeForm: {
-            title: '',
-            title_en: '',
-            allow_many: false,
-        },
-        doorTypes: []
+        doorTypes: [],
+        doorForm: {
+            length: 0,
+            width: 0,
+            left: true,
+            door_type_id: 0,
+            panel_id: 0,
+            decoration_id: 0,
+            main_lock: '',
+            safe_lock: '',
+            installation: '',
+            patern_id: 0,
+            color_id: 0,
+            quantity: 1,
+            price: 0
+
+        }
     }
   },
+  created () {
+    this.fetchDTData();
+  },
+  methods: {
+    fetchDTData(){
+        axios.get('/api/door-types')
+        .then(response => {
+            this.doorTypes = response.data.data;
+        });
+    },
+  }
 }
 </script>
 <style>
