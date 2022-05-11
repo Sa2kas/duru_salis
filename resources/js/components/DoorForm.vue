@@ -115,7 +115,16 @@
 </template>
 <script>
 export default {
-    
+    data () {
+    return {
+        doorTypeForm: {
+            title: '',
+            title_en: '',
+            allow_many: false,
+        },
+        doorTypes: []
+    }
+  },
 }
 </script>
 <style>
