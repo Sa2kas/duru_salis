@@ -1,7 +1,6 @@
 <template>
     <div class="door-component">
         <div class="border">
-            <!-- {{this.doors}} <br>       -->
                 <form class="door-form" v-on:submit.prevent>
                     <div class="door-form-item">
                         <div class="door-form-label">
