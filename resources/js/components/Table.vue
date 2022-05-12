@@ -65,7 +65,7 @@
           @pagechanged="onPageChange"
           />
       </div>
-      <!-- <button @click="showModal();edit = false">prideti</button> -->
+      <button @click="showModal();edit = false">prideti</button>
       </expand-collapse>
       <modal 
         v-show="isModalVisible"

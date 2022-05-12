@@ -31,9 +31,11 @@
 </template>
 <script>
 import VueTable from '../components/Table.vue'
+import PdfGenerator from '../components/PdfGeneration.vue'
 export default {
     components: {
-        VueTable
+        VueTable,
+        PdfGenerator
     },
     data() {
         return {

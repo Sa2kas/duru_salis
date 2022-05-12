@@ -137,7 +137,7 @@
                     <div class="door-form-total"  v-show="showPrice">
                         <span>Viso : {{total}} &euro;</span>
                         <button class="door-add" @click="addDoor">
-                            Pateikti durų informaciją
+                            Pateikti asmeninę informaciją
                         </button>
                     </div>
                         <div class="door-customer-data" v-show="showCustomer">
