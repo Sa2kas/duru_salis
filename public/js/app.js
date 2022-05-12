@@ -2204,34 +2204,80 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   data: function data() {
     return {
       doorForm: {
-        length: 0,
-        width: 0,
-        left: true,
-        door_type_id: 0,
-        panel_id: 0,
-        decoration_id: 0,
-        main_lock: '',
-        safe_lock: '',
-        installation: '',
-        pattern_id: 0,
-        color_id: 0,
+        length: 1800,
+        width: 900,
+        left: 0,
+        door_type_id: 2,
+        panel_id: 5,
+        decoration_id: 7,
+        main_lock: 'xxx',
+        safe_lock: 'yyy',
+        installation: 'aaa',
+        pattern_id: 18,
+        color_id: 19,
         quantity: 1,
-        price: 0,
-        customer: '',
-        phone: '',
-        email: '',
-        ordered: false
+        price: 550,
+        customer: 'vi',
+        phone: 'tel',
+        email: 'email',
+        ordered: 0
       },
       doorTypes: [],
+      doors: [],
       panels: [],
       decorations: [],
       parameters: [],
       patterns: [],
-      colors: []
+      colors: [],
+      total: 0,
+      showPrice: false,
+      showCustomer: false,
+      newDoors: []
     };
   },
   computed: {
@@ -2239,14 +2285,14 @@ __webpack_require__.r(__webpack_exports__);
       var _this = this;
 
       return this.panels.filter(function (elem) {
-        return elem.door_type_id == _this.doorForm.door_type_id;
+        return elem.door_type_id == _this.doorForm.door_type_id && _this.doorForm.door_type_id != 0;
       });
     },
     availableDecors: function availableDecors() {
       var _this2 = this;
 
       return this.decorations.filter(function (elem) {
-        return elem.panel_id == _this2.doorForm.panel_id;
+        return elem.panel_id == _this2.doorForm.panel_id && _this2.doorForm.panel_id != 0;
       });
     },
     mainLocks: function mainLocks() {
@@ -2274,7 +2320,14 @@ __webpack_require__.r(__webpack_exports__);
       var _this6 = this;
 
       return this.patterns.filter(function (elem) {
-        return elem.panel_id == _this6.doorForm.panel_id;
+        return elem.panel_id == _this6.doorForm.panel_id && _this6.doorForm.panel_id != 0;
+      });
+    },
+    availableColors: function availableColors() {
+      var _this7 = this;
+
+      return this.colors.filter(function (elem) {
+        return elem.panel_id == _this7.doorForm.panel_id && _this7.doorForm.panel_id != 0;
       });
     }
   },
@@ -2282,51 +2335,108 @@ __webpack_require__.r(__webpack_exports__);
     this.fetchDTData();
     this.fetchPanelData();
     this.fetchDecorData();
+    this.fetchDoorData();
     this.fetchParamData();
     this.fetchPatternData();
     this.fetchColorData();
   },
   methods: {
+    calculatePrice: function calculatePrice() {
+      var _this8 = this;
+
+      try {
+        var decoprice = this.availableDecors.filter(function (elem) {
+          return elem.id == _this8.doorForm.decoration_id;
+        })[0].price;
+        var mainLockPrice = this.mainLocks.filter(function (elem) {
+          return elem.title == _this8.doorForm.main_lock;
+        })[0].price;
+        var safeLockPrice = this.safeLocks.filter(function (elem) {
+          return elem.title == _this8.doorForm.safe_lock;
+        })[0].price;
+        var installationPrice = this.jobs.filter(function (elem) {
+          return elem.title == _this8.doorForm.installation;
+        })[0].price;
+        this.total = (decoprice + mainLockPrice + safeLockPrice + installationPrice) * this.doorForm.quantity;
+        this.doorForm.price = this.total;
+        this.showPrice = true;
+        document.getElementById("error1").textContent = '';
+      } catch (err) {
+        document.getElementById("error1").textContent = 'Įvesti ne visi duomenys';
+      }
+    },
+    addDoor: function addDoor() {
+      this.showCustomer = true;
+
+      try {} catch (err) {
+        document.getElementById("error1").textContent = 'Įvesti ne visi duomenys';
+      }
+    },
+    postDoor: function postDoor() {
+      var _this9 = this;
+
+      this.newDoors = this.doorForm;
+      axios.post('/api/doors', this.doorForm).then(function (response) {
+        // if(this.doorForm.id){
+        //     let item = this.doors.find(el => el.id == response.data.data.id)
+        //     let index = this.doors.indexOf(item);
+        // this.paramTypes[index] = response.data.data <= taip nedaryti
+        // this.$set(this.doors, index, response.data.data)
+        // }else{
+        _this9.doors.push(response.data.data); // }
+        // this.handleClose();
+
+
+        _this9.fetchDoorData();
+      });
+    },
+    fetchDoorData: function fetchDoorData() {
+      var _this10 = this;
+
+      axios.get('/api/doors').then(function (response) {
+        _this10.doors = response.data.data;
+      });
+    },
     fetchDTData: function fetchDTData() {
-      var _this7 = this;
+      var _this11 = this;
 
       axios.get('/api/door-types').then(function (response) {
-        _this7.doorTypes = response.data.data;
+        _this11.doorTypes = response.data.data;
       });
     },
     fetchPanelData: function fetchPanelData() {
-      var _this8 = this;
+      var _this12 = this;
 
       axios.get('/api/panels').then(function (response) {
-        _this8.panels = response.data.data;
+        _this12.panels = response.data.data;
       });
     },
     fetchDecorData: function fetchDecorData() {
-      var _this9 = this;
+      var _this13 = this;
 
       axios.get('/api/decorations').then(function (response) {
-        _this9.decorations = response.data.data;
+        _this13.decorations = response.data.data;
       });
     },
     fetchParamData: function fetchParamData() {
-      var _this10 = this;
+      var _this14 = this;
 
       axios.get('/api/params').then(function (response) {
-        _this10.parameters = response.data.data;
+        _this14.parameters = response.data.data;
       });
     },
     fetchPatternData: function fetchPatternData() {
-      var _this11 = this;
+      var _this15 = this;
 
       axios.get('/api/patterns').then(function (response) {
-        _this11.patterns = response.data.data;
+        _this15.patterns = response.data.data;
       });
     },
     fetchColorData: function fetchColorData() {
-      var _this12 = this;
+      var _this16 = this;
 
       axios.get('/api/colors').then(function (response) {
-        _this12.colors = response.data.data;
+        _this16.colors = response.data.data;
       });
     }
   }
@@ -3947,7 +4057,6 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 //
 //
 //
-//
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   data: function data() {
@@ -3993,11 +4102,11 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
   //     showHidePassword () {
   //       if (this.show === true) {
   //         document.querySelector('#password').setAttribute('type', 'password')
-  //         document.getElementById('showHide').style.background = 'url("/icons/input_show.svg") no-repeat 80%'
+  //         document.getElementById('showHide').style.background = 'url("/images/input_show.svg") no-repeat 80%'
   //         this.show = false
   //       } else {
   //         document.querySelector('#password').setAttribute('type', 'text')
-  //         document.getElementById('showHide').style.background = 'url("/icons/input_hide.svg") no-repeat 80%'
+  //         document.getElementById('showHide').style.background = 'url("/images/input_hide.svg") no-repeat 80%'
   //         this.show = true
   //       }
   //     }
@@ -8897,7 +9006,7 @@ __webpack_require__.r(__webpack_exports__);
 
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(function(i){return i[1]});
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, "\n.door-component {\n    padding: min(8vh, 8vw) 1vw;\n}\n.border {\n    width: 95%;\n    box-shadow: 0 2px 4px rgba(86, 71, 63, 0.5);\n    min-height: 300px;\n    margin: 1vw auto;\n    border-radius: 3px;\n    padding: 1vh 1vw;\n}\n.door-form-item {\n    display: flex;\n    justify-content: space-between;\n    margin: 8px;\n}\n.door-form-label {\n    font-family: \"Open Sans\", sans-serif;\n    color: #432310;\n    letter-spacing: -0.02em;\n}\n.door-input {\n    padding: 0.3em 1em 0.3em 0.5em;\n    font-family: \"Open Sans\", sans-serif;\n    font-size: 13px;\n    height: 18px;\n    border-radius: 3px;\n    border: 1px solid #432310;\n    color: #432310;\n}\n.door-submit {\n    background-color: #fff;\n    font-family: \"Oswald\", sans-serif;\n    font-size: 16px;\n    font-weight: 300;\n    border: 1px solid #723B1B;\n    letter-spacing: 0.05em;\n    border-radius: 5px;\n    padding: 0.3em 0.6em;\n    margin: 2em 1em 0.5em 1em;\n    color: #723B1B;\n    transition: 0.5s;\n    text-transform: uppercase;\n    letter-spacing: -0.01em;\n    /* position: absolute; */\n    /* float: right; */\n    display: block;\n}\n.door-submit:hover {\n    cursor: pointer;\n    background-color: #723B1B;\n    color: #fff;\n    border: 1px solid #fff;\n    transition: 0.5s;\n}\n", ""]);
+___CSS_LOADER_EXPORT___.push([module.id, "\n.door-component {\n    padding: min(8vh, 8vw) 1vw;\n}\n.border {\n    width: 95%;\n    box-shadow: 0 2px 4px rgba(86, 71, 63, 0.5);\n    min-height: 600px;\n    margin: 1vw auto;\n    border-radius: 3px;\n    padding: 1vh 1vw;\n}\n.door-form-item {\n    display: flex;\n    justify-content: space-between;\n    margin: 8px;\n}\n.door-form-label {\n    font-family: \"Open Sans\", sans-serif;\n    color: #432310;\n    letter-spacing: -0.02em;\n}\n.door-input {\n    padding: 0.3em 1em 0.3em 0.5em;\n    font-family: \"Open Sans\", sans-serif;\n    font-size: 13px;\n    height: 18px;\n    border-radius: 3px;\n    border: 1px solid #432310;\n    color: #432310;\n    width: 260px\n}\ninput.door-input {\n    width: 238px\n}\n.door-form-total {\n    text-align: right;\n    text-transform: uppercase;\n    font-family: \"Open Sans\", sans-serif;\n    font-size: 28px;\n    color: #432310;\n    margin-right: 1em;\n    margin-bottom: 1em;\n}\n.door-submit, .door-add {\n    background-color: #fff;\n    font-family: \"Oswald\", sans-serif;\n    font-size: 16px;\n    font-weight: 300;\n    border: 1px solid #723B1B;\n    letter-spacing: 0.05em;\n    border-radius: 5px;\n    padding: 0.3em 0.6em;\n    margin: 2em 1em 0.5em 1em;\n    color: #723B1B;\n    transition: 0.5s;\n    text-transform: uppercase;\n    letter-spacing: -0.01em;\n    /* position: absolute; */\n    /* float: right; */\n    display: block;\n}\n.door-submit:hover, .door-add:hover {\n    cursor: pointer;\n    background-color: #723B1B;\n    color: #fff;\n    border: 1px solid #fff;\n    transition: 0.5s;\n}\n#error1 {\n    visibility: visible;\n    font-size: 16px;\n    display: flex;\n    text-align: right;\n    margin: 0.1em;\n    padding-bottom: 0.1em;\n    /* float: right; */\n    /* margin-bottom: 25px; */\n}\n", ""]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
@@ -9113,7 +9222,7 @@ __webpack_require__.r(__webpack_exports__);
 
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(function(i){return i[1]});
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, "\n.table-header {\n  /* display: none; */\n  justify-content: space-between;\n  font-family: \"Open Sans\",sans-serif;\n  font-weight: 400;\n  font-size: 12px;\n  text-transform: none;\n  height: 40px;\n  padding: 6px 0;\n}\n.set-records-number {\n  width: -webkit-max-content;\n  width: -moz-max-content;\n  width: max-content;\n  display: flex;\n  justify-content: flex-end;\n  vertical-align: middle;\n}\n.records-number-title {\n  padding-top: 3px;\n  margin-right: 5px;\n  color: #444;\n}\n.choose-records-number {\n  width: 50px;\n  border: 1px solid #afafaf;\n  border-radius: 7px;\n  position: relative;\n  flex-grow: 1;\n  margin-left: 5px;\n  height: 24px;\n  background-image: url(/icons/arrow_down.svg);\n  background-repeat: no-repeat;\n  background-size: 12px 8px;\n  -webkit-appearance: none;\n     -moz-appearance: none;\n          appearance: none;\n  padding: 2px 24px 2px 5px;\n  background-position: center right 7px;\n  cursor: pointer;\n  color: #000;\n  display: flex;\n  flex-direction: column;\n  justify-content: center;\n  /* tas mirksintis cursorius */\n  caret-color: transparent;\n}\n.choose-records-number:focus + .number-options{\n  display: block;\n}\n.number-options:hover {\n  display: block;\n}\n.number-options {\n  width: 50px;\n  position: relative;\n  display: none;\n}\n.number-options ul {\n  border: 1px solid #e4e4e4;\n  box-shadow: 0 10px 5px 0 rgb(0 0 0 / 25%);\n  width: 50px;\n  padding-left: 0;\n  max-height: 200px;\n  overflow: auto;\n  position: absolute;\n  left: 5px;\n  z-index: 1;\n  background-color: #fff;\n}\n.number-options li {\n  color: #444;\n  font-family: \"Open Sans\",sans-serif;\n  font-weight: 400;\n  font-size: 11px;\n  text-transform: none;\n  list-style: none;\n  text-align: left;\n  padding: 0.3em 1em;\n  cursor: pointer;\n}\n.number-options li:hover {\n  border-left: 3px solid #0054a6;\n  color: #0054a6;\n}\ndiv.search {\n  position: relative;\n  flex-grow: 1;\n  justify-content: flex-end;\n}\ninput.search {\n  width: 100%;\n  max-width: 175px;\n  border: 1px solid #afafaf;\n  border-radius: 7px;\n  transition: border .2s linear,box-shadow .2s linear;\n  position: relative;\n  display: flex;\n  float: right;\n  font-size: 11px;\n  padding: 0.3em 1em;\n  height: 22px;\n}\ninput:focus {\n  outline: none;\n  box-shadow: 0px 0px 5px rgba(24, 143, 255, 0.5);\n  border: 1.5px solid rgba(24, 143, 255, 0.5);\n  transition: 0.2s;\n}\ninput:hover {\n  all: none;\n}\n.data-table {\n  cursor: default;\n  border-collapse: collapse;\n  width: 100%;\n  display: table;\n  text-indent: initial;\n  border-spacing: 2px;\n  border-color: grey;\n  color: #444;\n  font-family: \"Open Sans\", sans-serif;\n  font-size: 12px;\n}\n.th {\n  font-family: \"Oswald\",sans-serif;\n  font-weight: 400;\n  font-size: 15px;\n  text-transform: uppercase;\n  padding: 8px;\n  text-align: left;\n  position: relative;\n  color: #444;\n  display: table-cell;\n  vertical-align: inherit;\n}\n.td {\n  padding: 8px;\n  padding-left: 16px;\n}\n.data-header {\n  display: none;\n}\n.table-data {\n  min-width: 60px;\n}\n.row-div {\n  border: unset;\n  border-top: 1px solid #e4e4e4;\n  width: 100%;\n}\n.row-div:hover {\n  background-color: #f7f7f7;\n}\n.iconButton {\n  padding: 0;\n  background: none;\n  border: none;\n  margin: 1px 3px;\n  cursor: pointer;\n}\n.iconButton img{\n  height: 24px;\n  width: 24px;\n}\n.empty-table {\n  padding: 8px;\n  font-family: \"Open Sans\", sans-serif;\n  font-size: 12px;\n  font-weight: 400;\n  color: #444;\n}\n.empty-table:hover {\n  background-color: #f7f7f7;\n}\n.table-footer {\n  display: block;\n}\n@media only screen and (max-width: 1100px) {\nthead {\n    display: none;\n}\ntbody {\n    width: 100%;\n}\n.row-div {\n    border: unset;\n    border-top: 1px solid #e4e4e4;\n    display: flex;\n    flex-direction: column;\n}\n.row-div:nth-child(1) {\n    border-top: none;\n}\n.td {\n    display: flex;\n    justify-content: space-between;\n    padding: 8px;\n}\n.data-header {\n    display: block;\n    margin-right: 25%;\n}\n.table-title {\n    font-size: 15.6px;\n}\n}\n@media only screen and (max-width: 500px) {\n.row-div, .row-div:nth-child(1) {\n    border-radius: 7px;\n    border: 1px solid #e4e4e4;\n    margin-top: 15px;\n    max-width: 99.5%;\n}\n.td {\n    border: unset;\n    border-top: 1px solid #e4e4e4;\n    flex-direction: column;\n    color: #777;\n}\n.td:nth-child(1) {\n    border-top: none;\n}\n.data-header {\n    color: #444;\n    font-family: \"Oswald\", sans-serif;\n    font-weight: 400;\n    font-size: 13.2px;\n    text-transform: uppercase;\n}\n}\n", ""]);
+___CSS_LOADER_EXPORT___.push([module.id, "\n.table-header {\n  /* display: none; */\n  justify-content: space-between;\n  font-family: \"Open Sans\",sans-serif;\n  font-weight: 400;\n  font-size: 12px;\n  text-transform: none;\n  height: 40px;\n  padding: 6px 0;\n}\n.set-records-number {\n  width: -webkit-max-content;\n  width: -moz-max-content;\n  width: max-content;\n  display: flex;\n  justify-content: flex-end;\n  vertical-align: middle;\n}\n.records-number-title {\n  padding-top: 3px;\n  margin-right: 5px;\n  color: #444;\n}\n.choose-records-number {\n  width: 50px;\n  border: 1px solid #afafaf;\n  border-radius: 7px;\n  position: relative;\n  flex-grow: 1;\n  margin-left: 5px;\n  height: 24px;\n  background-image: url(/images/arrow_down.svg);\n  background-repeat: no-repeat;\n  background-size: 12px 8px;\n  -webkit-appearance: none;\n     -moz-appearance: none;\n          appearance: none;\n  padding: 2px 24px 2px 5px;\n  background-position: center right 7px;\n  cursor: pointer;\n  color: #000;\n  display: flex;\n  flex-direction: column;\n  justify-content: center;\n  /* tas mirksintis cursorius */\n  caret-color: transparent;\n}\n.choose-records-number:focus + .number-options{\n  display: block;\n}\n.number-options:hover {\n  display: block;\n}\n.number-options {\n  width: 50px;\n  position: relative;\n  display: none;\n}\n.number-options ul {\n  border: 1px solid #e4e4e4;\n  box-shadow: 0 10px 5px 0 rgb(0 0 0 / 25%);\n  width: 50px;\n  padding-left: 0;\n  max-height: 200px;\n  overflow: auto;\n  position: absolute;\n  left: 5px;\n  z-index: 1;\n  background-color: #fff;\n}\n.number-options li {\n  color: #444;\n  font-family: \"Open Sans\",sans-serif;\n  font-weight: 400;\n  font-size: 11px;\n  text-transform: none;\n  list-style: none;\n  text-align: left;\n  padding: 0.3em 1em;\n  cursor: pointer;\n}\n.number-options li:hover {\n  border-left: 3px solid #0054a6;\n  color: #0054a6;\n}\ndiv.search {\n  position: relative;\n  flex-grow: 1;\n  justify-content: flex-end;\n}\ninput.search {\n  width: 100%;\n  max-width: 175px;\n  border: 1px solid #afafaf;\n  border-radius: 7px;\n  transition: border .2s linear,box-shadow .2s linear;\n  position: relative;\n  display: flex;\n  float: right;\n  font-size: 11px;\n  padding: 0.3em 1em;\n  height: 22px;\n}\ninput:focus {\n  outline: none;\n  box-shadow: 0px 0px 5px rgba(24, 143, 255, 0.5);\n  border: 1.5px solid rgba(24, 143, 255, 0.5);\n  transition: 0.2s;\n}\ninput:hover {\n  all: none;\n}\n.data-table {\n  cursor: default;\n  border-collapse: collapse;\n  width: 100%;\n  display: table;\n  text-indent: initial;\n  border-spacing: 2px;\n  border-color: grey;\n  color: #444;\n  font-family: \"Open Sans\", sans-serif;\n  font-size: 12px;\n}\n.th {\n  font-family: \"Oswald\",sans-serif;\n  font-weight: 400;\n  font-size: 15px;\n  text-transform: uppercase;\n  padding: 8px;\n  text-align: left;\n  position: relative;\n  color: #444;\n  display: table-cell;\n  vertical-align: inherit;\n}\n.td {\n  padding: 8px;\n  padding-left: 16px;\n}\n.data-header {\n  display: none;\n}\n.table-data {\n  min-width: 60px;\n}\n.row-div {\n  border: unset;\n  border-top: 1px solid #e4e4e4;\n  width: 100%;\n}\n.row-div:hover {\n  background-color: #f7f7f7;\n}\n.iconButton {\n  padding: 0;\n  background: none;\n  border: none;\n  margin: 1px 3px;\n  cursor: pointer;\n}\n.iconButton img{\n  height: 24px;\n  width: 24px;\n}\n.empty-table {\n  padding: 8px;\n  font-family: \"Open Sans\", sans-serif;\n  font-size: 12px;\n  font-weight: 400;\n  color: #444;\n}\n.empty-table:hover {\n  background-color: #f7f7f7;\n}\n.table-footer {\n  display: block;\n}\n@media only screen and (max-width: 1100px) {\nthead {\n    display: none;\n}\ntbody {\n    width: 100%;\n}\n.row-div {\n    border: unset;\n    border-top: 1px solid #e4e4e4;\n    display: flex;\n    flex-direction: column;\n}\n.row-div:nth-child(1) {\n    border-top: none;\n}\n.td {\n    display: flex;\n    justify-content: space-between;\n    padding: 8px;\n}\n.data-header {\n    display: block;\n    margin-right: 25%;\n}\n.table-title {\n    font-size: 15.6px;\n}\n}\n@media only screen and (max-width: 500px) {\n.row-div, .row-div:nth-child(1) {\n    border-radius: 7px;\n    border: 1px solid #e4e4e4;\n    margin-top: 15px;\n    max-width: 99.5%;\n}\n.td {\n    border: unset;\n    border-top: 1px solid #e4e4e4;\n    flex-direction: column;\n    color: #777;\n}\n.td:nth-child(1) {\n    border-top: none;\n}\n.data-header {\n    color: #444;\n    font-family: \"Oswald\", sans-serif;\n    font-weight: 400;\n    font-size: 13.2px;\n    text-transform: uppercase;\n}\n}\n", ""]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
@@ -9329,7 +9438,7 @@ __webpack_require__.r(__webpack_exports__);
 
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(function(i){return i[1]});
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, "\n.login-page {\r\n  display: block;\n}\n.login-container {\r\n  margin: 0;\r\n  position: absolute;\r\n  top: 50%;\r\n  left: 50%;\r\n  transform: translate(-50%, -50%);\r\n  width: -webkit-max-content;\r\n  width: -moz-max-content;\r\n  width: max-content;\r\n  height: 426px;\r\n  display: flex;\n}\n.login-left {\r\n  width: 360px;\r\n  /* background-color: #0054a6; */\r\n  background-image: url('/images/login.jpg');\r\n  background-repeat: no-repeat;\r\n  background-size: cover, contain;\r\n  background-position: 0 center;\r\n  padding: 50px 40px;\r\n  border-radius: 7px;\n}\n.login-right {\r\n  width: 422.5px;\r\n  height: 224px;\r\n  background-color: #ffffff;\r\n  padding: 100px 20px 60px 20px;\r\n  margin: 20px 0;\r\n  border: 1.25px solid #e4e4e4;\r\n  border-radius: 0 7px 7px 0;\n}\n.login-title {\r\n  letter-spacing: 0.12em;\r\n  width: 100%;\r\n  font-family: \"Oswald\", sans-serif;\r\n  font-size: 19px;\r\n  text-transform: uppercase;\r\n  margin-bottom: 19px;\r\n  display: block;\r\n  color: #ffffff;\r\n  text-shadow: 0 0 5px #000;\n}\n.login-info {\r\n  text-shadow: 0 0 5px #000;\r\n  color: #ffffff;\r\n  display: block;\r\n  font-family: \"Open Sans\", sans-serif;\r\n  font-size: 14px;\r\n  width: 60%;\r\n  margin-bottom: 20px;\r\n  line-height: 19px;\n}\n.form-div {\r\n  position: relative;\r\n  width: 300px;\r\n  height: 40px;\r\n  margin-bottom: 20px;\r\n  margin-left: auto;\r\n  margin-right: auto;\n}\n.login-input {\r\n  width: 250px;\r\n  height: 30px;\r\n  margin-bottom: 20px;\r\n  color: #000;\r\n  font-size: 11px;\r\n  font-weight: 400;\r\n  font-family: Arial, Helvetica, sans-serif;\r\n  display: flex;\r\n  padding: 6.6px 40px 5.5px 5.5px;\r\n  border: 1.5px solid #afafaf;\r\n  border-radius: 7px;\r\n  position: relative;\n}\n.login-input:focus {\r\n  outline: none;\r\n  box-shadow: 0px 0px 5px rgba(24, 143, 255, 0.5);\r\n  border: 1.5px solid rgba(24, 143, 255, 0.5);\r\n  transition: 0.2s;\n}\n#showHide {\r\n  position: absolute;\r\n  width: 27px;\r\n  height: 25px;\r\n  background: url(\"/icons/input_show.svg\") no-repeat 80%;\r\n  top: 0.5em;\r\n  left: 19em;\r\n  border: none;\r\n  cursor: pointer;\r\n  z-index: 5;\n}\n.form-label {\r\n  position: absolute;\r\n  /* sito nereik, bet tada neatrodo taip nukirsta */\r\n  /* background: linear-gradient(to right, #ffffff00 0%, #ffffff 5px, #ffffff calc(100% - 5px), #ffffff00 100%); */\r\n  background-color: #ffffff;\r\n  color: #9090a5;\r\n  font-size: 12px;\r\n  display: inline-block;\r\n  padding: 0 6px;\r\n  z-index: 1;\r\n  font-weight: 400;\r\n  font-family: \"Open Sans\", sans-serif;\r\n  letter-spacing: 0.01em;\r\n  padding: 0 0.5em;\r\n  top: -0.75em;\r\n  left: 1em;\n}\n#error {\r\n  width: 300px;\r\n  height: 0px;\r\n  color: #dd4b39;\r\n  font-size: 12px;\r\n  font-weight: 400;\r\n  text-align: center;\r\n  font-family: \"Open Sans\", sans-serif;\r\n  margin-bottom: 16.25px;\r\n  visibility: hidden;\n}\n#login {\r\n  background-color: #ffffff;\r\n  padding: 0.2em 0.5em;\r\n  border: 1.5px solid rgba(68, 68, 68, 0.5);\r\n  border-radius: 5px;\r\n  cursor: pointer;\r\n  display: block;\r\n  font-family: \"Oswald\", sans-serif;\r\n  font-weight: 300;\r\n  font-size: 14px;\r\n  letter-spacing: 0.04em;\r\n  margin: 0 auto;\r\n  text-transform: uppercase;\r\n  color: #444;\n}\n#login:hover {\r\n    border: 1.5px solid rgba(15, 47, 117, 0.7);\r\n    box-shadow: 0 0 5px rgba(15, 47, 117, 0.2);\n}\n@media only screen and (max-width: 920px) {\n.login-container {\r\n    display: block;\r\n    position: relative;\r\n    min-width: unset;\r\n    top: unset;\r\n    left: unset;\r\n    transform: unset;\r\n    width: 100%;\r\n    height: 100%;\n}\n.login-left {\r\n    width: initial;\r\n    border-radius: 0;\r\n    padding: 50px 40px 50px 40px;\n}\n.login-right {\r\n    border: unset;\r\n    width: -webkit-max-content;\r\n    width: -moz-max-content;\r\n    width: max-content;\r\n    margin-left: auto;\r\n    margin-right: auto;\r\n    padding: 60px 20px 40px 20px;\n}\n.form-div {\r\n    margin-left: unset;\n}\n}\n@media only screen and (max-width: 500px) {\n#login {\r\n    max-width: 160px;\r\n    font-size: 13px;\r\n    padding: 1px 12.5px;\n}\n}\r\n", ""]);
+___CSS_LOADER_EXPORT___.push([module.id, "\n.login-page {\r\n  display: block;\n}\n.login-container {\r\n  margin: 0;\r\n  position: absolute;\r\n  top: 50%;\r\n  left: 50%;\r\n  transform: translate(-50%, -50%);\r\n  width: -webkit-max-content;\r\n  width: -moz-max-content;\r\n  width: max-content;\r\n  height: 426px;\r\n  display: flex;\n}\n.login-left {\r\n  width: 360px;\r\n  /* background-color: #0054a6; */\r\n  background-image: url('/images/login.jpg');\r\n  background-repeat: no-repeat;\r\n  background-size: cover, contain;\r\n  background-position: 0 center;\r\n  padding: 50px 40px;\r\n  border-radius: 7px;\n}\n.login-right {\r\n  width: 422.5px;\r\n  height: 224px;\r\n  background-color: #ffffff;\r\n  padding: 100px 20px 60px 20px;\r\n  margin: 20px 0;\r\n  border: 1.25px solid #e4e4e4;\r\n  border-radius: 0 7px 7px 0;\n}\n.login-title {\r\n  letter-spacing: 0.12em;\r\n  width: 100%;\r\n  font-family: \"Oswald\", sans-serif;\r\n  font-size: 19px;\r\n  text-transform: uppercase;\r\n  margin-bottom: 19px;\r\n  display: block;\r\n  color: #ffffff;\r\n  text-shadow: 0 0 5px #000;\n}\n.login-info {\r\n  text-shadow: 0 0 5px #000;\r\n  color: #ffffff;\r\n  display: block;\r\n  font-family: \"Open Sans\", sans-serif;\r\n  font-size: 14px;\r\n  width: 60%;\r\n  margin-bottom: 20px;\r\n  line-height: 19px;\n}\n.form-div {\r\n  position: relative;\r\n  width: 300px;\r\n  height: 40px;\r\n  margin-bottom: 20px;\r\n  margin-left: auto;\r\n  margin-right: auto;\n}\n.login-input {\r\n  width: 250px;\r\n  height: 30px;\r\n  margin-bottom: 20px;\r\n  color: #000;\r\n  font-size: 11px;\r\n  font-weight: 400;\r\n  font-family: Arial, Helvetica, sans-serif;\r\n  display: flex;\r\n  padding: 6.6px 40px 5.5px 5.5px;\r\n  border: 1.5px solid #afafaf;\r\n  border-radius: 7px;\r\n  position: relative;\n}\n.login-input:focus {\r\n  outline: none;\r\n  box-shadow: 0px 0px 5px rgba(24, 143, 255, 0.5);\r\n  border: 1.5px solid rgba(24, 143, 255, 0.5);\r\n  transition: 0.2s;\n}\n#showHide {\r\n  position: absolute;\r\n  width: 27px;\r\n  height: 25px;\r\n  background: url(\"/images/input_show.svg\") no-repeat 80%;\r\n  top: 0.5em;\r\n  left: 19em;\r\n  border: none;\r\n  cursor: pointer;\r\n  z-index: 5;\n}\n.form-label {\r\n  position: absolute;\r\n  /* sito nereik, bet tada neatrodo taip nukirsta */\r\n  /* background: linear-gradient(to right, #ffffff00 0%, #ffffff 5px, #ffffff calc(100% - 5px), #ffffff00 100%); */\r\n  background-color: #ffffff;\r\n  color: #9090a5;\r\n  font-size: 12px;\r\n  display: inline-block;\r\n  padding: 0 6px;\r\n  z-index: 1;\r\n  font-weight: 400;\r\n  font-family: \"Open Sans\", sans-serif;\r\n  letter-spacing: 0.01em;\r\n  padding: 0 0.5em;\r\n  top: -0.75em;\r\n  left: 1em;\n}\n#error {\r\n  width: 300px;\r\n  height: 0px;\r\n  color: #dd4b39;\r\n  font-size: 12px;\r\n  font-weight: 400;\r\n  text-align: center;\r\n  font-family: \"Open Sans\", sans-serif;\r\n  margin-bottom: 16.25px;\r\n  visibility: hidden;\n}\n#login {\r\n  background-color: #ffffff;\r\n  padding: 0.2em 0.5em;\r\n  border: 1.5px solid rgba(68, 68, 68, 0.5);\r\n  border-radius: 5px;\r\n  cursor: pointer;\r\n  display: block;\r\n  font-family: \"Oswald\", sans-serif;\r\n  font-weight: 300;\r\n  font-size: 14px;\r\n  letter-spacing: 0.04em;\r\n  margin: 0 auto;\r\n  text-transform: uppercase;\r\n  color: #444;\n}\n#login:hover {\r\n    border: 1.5px solid rgba(15, 47, 117, 0.7);\r\n    box-shadow: 0 0 5px rgba(15, 47, 117, 0.2);\n}\n@media only screen and (max-width: 920px) {\n.login-container {\r\n    display: block;\r\n    position: relative;\r\n    min-width: unset;\r\n    top: unset;\r\n    left: unset;\r\n    transform: unset;\r\n    width: 100%;\r\n    height: 100%;\n}\n.login-left {\r\n    width: initial;\r\n    border-radius: 0;\r\n    padding: 50px 40px 50px 40px;\n}\n.login-right {\r\n    border: unset;\r\n    width: -webkit-max-content;\r\n    width: -moz-max-content;\r\n    width: max-content;\r\n    margin-left: auto;\r\n    margin-right: auto;\r\n    padding: 60px 20px 40px 20px;\n}\n.form-div {\r\n    margin-left: unset;\n}\n}\n@media only screen and (max-width: 500px) {\n#login {\r\n    max-width: 160px;\r\n    font-size: 13px;\r\n    padding: 1px 12.5px;\n}\n}\r\n", ""]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
@@ -45908,572 +46017,17 @@ var render = function () {
   var _c = _vm._self._c || _h
   return _c("div", { staticClass: "door-component" }, [
     _c("div", { staticClass: "border" }, [
-      _vm._v("\n        " + _vm._s(_vm.patterns) + "\n        "),
-      _c("div", { staticClass: "door-form" }, [
-        _c("div", { staticClass: "door-form-item" }, [
-          _c("div", { staticClass: "door-form-label" }, [
-            _vm._v("\n                    Aukštis (mm)\n                "),
-          ]),
-          _vm._v(" "),
-          _c("div", { staticClass: "door-form-data" }, [
-            _c("input", {
-              directives: [
-                {
-                  name: "model",
-                  rawName: "v-model",
-                  value: _vm.doorForm.length,
-                  expression: "doorForm.length",
-                },
-              ],
-              staticClass: "door-input",
-              attrs: { type: "number" },
-              domProps: { value: _vm.doorForm.length },
-              on: {
-                input: function ($event) {
-                  if ($event.target.composing) {
-                    return
-                  }
-                  _vm.$set(_vm.doorForm, "length", $event.target.value)
-                },
-              },
-            }),
-          ]),
-        ]),
-        _vm._v(" "),
-        _c("div", { staticClass: "door-form-item" }, [
-          _c("div", { staticClass: "door-form-label" }, [
-            _vm._v("\n                    Plotis (mm)\n                "),
-          ]),
-          _vm._v(" "),
-          _c("div", { staticClass: "door-form-data" }, [
-            _c("input", {
-              directives: [
-                {
-                  name: "model",
-                  rawName: "v-model",
-                  value: _vm.doorForm.width,
-                  expression: "doorForm.width",
-                },
-              ],
-              staticClass: "door-input",
-              attrs: { type: "number" },
-              domProps: { value: _vm.doorForm.width },
-              on: {
-                input: function ($event) {
-                  if ($event.target.composing) {
-                    return
-                  }
-                  _vm.$set(_vm.doorForm, "width", $event.target.value)
-                },
-              },
-            }),
-          ]),
-        ]),
-        _vm._v(" "),
-        _c("div", { staticClass: "door-form-item" }, [
-          _c("div", { staticClass: "door-form-label" }, [
-            _vm._v("\n                    Rankena\n                "),
-          ]),
-          _vm._v(" "),
-          _c("div", { staticClass: "door-form-data" }, [
-            _c(
-              "select",
-              {
-                directives: [
-                  {
-                    name: "model",
-                    rawName: "v-model",
-                    value: _vm.doorForm.left,
-                    expression: "doorForm.left",
-                  },
-                ],
-                staticClass: "door-input",
-                staticStyle: { width: "180px", height: "28px" },
-                on: {
-                  change: function ($event) {
-                    var $$selectedVal = Array.prototype.filter
-                      .call($event.target.options, function (o) {
-                        return o.selected
-                      })
-                      .map(function (o) {
-                        var val = "_value" in o ? o._value : o.value
-                        return val
-                      })
-                    _vm.$set(
-                      _vm.doorForm,
-                      "left",
-                      $event.target.multiple ? $$selectedVal : $$selectedVal[0]
-                    )
-                  },
-                },
-              },
-              [
-                _c("option", { domProps: { value: true } }, [
-                  _vm._v("kairėje"),
-                ]),
-                _vm._v(" "),
-                _c("option", { domProps: { value: false } }, [
-                  _vm._v("dešinėje"),
-                ]),
-              ]
-            ),
-          ]),
-        ]),
-        _vm._v(" "),
-        _c("div", { staticClass: "door-form-item" }, [
-          _c("div", { staticClass: "door-form-label" }, [
-            _vm._v("\n                    Durų tipas\n                "),
-          ]),
-          _vm._v(" "),
-          _c("div", { staticClass: "door-form-data" }, [
-            _c(
-              "select",
-              {
-                directives: [
-                  {
-                    name: "model",
-                    rawName: "v-model",
-                    value: _vm.doorForm.door_type_id,
-                    expression: "doorForm.door_type_id",
-                  },
-                ],
-                staticClass: "door-input",
-                staticStyle: { width: "180px", height: "28px" },
-                on: {
-                  change: function ($event) {
-                    var $$selectedVal = Array.prototype.filter
-                      .call($event.target.options, function (o) {
-                        return o.selected
-                      })
-                      .map(function (o) {
-                        var val = "_value" in o ? o._value : o.value
-                        return val
-                      })
-                    _vm.$set(
-                      _vm.doorForm,
-                      "door_type_id",
-                      $event.target.multiple ? $$selectedVal : $$selectedVal[0]
-                    )
-                  },
-                },
-              },
-              _vm._l(_vm.doorTypes, function (doorType) {
-                return _c(
-                  "option",
-                  { key: doorType.id, domProps: { value: doorType.id } },
-                  [_vm._v(_vm._s(doorType.title))]
-                )
-              }),
-              0
-            ),
-          ]),
-        ]),
-        _vm._v(" "),
-        _c("div", { staticClass: "door-form-item" }, [
-          _c("div", { staticClass: "door-form-label" }, [
-            _vm._v("\n                    Plokštės tipas\n                "),
-          ]),
-          _vm._v(" "),
-          _c("div", { staticClass: "door-form-data" }, [
-            _vm.availablePanels.length != 0
-              ? _c(
-                  "select",
-                  {
-                    directives: [
-                      {
-                        name: "model",
-                        rawName: "v-model",
-                        value: _vm.doorForm.panel_id,
-                        expression: "doorForm.panel_id",
-                      },
-                    ],
-                    staticClass: "door-input",
-                    staticStyle: { width: "180px", height: "28px" },
-                    on: {
-                      change: function ($event) {
-                        var $$selectedVal = Array.prototype.filter
-                          .call($event.target.options, function (o) {
-                            return o.selected
-                          })
-                          .map(function (o) {
-                            var val = "_value" in o ? o._value : o.value
-                            return val
-                          })
-                        _vm.$set(
-                          _vm.doorForm,
-                          "panel_id",
-                          $event.target.multiple
-                            ? $$selectedVal
-                            : $$selectedVal[0]
-                        )
-                      },
-                    },
-                  },
-                  _vm._l(_vm.availablePanels, function (panel) {
-                    return _c(
-                      "option",
-                      { key: panel.id, domProps: { value: panel.id } },
-                      [_vm._v(_vm._s(panel.title))]
-                    )
-                  }),
-                  0
-                )
-              : _c("select", {
-                  staticClass: "door-input",
-                  staticStyle: { width: "180px", height: "28px" },
-                  attrs: { disabled: "" },
-                }),
-          ]),
-        ]),
-        _vm._v(" "),
-        _c("div", { staticClass: "door-form-item" }, [
-          _c("div", { staticClass: "door-form-label" }, [
-            _vm._v("\n                    Apdaila\n                "),
-          ]),
-          _vm._v(" "),
-          _c("div", { staticClass: "door-form-data" }, [
-            _vm.availableDecors.length != 0
-              ? _c(
-                  "select",
-                  {
-                    directives: [
-                      {
-                        name: "model",
-                        rawName: "v-model",
-                        value: _vm.doorForm.decoration_id,
-                        expression: "doorForm.decoration_id",
-                      },
-                    ],
-                    staticClass: "door-input",
-                    staticStyle: { width: "180px", height: "28px" },
-                    on: {
-                      change: function ($event) {
-                        var $$selectedVal = Array.prototype.filter
-                          .call($event.target.options, function (o) {
-                            return o.selected
-                          })
-                          .map(function (o) {
-                            var val = "_value" in o ? o._value : o.value
-                            return val
-                          })
-                        _vm.$set(
-                          _vm.doorForm,
-                          "decoration_id",
-                          $event.target.multiple
-                            ? $$selectedVal
-                            : $$selectedVal[0]
-                        )
-                      },
-                    },
-                  },
-                  _vm._l(_vm.availableDecors, function (decor) {
-                    return _c(
-                      "option",
-                      { key: decor.id, domProps: { value: decor.id } },
-                      [_vm._v(_vm._s(decor.title))]
-                    )
-                  }),
-                  0
-                )
-              : _c("select", {
-                  staticClass: "door-input",
-                  staticStyle: { width: "180px", height: "28px" },
-                  attrs: { disabled: "" },
-                }),
-          ]),
-        ]),
-        _vm._v(" "),
-        _c("div", { staticClass: "door-form-item" }, [
-          _c("div", { staticClass: "door-form-label" }, [
-            _vm._v("\n                    Pagrindinė spyna\n                "),
-          ]),
-          _vm._v(" "),
-          _c("div", { staticClass: "door-form-data" }, [
-            _vm.mainLocks != 0
-              ? _c(
-                  "select",
-                  {
-                    directives: [
-                      {
-                        name: "model",
-                        rawName: "v-model",
-                        value: _vm.doorForm.main_lock,
-                        expression: "doorForm.main_lock",
-                      },
-                    ],
-                    staticClass: "door-input",
-                    staticStyle: { width: "180px", height: "28px" },
-                    on: {
-                      change: function ($event) {
-                        var $$selectedVal = Array.prototype.filter
-                          .call($event.target.options, function (o) {
-                            return o.selected
-                          })
-                          .map(function (o) {
-                            var val = "_value" in o ? o._value : o.value
-                            return val
-                          })
-                        _vm.$set(
-                          _vm.doorForm,
-                          "main_lock",
-                          $event.target.multiple
-                            ? $$selectedVal
-                            : $$selectedVal[0]
-                        )
-                      },
-                    },
-                  },
-                  _vm._l(_vm.mainLocks, function (param) {
-                    return _c(
-                      "option",
-                      { key: param.id, domProps: { value: param.title } },
-                      [_vm._v(_vm._s(param.title))]
-                    )
-                  }),
-                  0
-                )
-              : _c("select", {
-                  staticClass: "door-input",
-                  staticStyle: { width: "180px", height: "28px" },
-                  attrs: { disabled: "" },
-                }),
-          ]),
-        ]),
-        _vm._v(" "),
-        _c("div", { staticClass: "door-form-item" }, [
-          _c("div", { staticClass: "door-form-label" }, [
-            _vm._v("\n                    Seifinė spyna\n                "),
-          ]),
-          _vm._v(" "),
-          _c("div", { staticClass: "door-form-data" }, [
-            _vm.safeLocks != 0
-              ? _c(
-                  "select",
-                  {
-                    directives: [
-                      {
-                        name: "model",
-                        rawName: "v-model",
-                        value: _vm.doorForm.safe_lock,
-                        expression: "doorForm.safe_lock",
-                      },
-                    ],
-                    staticClass: "door-input",
-                    staticStyle: { width: "180px", height: "28px" },
-                    on: {
-                      change: function ($event) {
-                        var $$selectedVal = Array.prototype.filter
-                          .call($event.target.options, function (o) {
-                            return o.selected
-                          })
-                          .map(function (o) {
-                            var val = "_value" in o ? o._value : o.value
-                            return val
-                          })
-                        _vm.$set(
-                          _vm.doorForm,
-                          "safe_lock",
-                          $event.target.multiple
-                            ? $$selectedVal
-                            : $$selectedVal[0]
-                        )
-                      },
-                    },
-                  },
-                  _vm._l(_vm.safeLocks, function (param) {
-                    return _c(
-                      "option",
-                      { key: param.id, domProps: { value: param.title } },
-                      [_vm._v(_vm._s(param.title))]
-                    )
-                  }),
-                  0
-                )
-              : _c("select", {
-                  staticClass: "door-input",
-                  staticStyle: { width: "180px", height: "28px" },
-                  attrs: { disabled: "" },
-                }),
-          ]),
-        ]),
-        _vm._v(" "),
-        _c("div", { staticClass: "door-form-item" }, [
-          _c("div", { staticClass: "door-form-label" }, [
-            _vm._v("\n                    Montavimas\n                "),
-          ]),
-          _vm._v(" "),
-          _c("div", { staticClass: "door-form-data" }, [
-            _vm.jobs != 0
-              ? _c(
-                  "select",
-                  {
-                    directives: [
-                      {
-                        name: "model",
-                        rawName: "v-model",
-                        value: _vm.doorForm.installation,
-                        expression: "doorForm.installation",
-                      },
-                    ],
-                    staticClass: "door-input",
-                    staticStyle: { width: "180px", height: "28px" },
-                    on: {
-                      change: function ($event) {
-                        var $$selectedVal = Array.prototype.filter
-                          .call($event.target.options, function (o) {
-                            return o.selected
-                          })
-                          .map(function (o) {
-                            var val = "_value" in o ? o._value : o.value
-                            return val
-                          })
-                        _vm.$set(
-                          _vm.doorForm,
-                          "installation",
-                          $event.target.multiple
-                            ? $$selectedVal
-                            : $$selectedVal[0]
-                        )
-                      },
-                    },
-                  },
-                  _vm._l(_vm.jobs, function (param) {
-                    return _c(
-                      "option",
-                      { key: param.id, domProps: { value: param.title } },
-                      [_vm._v(_vm._s(param.title))]
-                    )
-                  }),
-                  0
-                )
-              : _c("select", {
-                  staticClass: "door-input",
-                  staticStyle: { width: "180px", height: "28px" },
-                  attrs: { disabled: "" },
-                }),
-          ]),
-        ]),
-        _vm._v(" "),
-        _c("div", { staticClass: "door-form-item" }, [
-          _c("div", { staticClass: "door-form-label" }, [
-            _vm._v("\n                    Raštas\n                "),
-          ]),
-          _vm._v(" "),
-          _c("div", { staticClass: "door-form-data" }, [
-            _vm.jobs != 0
-              ? _c(
-                  "select",
-                  {
-                    directives: [
-                      {
-                        name: "model",
-                        rawName: "v-model",
-                        value: _vm.doorForm.pattern_id,
-                        expression: "doorForm.pattern_id",
-                      },
-                    ],
-                    staticClass: "door-input",
-                    staticStyle: { width: "180px", height: "28px" },
-                    on: {
-                      change: function ($event) {
-                        var $$selectedVal = Array.prototype.filter
-                          .call($event.target.options, function (o) {
-                            return o.selected
-                          })
-                          .map(function (o) {
-                            var val = "_value" in o ? o._value : o.value
-                            return val
-                          })
-                        _vm.$set(
-                          _vm.doorForm,
-                          "pattern_id",
-                          $event.target.multiple
-                            ? $$selectedVal
-                            : $$selectedVal[0]
-                        )
-                      },
-                    },
-                  },
-                  _vm._l(_vm.availablePatterns, function (pattern) {
-                    return _c(
-                      "option",
-                      { key: pattern.id, domProps: { value: pattern.title } },
-                      [_vm._v(_vm._s(pattern.title))]
-                    )
-                  }),
-                  0
-                )
-              : _c("select", {
-                  staticClass: "door-input",
-                  staticStyle: { width: "180px", height: "28px" },
-                  attrs: { disabled: "" },
-                }),
-          ]),
-        ]),
-        _vm._v(" "),
-        _vm._m(0),
-        _vm._v(" "),
-        _vm._m(1),
-        _vm._v(" "),
-        _vm._m(2),
-      ]),
-      _vm._v(" "),
-      _vm._m(3),
+      _vm._v("\n        " + _vm._s(this.doors) + " "),
+      _c("br"),
+      _vm._v("      \n        " + _vm._s(this.doorForm) + "\n            "),
+    ]),
+    _vm._v(" "),
+    _c("button", { staticClass: "door-add", on: { click: _vm.postDoor } }, [
+      _vm._v("\n        Pateikti užsakymo užklausą\n    "),
     ]),
   ])
 }
-var staticRenderFns = [
-  function () {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "door-form-item" }, [
-      _c("div", { staticClass: "door-form-label" }, [
-        _vm._v("\n                    Spalva\n                "),
-      ]),
-      _vm._v(" "),
-      _c("div", { staticClass: "door-form-data" }, [
-        _c("input", { staticClass: "door-input", attrs: { type: "text" } }),
-      ]),
-    ])
-  },
-  function () {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "door-form-item" }, [
-      _c("div", { staticClass: "door-form-label" }, [
-        _vm._v("\n                    Kiekis\n                "),
-      ]),
-      _vm._v(" "),
-      _c("div", { staticClass: "door-form-data" }, [
-        _c("input", { staticClass: "door-input", attrs: { type: "text" } }),
-      ]),
-    ])
-  },
-  function () {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "door-form-item" }, [
-      _c("div", { staticClass: "door-form-label" }, [_vm._v("Kaina")]),
-      _vm._v(" "),
-      _c("div", { staticClass: "door-form-data" }, [
-        _c("input", { staticClass: "door-input", attrs: { type: "text" } }),
-      ]),
-    ])
-  },
-  function () {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "door-form-submit" }, [
-      _c("button", { staticClass: "door-submit" }, [
-        _vm._v("\n                Apskaičiuoti\n            "),
-      ]),
-    ])
-  },
-]
+var staticRenderFns = []
 render._withStripped = true
 
 
@@ -46536,7 +46090,7 @@ var render = function () {
       [
         _c("img", {
           staticClass: "toggleImg",
-          attrs: { id: _vm.index, src: "/icons/arrow-toggle.svg", alt: "" },
+          attrs: { id: _vm.index, src: "/images/arrow-toggle.svg", alt: "" },
         }),
         _vm._v("\n    " + _vm._s(_vm.name) + "\n  "),
       ]
@@ -47479,7 +47033,7 @@ var render = function () {
                                               [
                                                 _c("img", {
                                                   attrs: {
-                                                    src: "/icons/edit.png",
+                                                    src: "/images/edit.png",
                                                     alt: "",
                                                   },
                                                 }),
@@ -47499,7 +47053,7 @@ var render = function () {
                                               [
                                                 _c("img", {
                                                   attrs: {
-                                                    src: "/icons/delete.png",
+                                                    src: "/images/delete.png",
                                                     alt: "",
                                                   },
                                                 }),

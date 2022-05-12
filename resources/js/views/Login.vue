@@ -2,7 +2,6 @@
   <div class="login-page">
     <div class="login-container">
       <div class="login-left">
-        <!-- <img class="teltonika" src="/icons/teltonika.svg" alt="teltonika"> -->
         <div class="login-title">{{$t('login.auth_req')}}</div>
         <div class="login-info">
           {{$t('login.info')}}
@@ -69,11 +68,11 @@ export default {
 //     showHidePassword () {
 //       if (this.show === true) {
 //         document.querySelector('#password').setAttribute('type', 'password')
-//         document.getElementById('showHide').style.background = 'url("/icons/input_show.svg") no-repeat 80%'
+//         document.getElementById('showHide').style.background = 'url("/images/input_show.svg") no-repeat 80%'
 //         this.show = false
 //       } else {
 //         document.querySelector('#password').setAttribute('type', 'text')
-//         document.getElementById('showHide').style.background = 'url("/icons/input_hide.svg") no-repeat 80%'
+//         document.getElementById('showHide').style.background = 'url("/images/input_hide.svg") no-repeat 80%'
 //         this.show = true
 //       }
 //     }
@@ -170,7 +169,7 @@ export default {
   position: absolute;
   width: 27px;
   height: 25px;
-  background: url("/icons/input_show.svg") no-repeat 80%;
+  background: url("/images/input_show.svg") no-repeat 80%;
   top: 0.5em;
   left: 19em;
   border: none;

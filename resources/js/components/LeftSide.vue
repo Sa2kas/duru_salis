@@ -38,11 +38,6 @@
           </router-link>
       </div>
       <div class="right-side-title" v-if="userRole == 1">
-          <router-link :to="'/orders_data'">
-            Duomenys užsakymams
-          </router-link>
-      </div>
-      <div class="right-side-title" v-if="userRole == 1">
           <router-link :to="'/users'">
             Naudotojai
           </router-link>

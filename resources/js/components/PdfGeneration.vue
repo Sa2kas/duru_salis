@@ -132,7 +132,7 @@ export default {
                 }, 
                 'xOnownoRFQ2QGLw-6'
                 );
-                alert('yeahhhh boyyyyyyy')
+                alert('užsakymo užklausa išsiųsta')
             } 
             catch(error) {
                 alert(error)
@@ -140,12 +140,11 @@ export default {
         }
     }, 
     watch: {
-        number(newNumber, oldNumber) {
-            if(newNumber == 5) {
-                // alert('yeahhhh boyyyyyyy')
-                this.sendEmail()
-            }
-        }
+        // number(newNumber, oldNumber) {
+        //     if(newNumber == 5) {
+        //         this.sendEmail()
+        //     }
+        // }
     }
 
 }

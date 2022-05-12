@@ -48,8 +48,8 @@
                   </div>
                   <div v-else class="table-data">{{data[column.dataIndex]}}</div>
                   <span v-if="column.dataIndex == 'actions'">
-                    <button class="iconButton" @click="showModal(data);edit = true"><img src="/icons/edit.png" alt=""></button>
-                    <button class="iconButton" @click="deleteData(data)"><img src="/icons/delete.png" alt=""></button>
+                    <button class="iconButton" @click="showModal(data);edit = true"><img src="/images/edit.png" alt=""></button>
+                    <button class="iconButton" @click="deleteData(data)"><img src="/images/delete.png" alt=""></button>
                   </span>
                 </slot>
               </td>
@@ -197,7 +197,7 @@ export default {
     flex-grow: 1;
     margin-left: 5px;
     height: 24px;
-    background-image: url(/icons/arrow_down.svg);
+    background-image: url(/images/arrow_down.svg);
     background-repeat: no-repeat;
     background-size: 12px 8px;
     appearance: none;

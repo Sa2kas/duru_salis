@@ -25,7 +25,7 @@
             :item="items.parameters"
             :index="1"
             name="Parametrai"
-            :showHeader="true">
+            :showHeader="false">
         </vue-table>
     </div>
 </template>
@@ -52,6 +52,7 @@ export default {
             origPTForm: {},
             paramTypes: [],
             params: [],
+            doorTypes: [],
             search: '',
             items: {
                 parameterTypes : {
@@ -86,6 +87,7 @@ export default {
     created(){
         this.fetchPTData();
         this.fetchPData();
+        this.fetchDoorData();
         this.origPTForm = _.cloneDeep(this.paramTypeForm);
     },
     methods: {
@@ -93,6 +95,12 @@ export default {
             this.search = search
             this.items.parameterTypes.data = this.dataSource
         },
+        fetchDoorData(){
+            axios.get('/api/doors')
+            .then(response => {
+                this.doors = response.data.data;
+            });
+        }, 
         fetchPTData(){
             axios.get('/api/param-types')
             .then(response => {

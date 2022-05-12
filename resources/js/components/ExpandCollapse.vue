@@ -1,7 +1,7 @@
 <template>
   <div class="expand-colllapse">
     <h3 class="table-title" @click="changeClass(index);hideTable(name)">
-      <img :id="index" class="toggleImg" src="/icons/arrow-toggle.svg" alt="">
+      <img :id="index" class="toggleImg" src="/images/arrow-toggle.svg" alt="">
       {{name}}
     </h3>
     <div :id="name" class="parent">

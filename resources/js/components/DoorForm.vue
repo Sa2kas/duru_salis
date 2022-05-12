@@ -1,7 +1,7 @@
 <template>
     <div class="door-component">
         <div class="border">
-            {{this.doors}} <br>      
+            <!-- {{this.doors}} <br>       -->
                 <form class="door-form" v-on:submit.prevent>
                     <div class="door-form-item">
                         <div class="door-form-label">
@@ -134,7 +134,7 @@
                     <button class="door-submit" @click="calculatePrice">
                         Apskaičiuoti
                     </button>
-                    <div id="error"></div>
+                    <div id="error1"></div>
                     <div class="door-form-total"  v-show="showPrice">
                         <span>Viso : {{total}} &euro;</span>
                         <button class="door-add" @click="addDoor">
@@ -155,7 +155,7 @@
                                     Telefono nr.
                                 </div>
                                 <div class="door-form-data">
-                                    <input type="tel" v-model="doorForm.phone" class="door-input">
+                                    <input type="text" v-model="doorForm.phone" class="door-input">
                                 </div>
                             </div>
                             <div class="door-form-item">
@@ -163,7 +163,7 @@
                                     El. paštas
                                 </div>
                                 <div class="door-form-data">
-                                    <input type="email" v-model="doorForm.email" class="door-input">
+                                    <input type="text" v-model="doorForm.email" class="door-input">
                                 </div>
                             </div>
                             <button class="door-add" @click="postDoor">
@@ -172,16 +172,20 @@
                     </div>
                 </div>
         </div>
+        <button class="door-add" @click="postDoor">
+            Pateikti užsakymo užklausą
+        </button>
     </div>
 </template>
 <script>
+import emailjs from 'emailjs-com';
 export default {
     data () {
     return {
         doorForm: {
             length: 1800,
             width: 900,
-            left: 0,
+            left: 1,
             door_type_id: 0,
             panel_id: 0,
             decoration_id: 0,
@@ -252,10 +256,10 @@ export default {
             this.total = (decoprice + mainLockPrice + safeLockPrice + installationPrice) * this.doorForm.quantity
             this.doorForm.price = this.total
             this.showPrice = true
-            document.getElementById("error").textContent = '';
+            document.getElementById("error1").textContent = '';
           }
           catch(err) {
-              document.getElementById("error").textContent = 'Įvesti ne visi duomenys';
+              document.getElementById("error1").textContent = 'Įvesti ne visi duomenys';
           }
       },
       addDoor () {
@@ -264,23 +268,39 @@ export default {
             
           }
           catch(err) {
-              document.getElementById("error").textContent = 'Įvesti ne visi duomenys';
+              document.getElementById("error1").textContent = 'Įvesti ne visi duomenys';
           }
       },
+      sendEmail(e) {
+            try {
+                emailjs.send('service_l2bh374','template_yl7r9y7', {
+                    order_id: 1,
+                    to_name: this.doorForm.customer,
+                    receiver: this.doorForm.email,
+                }, 
+                'xOnownoRFQ2QGLw-6'
+                );
+                alert('užsakymo užklausa išsiųsta')
+            } 
+            catch(error) {
+                alert(error)
+            }
+        },
       postDoor () {
-            this.newDoors = this.doorForm
-            axios.post('/api/doors', this.doorForm)
-            .then(response => {
-                if(this.doorForm.id){
-                    let item = this.doors.find(el => el.id == response.data.data.id)
-                    let index = this.doors.indexOf(item);
-                    // this.paramTypes[index] = response.data.data <= taip nedaryti
-                    this.$set(this.doors, index, response.data.data)
-                }else{
-                    this.doors.push(response.data.data)
-                }
-                // this.handleClose();
-            })
+        this.newDoors = this.doorForm
+        axios.post('/api/doors', this.doorForm)
+        .then(response => {
+            if(this.doorForm.id){
+                let item = this.doors.find(el => el.id == response.data.data.id)
+                let index = this.doors.indexOf(item);
+                // this.paramTypes[index] = response.data.data <= taip nedaryti
+                this.$set(this.doors, index, response.data.data)
+            }else{
+                this.doors.push(response.data.data)
+                this.sendEmail()
+            }
+            // this.handleClose();
+        })
       },
      fetchDoorData(){
         axios.get('/api/doors')
@@ -399,7 +419,7 @@ export default {
         border: 1px solid #fff;
         transition: 0.5s;
     }
-    #error {
+    #error1 {
         visibility: visible;
         font-size: 16px;
         display: flex;
