@@ -24,7 +24,6 @@ export default {
                 doors : {
                     columns: [
                         { dataIndex: 'id', title: '#' },
-                        { dataIndex: 'ordered', title: 'užsakyta' },
                         { dataIndex: 'customer', title: 'klientas' },
                         { dataIndex: 'email', title: 'email' },
                         { dataIndex: 'phone', title: 'phone' },

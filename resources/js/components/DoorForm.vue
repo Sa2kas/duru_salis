@@ -171,9 +171,6 @@
                     </div>
                 </div>
         </div>
-        <button class="door-add" @click="postDoor">
-            Pateikti užsakymo užklausą
-        </button>
     </div>
 </template>
 <script>
