@@ -47,10 +47,14 @@ class DoorController extends Controller
         $param->main_lock = $request->input('main_lock');
         $param->safe_lock = $request->input('safe_lock');
         $param->intallation = $request->input('installation');
-        $param->patern_id = $request->input('patern_id');
+        $param->pattern_id = $request->input('pattern_id');
         $param->color_id = $request->input('color_id');
         $param->quantity = $request->input('quantity');
         $param->price = $request->input('price');
+        $param->customer = $request->input('customer');
+        $param->email = $request->input('email');
+        $param->phone = $request->input('phone');
+        $param->ordered = $request->input('ordered');
         $param->save();
         return new Door($param);
     }

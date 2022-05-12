@@ -38,14 +38,16 @@ Route::middleware('auth:sanctum')->group(function() {
         return $request->user();
     });
 
-    Route::get('/param-types', [ParameterTypeController::class, 'index']);
+    // Route::get('/param-types', [ParameterTypeController::class, 'index']);
     Route::post('/param-types', [ParameterTypeController::class, 'store']);
     Route::delete('/param-types/{id}', [ParameterTypeController::class, 'destroy']);
     
-    Route::get('/params', [ParameterController::class, 'index']);
+    // Route::get('/params', [ParameterController::class, 'index']);
     Route::post('/params', [ParameterController::class, 'store']);
     Route::delete('/params/{id}', [ParameterController::class, 'destroy']);
 });
+Route::get('/param-types', [ParameterTypeController::class, 'index']);
+Route::get('/params', [ParameterController::class, 'index']);
 
     Route::get('/additional-params', [AdditionalParamController::class, 'index']);
     Route::post('/additional-params', [AdditionalParamController::class, 'store']);
