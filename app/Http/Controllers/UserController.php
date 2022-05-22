@@ -2,11 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Role;
+use App\Models\User;
 use Illuminate\Http\Request;
-use App\Http\Resources\Role as RoleResource;
+use App\Http\Resources\User as UserResource;
 
-class RoleController extends Controller
+class UserController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -16,7 +16,7 @@ class RoleController extends Controller
     public function index()
     {
         //
-        return RoleResource::collection(Role::get());
+        return UserResource::collection(User::get());
     }
 
     /**
@@ -38,19 +38,20 @@ class RoleController extends Controller
     public function store(Request $request)
     {
         //
-        $param = !empty($request->input('id')) ? Role::findOrFail($request->input('id')) : new Role;
+        $param = !empty($request->input('id')) ? User::findOrFail($request->input('id')) : new User;
         $param->title = $request->input('title');
+        $param->title_en = $request->input('title_en');
         $param->save();
-        return new RoleResource($param);
+        return new UserResource($param);
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\Role  $role
+     * @param  \App\Models\User  $user
      * @return \Illuminate\Http\Response
      */
-    public function show(Role $role)
+    public function show(User $user)
     {
         //
     }
@@ -58,10 +59,10 @@ class RoleController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Models\Role  $role
+     * @param  \App\Models\User  $user
      * @return \Illuminate\Http\Response
      */
-    public function edit(Role $role)
+    public function edit(User $user)
     {
         //
     }
@@ -70,10 +71,10 @@ class RoleController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Role  $role
+     * @param  \App\Models\User  $user
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Role $role)
+    public function update(Request $request, User $user)
     {
         //
     }
@@ -81,13 +82,13 @@ class RoleController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\Role  $role
+     * @param  \App\Models\User  $user
      * @return \Illuminate\Http\Response
      */
-    public function destroy($role)
+    public function destroy($user)
     {
         //
-        Role::find($role)->delete();
-        return RoleResource::collection(Role::get());
+        User::find($user)->delete();
+        return UserResource::collection(User::get());
     }
 }

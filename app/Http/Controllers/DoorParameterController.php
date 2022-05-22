@@ -38,14 +38,11 @@ class DoorParameterController extends Controller
     public function store(Request $request)
     {
         //
-        $param = !empty($request->input('id')) ? Parameter::findOrFail($request->input('id')) : new Parameter;
-        $param->title = $request->input('title');
-        $param->title_en = $request->input('title_en');
-        $param->price = $request->input('price');
-        $param->parameter_type_id = $request->input('parameter_type_id');
-        $param->door_type_id = $request->input('door_type_id');
+        $param = !empty($request->input('id')) ? DoorParameter::findOrFail($request->input('id')) : new DoorParameter;
+        $param->door_id = $request->input('door_id');
+        $param->parameter_id = $request->input('parameter_id');
         $param->save();
-        return new ParameterResource($param);
+        return new DoorParameterResource($param);
     }
 
     /**

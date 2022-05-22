@@ -33,10 +33,8 @@ class CreateDoorsTable extends Migration
             $table->foreign('color_id')->references('id')->on('colors');
             $table->integer('quantity');
             $table->float('price');
-            $table->string('customer');
-            $table->string('phone');
-            $table->string('email');
-            $table->string('ordered')->default(false);
+            $table->unsignedBigInteger('order_id')->nullable();
+            $table->foreign('order_id')->references('id')->on('orders');
             $table->timestamps();
         });
     }

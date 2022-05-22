@@ -41,6 +41,7 @@ class DoorController extends Controller
         $param = !empty($request->input('id')) ? Door::findOrFail($request->input('id')) : new Door;
         $param->length = $request->input('length');
         $param->width = $request->input('width');
+        $param->left = $request->input('left');
         $param->door_type_id = $request->input('door_type_id');
         $param->panel_id = $request->input('panel_id');
         $param->decoration_id = $request->input('decoration_id');
@@ -51,10 +52,7 @@ class DoorController extends Controller
         $param->color_id = $request->input('color_id');
         $param->quantity = $request->input('quantity');
         $param->price = $request->input('price');
-        $param->customer = $request->input('customer');
-        $param->email = $request->input('email');
-        $param->phone = $request->input('phone');
-        $param->ordered = $request->input('ordered');
+        $param->order_id = $request->input('order_id');
         $param->save();
         return new DoorResource($param);
     }

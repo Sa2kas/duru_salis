@@ -44,7 +44,9 @@ export default {
     }),
     handleLogin(){      
       axios.get('/api/sanctum/csrf-cookie').then(response => {
-        axios.post('/login', this.form).then(({data})=>{
+        axios.post('/login', this.form).catch(({response:{data}})=>{
+          alert(data.message)
+        }).then(({data})=>{
           this.signIn()
         }).catch(({response:{data}})=>{
           alert(data.message)

@@ -38,14 +38,19 @@ class OrderController extends Controller
     public function store(Request $request)
     {
         //
-        $param = !empty($request->input('id')) ? Parameter::findOrFail($request->input('id')) : new Parameter;
-        $param->title = $request->input('title');
-        $param->title_en = $request->input('title_en');
+        $param = !empty($request->input('id')) ? Order::findOrFail($request->input('id')) : new Order;
+        $param->customer = $request->input('customer');
+        $param->phone = $request->input('phone');
+        $param->email = $request->input('email');
+        $param->address = $request->input('address');
+        $param->status_id = $request->input('status_id');
         $param->price = $request->input('price');
-        $param->parameter_type_id = $request->input('parameter_type_id');
-        $param->door_type_id = $request->input('door_type_id');
+        $param->advance = $request->input('advance');
+        $param->order_date = $request->input('order_date');
+        $param->signed_by = $request->input('signed_by');
+        $param->reported = $request->input('reported');
         $param->save();
-        return new ParameterResource($param);
+        return new OrderResource($param);
     }
 
     /**

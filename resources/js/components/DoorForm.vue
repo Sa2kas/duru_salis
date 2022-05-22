@@ -146,7 +146,7 @@
                                     Vardas, pavardė
                                 </div>
                                 <div class="door-form-data">
-                                    <input type="text" v-model="doorForm.customer" class="door-input">
+                                    <input type="text" v-model="orderForm.customer" class="door-input">
                                 </div>
                             </div>
                             <div class="door-form-item">
@@ -154,7 +154,7 @@
                                     Telefono nr.
                                 </div>
                                 <div class="door-form-data">
-                                    <input type="text" v-model="doorForm.phone" class="door-input">
+                                    <input type="text" v-model="orderForm.phone" class="door-input">
                                 </div>
                             </div>
                             <div class="door-form-item">
@@ -162,7 +162,7 @@
                                     El. paštas
                                 </div>
                                 <div class="door-form-data">
-                                    <input type="text" v-model="doorForm.email" class="door-input">
+                                    <input type="text" v-model="orderForm.email" class="door-input">
                                 </div>
                             </div>
                             <button class="door-add" @click="postDoor">
@@ -192,10 +192,13 @@ export default {
             color_id: 0,
             quantity: 1,
             price: 0,
+            order_id: 0
+        },
+        orderForm: {
             customer: '',
             phone: '',
             email: '',
-            ordered: 0
+            status_id: 1
         },
         doorTypes: [],
         doors: [],
@@ -286,15 +289,9 @@ export default {
         this.newDoors = this.doorForm
         axios.post('/api/doors', this.doorForm)
         .then(response => {
-            if(this.doorForm.id){
-                let item = this.doors.find(el => el.id == response.data.data.id)
-                let index = this.doors.indexOf(item);
-                // this.paramTypes[index] = response.data.data <= taip nedaryti
-                this.$set(this.doors, index, response.data.data)
-            }else{
                 this.doors.push(response.data.data)
-                this.sendEmail()
-            }
+                alert(response.data.data.id)
+                // this.sendEmail()
             // this.handleClose();
         })
       },
@@ -422,6 +419,7 @@ export default {
         text-align: right;
         margin: 0.1em;
         padding-bottom: 0.1em;
+        color: #FF0000;
         /* float: right; */
         /* margin-bottom: 25px; */
     }

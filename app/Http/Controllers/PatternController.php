@@ -38,14 +38,13 @@ class PatternController extends Controller
     public function store(Request $request)
     {
         //
-        $param = !empty($request->input('id')) ? Parameter::findOrFail($request->input('id')) : new Parameter;
+        $param = !empty($request->input('id')) ? Pattern::findOrFail($request->input('id')) : new Pattern;
         $param->title = $request->input('title');
         $param->title_en = $request->input('title_en');
-        $param->price = $request->input('price');
-        $param->parameter_type_id = $request->input('parameter_type_id');
-        $param->door_type_id = $request->input('door_type_id');
+        $param->photo = $request->input('photo');
+        $param->panel_id = $request->input('panel_id');
         $param->save();
-        return new ParameterResource($param);
+        return new PatternResource($param);
     }
 
     /**

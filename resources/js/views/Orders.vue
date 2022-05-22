@@ -5,7 +5,7 @@
             <vue-table
                 :item="items.doors"
                 :index="0"
-                name="Nepatvirtintos durys"
+                name="Nepatvirtinti užsakymai"
                 :showHeader="false">
             </vue-table>
         </div>
@@ -27,6 +27,7 @@ export default {
                         { dataIndex: 'customer', title: 'klientas' },
                         { dataIndex: 'email', title: 'email' },
                         { dataIndex: 'phone', title: 'phone' },
+                        { dataIndex: 'status_id', title: 'statusas' },
                     ],
                     data: []
                 },

@@ -35,7 +35,7 @@
         <div class="small-right-side" :style="[!showR ? {'max-width': '0px', 'min-width': '0px'} : {}]">
             <right-side/>            
         </div>
-        <div class="menu-overlay" :style="[showR || showL ? {'visibility': 'visible', 'opacity': '0.6'} : {}]" @click="showR = false;showL = false"/>
+        <div class="menu-overlay" :style="[showR || showL ? {'visibility': 'visible', 'opacity': '0.6'} : {}]" @click="closeSide"/>
     </div>
 </template>
 <script>
@@ -78,6 +78,10 @@ export default {
         changeLang(lang) {
             this.language = lang
             this.$i18n.locale = this.language
+        },
+        closeSide() {
+            this.showR = false
+            this.showL = false
         }
     },
     mounted() {

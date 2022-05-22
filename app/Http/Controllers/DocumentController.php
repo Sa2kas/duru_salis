@@ -38,14 +38,17 @@ class DocumentController extends Controller
     public function store(Request $request)
     {
         //
-        $param = !empty($request->input('id')) ? Parameter::findOrFail($request->input('id')) : new Parameter;
-        $param->title = $request->input('title');
-        $param->title_en = $request->input('title_en');
-        $param->price = $request->input('price');
-        $param->parameter_type_id = $request->input('parameter_type_id');
-        $param->door_type_id = $request->input('door_type_id');
+        $param = !empty($request->input('id')) ? Document::findOrFail($request->input('id')) : new Document;
+        $param->name = $request->input('name');
+        $param->surname = $request->input('surname');
+        $param->today = $request->input('today');
+        $param->planned_completion_date = $request->input('planned_completion_date');
+        $param->total = $request->input('total');
+        $param->advance = $request->input('advance');
+        $param->address = $request->input('address');
+        $param->manager = $request->input('manager');
         $param->save();
-        return new ParameterResource($param);
+        return new DocumentResource($param);
     }
 
     /**
