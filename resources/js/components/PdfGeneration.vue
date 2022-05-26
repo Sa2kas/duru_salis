@@ -14,7 +14,7 @@ export default {
     data () {
         return {
             order_id: "D20220506",
-            to_name: "Brangute",
+            to_name: "Gerb. kažkas",
             receiver: "vigaile.zygaite@gmail.com",
             number: 0,
             props: {
@@ -33,12 +33,11 @@ export default {
                     }
                 },
                 business: {
-                    name: "Business Name",
-                    address: "Albania, Tirane ish-Dogana, Durres 2001",
-                    phone: "(+355) 069 11 11 111",
-                    email: "email@example.com",
-                    email_1: "info@example.al",
-                    website: "www.example.al",
+                    name: "Durų šalis",
+                    address: "Žiemgalių g. 8, Kaunas LT-48230, Lietuva",
+                    phone: "+37061603034",
+                    email: "info@durusalis.lt",
+                    website: "	o7il.l.durusalis.lt",
                 },
                 contact: {
                     label: "Invoice issued for:",

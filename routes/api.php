@@ -21,6 +21,7 @@ use App\Http\Controllers\PatternController;
 use App\Http\Controllers\PhotoController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\StatusController;
+use App\Http\Controllers\UserController;
 
 /*
 |--------------------------------------------------------------------------
@@ -38,11 +39,15 @@ Route::middleware('auth:sanctum')->group(function() {
         return $request->user();
     });
 
-    // Route::get('/param-types', [ParameterTypeController::class, 'index']);
+    Route::get('/users', [UserController::class, 'index']);
+    Route::post('/users', [UserController::class, 'store']);
+    Route::delete('/users/{id}', [UserController::class, 'destroy']);
+
+    Route::get('/param-types', [ParameterTypeController::class, 'index']);
     Route::post('/param-types', [ParameterTypeController::class, 'store']);
     Route::delete('/param-types/{id}', [ParameterTypeController::class, 'destroy']);
     
-    // Route::get('/params', [ParameterController::class, 'index']);
+    Route::get('/params', [ParameterController::class, 'index']);
     Route::post('/params', [ParameterController::class, 'store']);
     Route::delete('/params/{id}', [ParameterController::class, 'destroy']);
 });

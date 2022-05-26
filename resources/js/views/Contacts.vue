@@ -58,13 +58,12 @@ export default {
     .contact-title {
         background-color: rgb(252, 252, 252);
         width: 80vw;
-        height: min(18vh, 18vw);
-        max-height: 65px;
-        min-height: 50px;
+        height: min(10vh, 10vw);
+        max-height: 50px;
         margin: 0 auto;
-        padding: min(min(5vh, 5vw), 15px) 0 0 0;
+        padding: min(min(4vh, 4vw), 14px) 0 0 0;
         position: absolute;
-        top: min(min(60vh, 60vw), 350px);
+        top: min(min(63vh, 63vw), 365px);
         left: 10vw;
         display: block;
         font-size: min(6vw, 34px);

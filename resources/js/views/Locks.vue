@@ -2,68 +2,118 @@
     <div class="outside-door">
         <div class="outside-header"></div>
         <div class="outside-title">
-            Šarvuotos buto durys
+            Spynos
         </div>
         <div class="outside-door-body">
             <div class="outside-item">
                 <div class="home-card-title">
-                    Standartas
+                    EVVA EPS
                 </div>
                 <div class="body-item">
                     <div class="body-item-left">
                         <div class="home-card-data">
-                            Durys pagamintos naudojant laminuotą medžio drožlių plokštę LMDP. Laminuotas paviršius atsparus drėgmei ir aukštesnei temperatūrai.
+                            Komplektojama su Dorma 712 spynos korpusu
                             <br>
-                            Šios durys standartiškai komplektuojamos su pagrindine Dorma 712 ir seifine ISEO 66360 spynomis, bet galima rinktis ir kitas spynas.
+                            Patentuota rakinimo sistema, patentuotas dvigubas rakto profilis (patento galiojimas iki 2026 metų);
                             <br>
-                            Durų stakta 80 mm apšiltinta kombinuotai – akmens vata ir putų polistirolu.
+                            Teisiškai, techniškai bei organizacine prasme nuo nelegalaus kopijavimo apsaugotas raktas, rakto kopija daroma tik pateikus raktą bei identifikacinę kortelę;
                             <br>
-                            Durų varčia 66 mm apšiltinta akmens vata.
+                            Aukščiausia 6-toji saugumo klasė pagal pagrindinį Europos spynų cilindrų saugumą reglamentuojantį standartą EN 1303:2005;
                             <br>
-                            Komplektacijoje nerūdijančio plieno slenktis ir durų apvadai.
+                            Atsparus dėvėjimuisi nikelio sidabro lydinio raktas;
                         </div>
                     </div>
-                    <!-- <div class="body-item-right">
-                        <div class="slideshow-container">
-                            <div v-for="photo in photos3" :key="photo.id">
-                                <div v-if="photo.panel == 3" class="mySlides fade">
-                                    <img class="door-photo" :src="photo.path">
-                                </div>
-                            </div>
-                            <a class="prev" @click="plusSlides(-1)">❮</a>
-                            <a class="next" @click="plusSlides(1)">❯</a>
-                        </div>
-                    </div> -->
+                    <div class="body-item-right">
+                        <img class="door-photo" src="/images/evva.png">
+                    </div>
                 </div>
             </div>
-            
             <div class="outside-item">
                 <div class="home-card-title">
-                    Laminuotos
+                    ISEO 66360
                 </div>
                 <div class="body-item">
                     <div class="body-item-left">
                         <div class="home-card-data">
-                            Tokios durys gaminamos iš medžio drožlių plokštės,vėliau plokštė užlaminuojama drėgmei atsparia PVC plėvele. Ši apdaila turi kietą paviršių, gerą estetinį vaizdą, duris lengva prižiūrėti, neblunka, atspari mechaniniams pažeidimams.
+                            Ši spyna skirta metalinėms durims.
                             <br>
-                            Šios durys standartiškai komplektuojamos su pagrindine Dorma 712 ir seifine ISEO 66360 spynomis, bet galima rinktis ir kitas spynas. Taip pat gali būti su akute ar be jos.
+                            Nikeliu chromu priekinė spynos plokštelė.
                             <br>
-                            Durų stakta 80 mm apšiltinta kombinuotai – akmens vata ir putų polistirolu.
+                            Pateikiama su poliruoto chromo raktaskylėmis.
                             <br>
-                            Durų varčia 66 mm apšiltinta akmens vata.
+                            Rakinasi trim kryptim. Komplekte yra 5 raktai.
                         </div>
                     </div>
-                    <!-- <div class="body-item-right">
-                        <div class="slideshow-container">
-                            <div v-for="photo in photos2" :key="photo.id">
-                                <div v-if="photo.panel == 2" class="mySlides fade">
-                                    <img class="door-photo" :src="photo.path">
-                                </div>
-                            </div>
-                            <a class="prev" @click="plusSlides(-1)">❮</a>
-                            <a class="next" @click="plusSlides(1)">❯</a>
+                    <div class="body-item-right">
+                        <img class="door-photo" src="/images/663.jpeg">
+                    </div>
+                </div>
+            </div>
+            <div class="outside-item">
+                <div class="home-card-title">
+                    FIAM 672
+                </div>
+                <div class="body-item">
+                    <div class="body-item-left">
+                        <div class="home-card-data">
+                            cilindrinė krumpliaratinė spyna, skirta aukšto saugumo lygio šarvo durims
+                            <br>
+                            Unikalus spynos krumpliaratinis rakinimo mechanizmas: spyna rakinama ypač tyliai ir švelniai, mažiau dėvisi cilindras.
+                            <br>
+                            Speciali krumpliaratinio mechanizmo konstrukcija bei jame esantys grūdinto plieno strypai saugo nuo kaiščių sustūmimo ir mechanizmo pragręžimo.
+                            <br>
+                            Patentuotas, stiprus cilindro tvirtinimas, saugantis nuo cilindro išmušimo ir sulaužymo.
+                            <br>
+                            Pagrindiniai saugumo parametrai atitinka 7-osios − aukščiausiosio saugumo klasės reikalavimus pagal EN 12209.
                         </div>
-                    </div> -->
+                    </div>
+                    <div class="body-item-right">
+                        <img class="door-photo" src="/images/FIAM.jpeg">
+                    </div>
+                </div>
+            </div>
+            <div class="outside-item">
+                <div class="home-card-title">
+                    Dierre 6000
+                </div>
+                <div class="body-item">
+                    <div class="body-item-left">
+                        <div class="home-card-data">
+                            Plokštelinė (6 plokštelės) seifinė, perkoduojama spyna. Su apsaugine plokštele, keičiama kasete.
+                            <br>
+                            Apsauga nuo gręžimo, rūgšties, pjovimo, visrakčio. Mechanizmą galima keisti daug kartų be meistro pagalbos.
+                            <br>
+                            Teisiškai, techniškai bei organizacine prasme nuo nelegalaus kopijavimo apsaugotas raktas, rakto kopija daroma tik pateikus raktą bei identifikacinę kortelę;
+                            <br>
+                            Rakina trimis kryptimis. Komplekte 5 dideli raktai įpakuoti dežutėje + 1 statybinis raktas.
+                        </div>
+                    </div>
+                    <div class="body-item-right">
+                        <img class="door-photo" src="/images/diere.jpeg">
+                    </div>
+                </div>
+            </div>
+            <div class="outside-item">
+                <div class="home-card-title">
+                    MOTTURA 52N883
+                </div>
+                <div class="body-item">
+                    <div class="body-item-left">
+                        <div class="home-card-data">
+                            7-oji, aukščiausioji, spynos saugumo klasė pagal EN 12209 ir priešgaisrinis sertifikatas.
+                            <br>
+                            Patentuota MOTTURA ANTIDECO II sistema, sauganti nuo atrakinimo visrakčiu.
+                            <br>
+                            Penki galingi kaiščiai atlaiko net 1,5 tonos (15 kN) šoninę spaudimo jėgą.
+                            <br>
+                            Standartiškai tiekiama su 2 mm grūdinto manganinio plieno apsauga, kuri saugo svarbiausius spynos taškus nuo pragręžimo.
+                            <br>
+                            Komplekte yra 5 asimetriniai raktai su ergonomiškomis gumos bei plastiko mišinio galvutėmis, pateikiami sandarioje pakuotėje, kuri atidaroma tik pirkėjui matant.
+                        </div>
+                    </div>
+                    <div class="body-item-right">
+                        <img class="door-photo" src="/images/52n.jpeg">
+                    </div>
                 </div>
             </div>
         </div>
@@ -129,7 +179,7 @@ export default {
         padding-bottom: 5vh;
     }
     .outside-header {
-        background-image: url('/images/inside.jpg');
+        background-image: url('/images/lock.jpg');
         width: 100%;
         height: min(70vh, 70vw);
         max-height: 400px;
@@ -175,7 +225,7 @@ export default {
         flex-direction: row;
     }
     .body-item-left {
-        width: 100%;
+        width: 48%;
         min-height: 280px;
         /* background-color: aquamarine; */
         position: relative;
@@ -193,9 +243,10 @@ export default {
         margin: 1%;
     }
     .door-photo {
-        width: 100%;
+        /* width: 100%; */
         object-fit: cover;
-        height: 400px;
+        height: 300px;
+        object-fit:scale-down;
         /* background-color: #444; */
     }
     @media (max-width: 800px) {

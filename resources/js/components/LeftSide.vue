@@ -14,7 +14,27 @@
       </div>
       <div v-if="!authenticated" class="right-side-title">
           <router-link :to="'/calculate_price'">
-            Apskaičiuoti užsakymą
+            Apskaičiuoti užsakymo kainą
+          </router-link>
+      </div>
+      <div v-if="!authenticated" class="right-side-title">
+          <router-link :to="'/check_order'">
+            Tikrinti užsakymo būseną
+          </router-link>
+      </div>
+      <div v-if="!authenticated" class="right-side-title">
+          <router-link :to="'/inside_doors'">
+            Vidaus durys
+          </router-link>
+      </div>
+      <div v-if="!authenticated" class="right-side-title">
+          <router-link :to="'/outside_doors'">
+            Lauko durys
+          </router-link>
+      </div>
+      <div v-if="!authenticated" class="right-side-title">
+          <router-link :to="'/locks'">
+            Spynos
           </router-link>
       </div>
       <div class="right-side-title" v-if="userRole == 1">
@@ -42,9 +62,14 @@
             Naudotojai
           </router-link>
       </div>
-      <div class="right-side-title">
+      <div v-if="!authenticated" class="right-side-title">
           <router-link :to="'/contacts'">
             Kontaktai
+          </router-link>
+      </div>
+      <div v-if="userRole == 1 || userRole == 2" class="right-side-title">
+          <router-link :to="'/edit_gallery'">
+            Tvarkyti galeriją
           </router-link>
       </div>
       <div class="right-side-title">

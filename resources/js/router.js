@@ -10,7 +10,12 @@ import Contacts from "./views/Contacts"
 import Comments from "./views/Comments"
 import Orders from "./views/Orders"
 import OrdersData from "./views/OrdersData"
+import InsideDoor from "./views/InsideDoor"
+import OutsideDoor from "./views/OutsideDoor"
+import Locks from "./views/Locks"
+import CheckOrder from "./views/CheckOrder"
 import Users from "./views/Users"
+import EditGallery from "./views/EditGallery"
 import store from './store';
 
 Vue.use(VueRouter);
@@ -114,6 +119,51 @@ const router = new VueRouter({
             meta:{
                 title:`Users`,
                 middleware:"admin"
+            }
+        },
+        {
+            path: '/inside_doors',
+            name:"inside_doors",
+            component: InsideDoor,
+            meta:{
+                title:`Inside doors`,
+                middleware:"guest"
+            }
+        },
+        {
+            path: '/outside_doors',
+            name:"outside_doors",
+            component: OutsideDoor,
+            meta:{
+                title:`Outside doors`,
+                middleware:"guest"
+            }
+        },
+        {
+            path: '/locks',
+            name:"locks",
+            component: Locks,
+            meta:{
+                title:`Locks`,
+                middleware:"guest"
+            }
+        },
+        {
+            path: '/check_order',
+            name:"check_order",
+            component: CheckOrder,
+            meta:{
+                title:`Check order`,
+                middleware:"guest"
+            }
+        },
+        {
+            path: '/edit_gallery',
+            name:"edit_gallery",
+            component: EditGallery,
+            meta:{
+                title:`Edit gallery`,
+                middleware:"worker"
             }
         }
     ],

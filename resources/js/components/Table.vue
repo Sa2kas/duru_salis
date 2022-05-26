@@ -4,7 +4,7 @@
       <div class="table-header" :style="[showHeader ? {'display': 'flex'} : {'display': 'none'}]">
         <div class="set-records-number">
           <div class="records-number-title">
-            Events per page
+            Records per page
           </div>
           <div id="records" class="records-number">
             <input class="choose-records-number" v-model="perPage">
@@ -65,7 +65,7 @@
           @pagechanged="onPageChange"
           />
       </div>
-      <button @click="showModal();edit = false">prideti</button>
+      <button class="control-btn" @click="showModal();edit = false">pridėti</button>
       </expand-collapse>
       <modal 
         v-show="isModalVisible"
@@ -342,6 +342,31 @@ export default {
   .table-footer {
     display: block;
   }
+  .control-btn {
+    background-color: #fff;
+    font-family: "Oswald", sans-serif;
+    font-size: 14px;
+    font-weight: 300;
+    border: 1px solid #444;
+    letter-spacing: 0.05em;
+    border-radius: 5px;
+    padding: 0.2em 1em;
+    margin: 2em 1em 0.5em 1em;
+    color: #444;
+    transition: 0.5s;
+    text-transform: uppercase;
+    letter-spacing: -0.01em;
+    /* position: absolute; */
+    /* float: right; */
+    display: block;
+  }
+  .control-btn:hover {
+    cursor: pointer;
+    background-color: #808080;
+    color: #fff;
+    border: 1px solid #808080;
+    transition: 0.5s;
+    }
   @media only screen and (max-width: 1100px) {
     thead {
       display: none;

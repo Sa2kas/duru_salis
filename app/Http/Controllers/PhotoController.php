@@ -38,14 +38,21 @@ class PhotoController extends Controller
     public function store(Request $request)
     {
         //
+       if($request->file()) {
+        $file_name = time().'_'.$request->file->getClientOriginalName();
+        $file_path = $request->file('file')->storeAs('', $file_name, 'public');
+
         $param = !empty($request->input('id')) ? Photo::findOrFail($request->input('id')) : new Photo;
-        $param->title = $request->input('title');
-        $param->title_en = $request->input('title_en');
-        $param->description_lt = $request->input('description_lt');
-        $param->description_en = $request->input('description_en');
-        $param->editable = $request->input('editable');
+        $param->door_type = $request->input('door_type');
+        $param->panel = $request->input('panel');
+
+        $param->name = time().'_'.$request->file->getClientOriginalName(); //failo pavadinimas
+        $param->path = '/images/' . $file_path; //failo kelias
+        $request->file->move(public_path('/images'),$file_name);
+        // $image->move('img', $file_name);
         $param->save();
         return new PhotoResource($param);
+       }
     }
 
     /**

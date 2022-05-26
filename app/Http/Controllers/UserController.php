@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\User;
 use Illuminate\Http\Request;
 use App\Http\Resources\User as UserResource;
+use Illuminate\Support\Facades\Hash;
 
 class UserController extends Controller
 {
@@ -39,8 +40,9 @@ class UserController extends Controller
     {
         //
         $param = !empty($request->input('id')) ? User::findOrFail($request->input('id')) : new User;
-        $param->title = $request->input('title');
-        $param->title_en = $request->input('title_en');
+        $param->name = $request->input('name');
+        $param->email = $request->input('email');
+        $param->password = Hash::make($request->input('password'));
         $param->save();
         return new UserResource($param);
     }

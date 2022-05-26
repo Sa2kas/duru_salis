@@ -1,7 +1,7 @@
 <template>
     <div class="dashboard">
         <h2 style="padding-top: 0px, margin-top: 0px">
-            Admin dashboard (Order parameters data)
+            Admin dashboard
         </h2>
         <vue-table
             :item="items.parameterTypes"
@@ -83,7 +83,7 @@ export default {
     },
     computed: {
         dataSource () {
-            return this.paramTypes.filter(elem => !this.search || elem.title.includes(this.search) || elem.title_en.includes(this.search))
+            return this.paramTypes.filter(elem => !this.search || elem.title.toLowerCase().includes(this.search.toLowerCase()) || elem.title_en.includes(this.search))
         }
     },
     created(){

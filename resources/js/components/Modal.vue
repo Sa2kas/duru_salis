@@ -138,4 +138,9 @@ export default {
   border-bottom-left-radius: 7px;
   padding: 0 38px 60px 38px;
 }
+@media (max-width: 700px) {
+  .modal-container {
+    width: 85vw;
+  }
+}
 </style>
