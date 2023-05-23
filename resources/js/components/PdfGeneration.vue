@@ -7,7 +7,7 @@
     </div>
 </template>
 <script>
-// import jsPDFInvoiceTemplate from "jspdf-invoice-template";
+import jsPDFInvoiceTemplate from "jspdf-invoice-template";
 // import jsPDFInvoiceTemplate, { OutputType, jsPDF } from "jspdf-invoice-template";
 import emailjs from 'emailjs-com';
 export default {
@@ -23,24 +23,27 @@ export default {
                 fileName: "Invoice 2021",
                 orientationLandscape: false,
                 compress: true,
-                logo: {
-                    src: "https://raw.githubusercontent.com/edisonneza/jspdf-invoice-template/demo/images/logo.png",
-                    width: 53.33, //aspect ratio = width/height
-                    height: 26.66,
-                    margin: {
-                        top: 0, //negative or positive num, from the current position
-                        left: 0 //negative or positive num, from the current position
-                    }
-                },
+                // logo: {
+                //     src: "https://raw.githubusercontent.com/edisonneza/jspdf-invoice-template/demo/images/logo.png",
+                //     width: 53.33, //aspect ratio = width/height
+                //     height: 26.66,
+                //     margin: {
+                //         top: 0, //negative or positive num, from the current position
+                //         left: 0 //negative or positive num, from the current position
+                //     }
+                // },
                 business: {
                     name: "Durų šalis",
+                    style: {
+                            fontSize: 10 //optional, default 12
+                        },
                     address: "Žiemgalių g. 8, Kaunas LT-48230, Lietuva",
                     phone: "+37061603034",
                     email: "info@durusalis.lt",
                     website: "	o7il.l.durusalis.lt",
                 },
                 contact: {
-                    label: "Invoice issued for:",
+                    label: "Užsakymo forma:",
                     name: "Client Name",
                     address: "Albania, Tirane, Astir",
                     phone: "(+355) 069 22 22 222",
@@ -48,9 +51,9 @@ export default {
                     otherInfo: "www.website.al",
                 },
                 invoice: {
-                    label: "Invoice #: ",
+                    label: "Užsakymas #: ",
                     num: 19,
-                    invDate: "Payment Date: 01/01/2021 18:12",
+                    invDate: "Apmokėta",
                     invGenDate: "Invoice Date: 02/02/2021 10:17",
                     headerBorder: false,
                     tableBodyBorder: false,
@@ -119,8 +122,8 @@ export default {
     },
     methods: {
         getNumberOfPages() {
-            // const jsPDF = jsPDFInvoiceTemplate(this.props)
-            this.number += 1
+            const jsPDF = jsPDFInvoiceTemplate(this.props)
+            // this.number += 1
         },
         sendEmail(e) {
             try {

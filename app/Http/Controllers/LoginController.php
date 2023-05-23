@@ -25,6 +25,8 @@ class LoginController extends Controller
  
             return Auth::user();
         }
+
+        return "Error";
  
         return back()->withErrors([
             'email' => 'The provided credentials do not match our records.',

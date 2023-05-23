@@ -42,6 +42,8 @@ class UserController extends Controller
         $param = !empty($request->input('id')) ? User::findOrFail($request->input('id')) : new User;
         $param->name = $request->input('name');
         $param->email = $request->input('email');
+        // $param->role_id = 2;
+        $param->role_id = $request->input('role');
         $param->password = Hash::make($request->input('password'));
         $param->save();
         return new UserResource($param);

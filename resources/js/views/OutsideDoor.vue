@@ -2,16 +2,16 @@
     <div class="outside-door">
         <div class="outside-header"></div>
         <div class="outside-title">
-            Šarvuotos lauko durys
+            {{$i18n.locale == 'lt' ? 'Šarvuotos lauko durys' : 'Armored front door'}}
         </div>
         <div class="outside-door-body">
             <div class="outside-item">
                 <div class="home-card-title">
-                    Šarvuotos lauko durys OKOUME
+                    {{$i18n.locale == 'lt' ? 'Šarvuotos lauko durys OKOUME' : 'Armored front door OKOUME'}}
                 </div>
                 <div class="body-item">
                     <div class="body-item-left">
-                        <div class="home-card-data">
+                        <div class="home-card-data" v-show="$i18n.locale == 'lt'">
                             Šios durys gaminamos su VAF plokšte dar vadinama Okoume plokšte, gaminama iš gabonmedžio. Ši plokštė ypatingai atspari aplinkos poveikiui ir visiškai nebijo drėgmės. Okoume plokštė impregnuojama, gruntuojama ir lakuojama naudojant profesionalią produkciją. Šios produkcijos dėka, plokštė apsaugoma optimaliausiai.
                             <br>
                             Šioms durims rekomenduojame Dorma 712 arba Assa 565 vokiškos kokybės spynas.
@@ -23,6 +23,19 @@
                             Komplektacijoje nerūdijančio plieno slenktis ir durų apvadai.
                             <br>
                             Šilumos perdavimo koef. Uw=1.
+                        </div>
+                        <div class="home-card-data" v-show="$i18n.locale == 'en'">
+                            These doors are made with VAF board, also known as Okoume board, which is made from gabon wood. This board is particularly resistant to environmental impact and is completely unafraid of moisture. The Okoume board is impregnated, primed, and coated using professional production methods to provide optimal protection.
+                            <br>
+                            We recommend using German quality locks such as Dorma 712 or Assa 565 for these doors.
+                            <br>
+                            The door frame is 80 mm insulated with a combination of mineral wool and foam.
+                            <br>
+                            The door leaf is 76 mm insulated with mineral wool.
+                            <br>
+                            Stainless steel threshold and door trims are included in the package.
+                            <br>
+                            Heat transfer coefficient Uw=1.
                         </div>
                     </div>
                     <!-- <div class="body-item-right">
@@ -40,23 +53,36 @@
             </div>
             <div class="outside-item">
                 <div class="home-card-title">
-                    Šarvuotos lauko durys UMIDAX (MDF)
+                    {{$i18n.locale == 'lt' ? 'Šarvuotos lauko durys UMIDAX (MDF)' : 'Armored front door UMIDAX (MDF)'}}
                 </div>
                 <div class="body-item">
-                    <div class="body-item-left">
-                        <div class="home-card-data">
-                        Tai šiltos ir saugios durys. Durų apdailai naudojama drėgmei atspari, lauko sąlygoms skirta medžio dulkių plokštė (MDF).
-                        <br>
-                        UMIDAX plokštė gruntuojama ir dažoma bet kuria užsakovo pageidaujama spalva iš plataus RAL spalvyno
-                        <br>
-                        Šioms durims rekomenduojame Dorma 712 arba Assa 565 vokiškos kokybės spynas.
-                        <br>
-                        Durų stakta 80 mm apšiltinta kombinuotai – akmens vata ir puta.
-                        <br>
-                        Durų varčia 76 mm apšiltinta akmens vata.
-                        <br>
-                        Komplektacijoje nerūdijančio plieno slenktis ir durų apvadai.
-                    </div>
+                    <div class="body-item-left" >
+                        <div class="home-card-data" v-show="$i18n.locale == 'lt'">
+                            Tai šiltos ir saugios durys. Durų apdailai naudojama drėgmei atspari, lauko sąlygoms skirta medžio dulkių plokštė (MDF).
+                            <br>
+                            UMIDAX plokštė gruntuojama ir dažoma bet kuria užsakovo pageidaujama spalva iš plataus RAL spalvyno
+                            <br>
+                            Šioms durims rekomenduojame Dorma 712 arba Assa 565 vokiškos kokybės spynas.
+                            <br>
+                            Durų stakta 80 mm apšiltinta kombinuotai – akmens vata ir puta.
+                            <br>
+                            Durų varčia 76 mm apšiltinta akmens vata.
+                            <br>
+                            Komplektacijoje nerūdijančio plieno slenktis ir durų apvadai.
+                        </div>
+                        <div class="home-card-data" v-show="$i18n.locale == 'en'">
+                            These are warm and secure doors. The door finish uses moisture-resistant, outdoor-grade wood particle board (MDF).
+                            <br>
+                            The UMIDAX board is primed and painted in any desired color from a wide range of RAL colors.
+                            <br>
+                            We recommend using German quality locks such as Dorma 712 or Assa 565 for these doors.
+                            <br>
+                            The door frame is 80 mm insulated with a combination of mineral wool and foam.
+                            <br>
+                            The door leaf is 76 mm insulated with mineral wool.
+                            <br>
+                            Stainless steel threshold and door trims are included in the package.
+                        </div>
                     </div>
                     <!-- <div class="body-item-right">
                         <div class="slideshow-container">
@@ -73,11 +99,11 @@
             </div>
             <div class="outside-item">
                 <div class="home-card-title">
-                    Šarvuotos lauko durys EKONOMIK (LFSF, bakalitas)
+                    {{$i18n.locale == 'lt' ? 'Šarvuotos lauko durys EKONOMIK (LFSF, bakalitas)' : 'Armored front door EKONOMIK (LSFS, bakelite)'}}
                 </div>
                 <div class="body-item">
                     <div class="body-item-left">
-                        <div class="home-card-data">
+                        <div class="home-card-data" v-show="$i18n.locale == 'lt'">
                             Šios durys priskiriamos ekonominei klasei, nes gaminamos iš laminuotos daugiasluoksnės faneros LFSF, kitaip vadinamos jūrine fanera arba bakalitu. Faneros sluoksniai suklijuoti vandeniui atspariais klijais, išorinės laminuotos faneros pusės padengtos specialiu popieriumi, įmirkytu fenolio derva.
                             <br>
                             Šioms durims rekomenduojame Dorma 712 arba Assa 565 vokiškos kokybės spynas.
@@ -87,6 +113,17 @@
                             Durų varčia 76 mm apšiltinta akmens vata.
                             <br>
                             Komplektacijoje nerūdijančio plieno slenktis ir durų apvadai.
+                        </div>
+                        <div class="home-card-data" v-show="$i18n.locale == 'en'">
+                            These doors belong to the economic class as they are made from laminated multilayer plywood LFSF, also known as marine plywood or bakelite. The layers of plywood are bonded with water-resistant adhesives, and the outer laminated sides are covered with special paper impregnated with phenolic resin.
+                            <br>
+                            We recommend using German quality locks such as Dorma 712 or Assa 565 for these doors.
+                            <br>
+                            The door frame is 80 mm insulated with a combination of mineral wool and foam polystyrene.
+                            <br>
+                            The door leaf is 76 mm insulated with mineral wool.
+                            <br>
+                            Stainless steel threshold and door trims are included in the package.
                         </div>
                     </div>
                     <!-- <div class="body-item-right">

@@ -4,7 +4,7 @@
                 <form class="door-form" v-on:submit.prevent>
                     <div class="door-form-item">
                         <div class="door-form-label">
-                            Aukštis (mm)
+                            {{$i18n.locale == 'lt' ? 'Aukštis (mm)' : 'Height (mm)'}}
                         </div>
                         <div class="door-form-data">
                             <input type="number" min="1800" v-model="doorForm.length" class="door-input">
@@ -12,7 +12,7 @@
                     </div>
                     <div class="door-form-item">
                         <div class="door-form-label">
-                            Plotis (mm)
+                            {{$i18n.locale == 'lt' ? 'Plotis (mm)' : 'Width (mm)'}}
                         </div>
                         <div class="door-form-data">
                             <input type="number" min="900" v-model="doorForm.width" class="door-input">
@@ -20,44 +20,44 @@
                     </div>
                     <div class="door-form-item">
                         <div class="door-form-label">
-                            Rankena
+                            {{$i18n.locale == 'lt' ? 'Rankena' : 'Handle'}}
                         </div>
                         <div class="door-form-data">
                             <select style="height: 28px" v-model="doorForm.left"  class="door-input">
-                                <option :value="1">kairėje</option>
-                                <option :value="0">dešinėje</option>
+                                <option :value="1">{{($i18n.locale == 'lt') ? 'Kairėje' : 'On the left'}}</option>
+                                <option :value="0">{{($i18n.locale == 'lt') ? 'Dešinėje' : 'On the right'}}</option>
                             </select>
                         </div>
                     </div>
                     <div class="door-form-item">
                         <div class="door-form-label">
-                            Durų tipas
+                            {{$i18n.locale == 'lt' ? 'Durų tipas' : 'Door type'}}
                         </div>
                         <div class="door-form-data">
                             <select style="height: 28px" v-model="doorForm.door_type_id"  class="door-input">
-                                <option v-for="doorType in doorTypes" :key="doorType.id" :value="doorType.id">{{doorType.title}}</option>
+                                <option v-for="doorType in doorTypes" :key="doorType.id" :value="doorType.id">{{$i18n.locale == 'lt' ? doorType.title : doorType.title_en}}</option>
                             </select>
                         </div>
                     </div>
                     <div class="door-form-item">
                         <div class="door-form-label">
-                            Plokštės tipas
+                            {{$i18n.locale == 'lt' ? 'Plokštės tipas' : 'Panel type'}}
                         </div>
                         <div class="door-form-data">
                             <select v-if="availablePanels.length != 0" style="height: 28px" v-model="doorForm.panel_id"  class="door-input">
-                                <option v-for="panel in availablePanels" :key="panel.id" :value="panel.id">{{panel.title}}</option>
+                                <option v-for="panel in availablePanels" :key="panel.id" :value="panel.id">{{$i18n.locale == 'lt' ? panel.title : panel.title_en}}</option>
                             </select>
                             <select v-else style="height: 28px" class="door-input" disabled></select>
                         </div>
                     </div>
                     <div class="door-form-item">
                         <div class="door-form-label">
-                            Apdaila
+                            {{$i18n.locale == 'lt' ? 'Apdaila' : 'Decoration'}}
                         </div>
                         <div class="door-form-data">
                             <select v-if="availableDecors.length != 0" style="height: 28px" v-model="doorForm.decoration_id"  class="door-input">
                                 <option v-for="decor in availableDecors" :key="decor.id" :value="decor.id">
-                                    {{decor.title}}
+                                    {{$i18n.locale == 'lt' ? decor.title : decor.title_en}}
                                     </option>
                             </select>
                             <select v-else style="height: 28px" class="door-input" disabled></select>
@@ -65,12 +65,12 @@
                     </div>
                     <div class="door-form-item">
                         <div class="door-form-label">
-                            Pagrindinė spyna
+                            {{$i18n.locale == 'lt' ? 'Pagrindinė spyna' : 'Main lock'}}
                         </div>
                         <div class="door-form-data">
                             <select v-if="mainLocks != 0" style="height: 28px" v-model="doorForm.main_lock"  class="door-input">
                                 <option v-for="param in mainLocks" :key="param.id" :value="param.title">
-                                    {{param.title}}
+                                    {{$i18n.locale == 'lt' ? param.title : param.title_en}}
                                 </option>
                             </select>
                             <select v-else style="height: 28px" class="door-input" disabled></select>
@@ -78,51 +78,55 @@
                     </div>
                     <div class="door-form-item">
                         <div class="door-form-label">
-                            Seifinė spyna
+                            {{$i18n.locale == 'lt' ? 'Seifinė spyna' : 'Safe lock'}}
                         </div>
                         <div class="door-form-data">
                             <select v-if="safeLocks != 0" style="height: 28px" v-model="doorForm.safe_lock"  class="door-input">
-                                <option v-for="param in safeLocks" :key="param.id" :value="param.title">{{param.title}}</option>
+                                <option v-for="param in safeLocks" :key="param.id" :value="param.title">{{$i18n.locale == 'lt' ? param.title : param.title_en}}</option>
                             </select>
                             <select v-else style="height: 28px" class="door-input" disabled></select>
                         </div>
                     </div>
                     <div class="door-form-item">
                         <div class="door-form-label">
-                            Montavimas
+                            {{$i18n.locale == 'lt' ? 'Montavimas' : 'Installation'}}
                         </div>
                         <div class="door-form-data">
                             <select v-if="jobs != 0" style="height: 28px" v-model="doorForm.installation"  class="door-input">
-                                <option v-for="param in jobs" :key="param.id" :value="param.title">{{param.title}}</option>
+                                <option v-for="param in jobs" :key="param.id" :value="param.title">{{$i18n.locale == 'lt' ? param.title : param.title_en}}</option>
                             </select>
                             <select v-else style="height: 28px" class="door-input" disabled></select>
                         </div>
                     </div>
                     <div class="door-form-item">
                         <div class="door-form-label">
-                            Raštas
+                            {{$i18n.locale == 'lt' ? 'Raštas' : 'Pattern'}}
                         </div>
                         <div class="door-form-data">
                             <select v-if="availablePatterns != 0" style="height: 28px" v-model="doorForm.pattern_id"  class="door-input">
-                                <option v-for="pattern in availablePatterns" :key="pattern.id" :value="pattern.id">{{pattern.title}}</option>
+                                <option v-for="pattern in availablePatterns" :key="pattern.id" :value="pattern.id">{{$i18n.locale == 'lt' ? pattern.title : pattern.title_en}}</option>
                             </select>
                             <select v-else style="height: 28px" class="door-input" disabled></select>
                         </div>
                     </div>
                     <div class="door-form-item">
                         <div class="door-form-label">
-                            Spalva
+                            {{$i18n.locale == 'lt' ? 'Spalva' : 'Color'}}
                         </div>
                         <div class="door-form-data">
                             <select v-if="availableColors != 0" style="height: 28px" v-model="doorForm.color_id"  class="door-input">
-                                <option v-for="color in availableColors" :key="color.id" :value="color.id">{{color.title}}</option>
+                                <option v-for="color in availableColors" :key="color.id" :value="color.id" >
+                                    <span :style="{ backgroundImage: `url(${color.photo})` }">
+                                        {{$i18n.locale == 'lt' ? color.title : color.title_en}}
+                                    </span>
+                                </option>
                             </select>
                             <select v-else style="height: 28px" class="door-input" disabled></select>
                         </div>
                     </div>
                     <div class="door-form-item">
                         <div class="door-form-label">
-                            Kiekis
+                            {{$i18n.locale == 'lt' ? 'Kiekis' : 'Quantity'}}
                         </div>
                         <div class="door-form-data">
                             <input v-model="doorForm.quantity" type="number" class="door-input" min="1">
@@ -131,19 +135,19 @@
                 </form>
                 <div class="door-form-submit">
                     <button class="door-submit" @click="calculatePrice">
-                        Apskaičiuoti
+                        {{$i18n.locale == 'lt' ? 'Apskaičiuoti kainą' : 'Calculate the price'}}
                     </button>
                     <div id="error1"></div>
                     <div class="door-form-total"  v-show="showPrice">
-                        <span>Viso : {{total}} &euro;</span>
+                        <span>{{$i18n.locale == 'lt' ? 'Viso' : 'Total'}} : {{total}} &euro;</span>
                         <button class="door-add" @click="addDoor">
-                            Pateikti asmeninę informaciją
+                            {{$i18n.locale == 'lt' ? 'Pateikti užsakymo užklausą' : 'Submit an order request'}}
                         </button>
                     </div>
                         <div class="door-customer-data" v-show="showCustomer">
                             <div class="door-form-item">
                                 <div class="door-form-label">
-                                    Vardas, pavardė
+                                    {{$i18n.locale == 'lt' ? 'Vardas, pavardė' : 'Name, surname'}}
                                 </div>
                                 <div class="door-form-data">
                                     <input type="text" v-model="orderForm.customer" class="door-input">
@@ -151,7 +155,7 @@
                             </div>
                             <div class="door-form-item">
                                 <div class="door-form-label">
-                                    Telefono nr.
+                                    {{$i18n.locale == 'lt' ? 'Telefono nr.' : 'Phone number'}}
                                 </div>
                                 <div class="door-form-data">
                                     <input type="text" v-model="orderForm.phone" class="door-input">
@@ -159,14 +163,14 @@
                             </div>
                             <div class="door-form-item">
                                 <div class="door-form-label">
-                                    El. paštas
+                                    {{$i18n.locale == 'lt' ? 'El. paštas' : 'Email'}}
                                 </div>
                                 <div class="door-form-data">
                                     <input type="text" v-model="orderForm.email" class="door-input">
                                 </div>
                             </div>
                             <button class="door-add" @click="postDoor">
-                                Pateikti užsakymo užklausą
+                                {{$i18n.locale == 'lt' ? 'Pateikti' : 'Submit'}}
                             </button>
                     </div>
                 </div>
@@ -210,7 +214,7 @@ export default {
         total: 0,
         showPrice: false,
         showCustomer: false,
-        newDoors: []
+        newDoors: [],
     }
   },
   computed: {
@@ -272,13 +276,47 @@ export default {
       },
       sendEmail(e) {
             try {
-                emailjs.send('service_l2bh374','template_yl7r9y7', {
-                    order_id: 1,
-                    to_name: this.doorForm.customer,
-                    receiver: this.doorForm.email,
-                }, 
-                'xOnownoRFQ2QGLw-6'
-                );
+                let x = this.doorForm.left;
+                let y = this.$i18n.locale;
+                emailjs.send("service_l2bh374","uzsakymo_pateikimas",{
+                    height: this.doorForm.length,
+                    width: this.doorForm.width,
+                    door_type: this.$i18n.locale == 'lt' ? this.doorTypes.filter(elem => elem.id == this.doorForm.door_type_id)[0].title : this.doorTypes.filter(elem => elem.id == this.doorForm.door_type_id)[0].title_en,
+                    handle: (x == 1 && y == 'lt') ? "Kairėje" : (x == 1 && y == 'en') ? "On the left" : (x == 0 && y == 'lt') ? "Dešinėje" : "On the right",
+                    panel_type: this.$i18n.locale == 'lt' ? this.panels.filter(elem => elem.id == this.doorForm.panel_id)[0].title : this.panels.filter(elem => elem.id == this.doorForm.panel_id)[0].title_en,
+                    decoration: this.$i18n.locale == 'lt' ? this.decorations.filter(elem => elem.id == this.doorForm.decoration_id)[0].title : this.decorations.filter(elem => elem.id == this.doorForm.decoration_id)[0].title_en,
+                    lock: this.$i18n.locale == 'lt' ? this.mainLocks.filter(elem => elem.title == this.doorForm.main_lock)[0].title : this.mainLocks.filter(elem => elem.title == this.doorForm.main_lock)[0].title_en,
+                    safe_lock: this.$i18n.locale == 'lt' ? this.safeLocks.filter(elem => elem.title == this.doorForm.safe_lock)[0].title : this.safeLocks.filter(elem => elem.title == this.doorForm.safe_lock)[0].title_en,
+                    installation: this.$i18n.locale == 'lt' ? this.jobs.filter(elem => elem.title == this.doorForm.installation)[0].title : this.jobs.filter(elem => elem.title == this.doorForm.installation)[0].title_en,
+                    pattern: this.$i18n.locale == 'lt' ? this.patterns.filter(elem => elem.id == this.doorForm.pattern_id)[0].title : this.patterns.filter(elem => elem.id == this.doorForm.pattern_id)[0].title_en,
+                    color: this.$i18n.locale == 'lt' ? this.colors.filter(elem => elem.id == this.doorForm.color_id)[0].title : this.colors.filter(elem => elem.id == this.doorForm.color_id)[0].title_en,
+                    quantity: this.doorForm.quantity,
+                    text_title: (this.$i18n.locale === 'lt') ? "Durų parametrai" : "Door parameters",
+                    text_height: (this.$i18n.locale === 'lt') ? "Aukštis (mm)" : "Height (mm)",
+                    text_width: (this.$i18n.locale === 'lt') ? "Plotis (mm)" : "Width (mm)",
+                    text_door_type: (this.$i18n.locale === 'lt') ? "Durų tipas" : "Door type",
+                    text_handle: (this.$i18n.locale === 'lt') ? "Rankena" : "Handle",
+                    text_panel_type: (this.$i18n.locale === 'lt') ? "Plokštės tipas" : "Panel type",
+                    text_decoration: (this.$i18n.locale === 'lt') ? "Apdaila" : "Decoration",
+                    text_lock: (this.$i18n.locale === 'lt') ? "Pagrindinė spyna" : "Main lock",
+                    text_safe_lock: (this.$i18n.locale === 'lt') ? "Seifinė spyna" : "Safe lock",
+                    text_pattern: (this.$i18n.locale === 'lt') ? "Raštas" : "Pattern",
+                    text_color: (this.$i18n.locale === 'lt') ? "Spalva" : "Color",
+                    text_quantity: (this.$i18n.locale === 'lt') ? "Kiekis" : "Quantity",
+                    text_installation: (this.$i18n.locale === 'lt') ? "Montavimas" : "Installation",
+                    text1: (this.$i18n.locale === 'lt') ? "Sveiki," : "Hello,",
+                    text2: (this.$i18n.locale === 'lt') ? "Džiaugiamės gavę Jūsų užsakymo užklausą!" : "We are glad to receive your order request!",
+                    text3: (this.$i18n.locale === 'lt') ? "Jus dominančių durų parametrai:" : "Door parameters you are interested in:",
+                    text4: (this.$i18n.locale === 'lt') ? "Su Jumis per artimiausias 1-3d.d. susisieks mūsų vadybininkai." : "Our managers will contact you within the next 1-3 working days.",
+                    text5: (this.$i18n.locale === 'lt') ? "Kilus klausimams maloniai kviečiame kreiptis numeriu: +370 616 03034 arba elektroniniu paštu info@durusalis.lt" : "If you have any questions, please feel free to contact us at +370 616 03034 or via email at info@durusalis.lt",
+                    text6: (this.$i18n.locale === 'lt') ? "Gražios dienos," : "Have a great day,",
+                    text7: (this.$i18n.locale === 'lt') ? "Durų šalies komanda" : "Durų šalis team",
+                    text8: (this.$i18n.locale === 'lt') ? "Preliminari bendra suma: " : "Preliminary total price: ",
+                    receiver: this.orderForm.email,
+                    sender: "duru.informacija2@gmail.com",
+                    total: this.doorForm.price,
+                    subject: (this.$i18n.locale === 'lt') ? 'UAB "Durų šalis" užsakymo užklausa' : 'UAB "Durų šalis" order request',
+                }, 'xOnownoRFQ2QGLw-6');
                 alert('užsakymo užklausa išsiųsta')
             } 
             catch(error) {
@@ -286,13 +324,17 @@ export default {
             }
         },
       postDoor () {
-        this.newDoors = this.doorForm
-        axios.post('/api/doors', this.doorForm)
+        axios.post('/api/orders', this.orderForm)
         .then(response => {
-                this.doors.push(response.data.data)
-                alert(response.data.data.id)
-                // this.sendEmail()
-            // this.handleClose();
+            this.doorForm.order_id = response.data.data.id
+            axios.post('/api/doors', this.doorForm)
+            .then(response => {
+                console.log(response.data)
+                    // this.doors.push(response.data.data)
+                    // alert(response.data.data.id)
+                    this.sendEmail()
+                // this.handleClose();
+            })
         })
       },
      fetchDoorData(){

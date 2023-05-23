@@ -29,7 +29,7 @@
         </div>
         <div class="small-left-side">
             <div class="fixed-nav" :style="[!showL ? {'max-width': '0px', 'min-width': '0px'} : {}]">
-                <left-side/>
+                <left-side @close="closeSide()"/>
             </div>
         </div>
         <div class="small-right-side" :style="[!showR ? {'max-width': '0px', 'min-width': '0px'} : {}]">
@@ -78,6 +78,7 @@ export default {
         changeLang(lang) {
             this.language = lang
             this.$i18n.locale = this.language
+            window.location.reload();
         },
         closeSide() {
             this.showR = false

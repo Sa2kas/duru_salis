@@ -8,34 +8,46 @@
         <h3 @click="scroll()"><span></span>{{ $t("home.scroll") }}</h3>
         <div id="after-image">
             <div class="after-image-title">
-                Ką galime Jums pasiūlyti
+                {{$i18n.locale == 'lt' ? 'Ką galime Jums pasiūlyti' : 'Here is what we can offer you'}}
             </div>
             <div class="image-title-after"/>
             <div class="flex-wrap">
                 <div class="after-image-flex">
                     <div class="after-image-card">
                         <div class="home-card-title">
-                            Lauko durys
+                            {{$i18n.locale == 'lt' ? 'Šarvuotos lauko durys' : 'Armored front door'}}
                         </div>
-                        <div class="home-card-data">
+                        <div class="home-card-data" v-show="$i18n.locale == 'lt'">
                             Lauko durys - tai namo vizitinė kortelė, jas pastebi kiekvienas. Dažniausiai name varstomos durys turi būti ne tik gražios, derėti prie namo išorės, bet ir ilgai tarnauti. <br/>
                             Šarvuotų lauko durų apdailai turi būti naudojamos atmosferiniam poveikiui atsparios plokštės. Atsižvelgiant į tai, mes siūlome: <br/>
                             Šarvuotas lauko duris <strong>OKOUME</strong> <br/>
                             Šarvuotas lauko duris <strong>UMIDAX (MDF)</strong> <br/>
                             Šarvuotas lauko duris <strong>EKONOMIK (LFSF, bakalitas)</strong> <br/>
                         </div>
-                        <button class="more-info">Daugiau informacijos</button>
+                        <div class="home-card-data" v-show="$i18n.locale == 'en'">
+                            Exterior doors - they are the visiting card of the house, noticed by everyone. The most common entrance doors should not only be beautiful and match the exterior of the house but also serve for a long time. <br/>
+                            For the finishing of armored exterior doors, weather-resistant panels should be used. In this regard, we offer: <br/>
+                            Armored exterior doors <strong>OKOUME</strong> <br/>
+                            Armored exterior doors <strong>UMIDAX (MDF)</strong> <br/>
+                            Armored exterior doors <strong>ECONOMIC (LFSF, bakelite)</strong> <br/>
+                        </div>
+                        <router-link to="/outside_doors" tag="button" class="more-info">{{$i18n.locale == 'lt' ? 'Daugiau informacijos' : 'More information'}}</router-link>
                     </div>
                     <div class="after-image-card">
                         <div class="home-card-title">
-                            Buto durys
+                            {{$i18n.locale == 'lt' ? 'Šarvuotos buto durys' : 'Armored apartment door'}}
                         </div>
-                        <div class="home-card-data">
+                        <div class="home-card-data" v-show="$i18n.locale == 'lt'">
                             Šarvuotos vidaus patalpų durys - skirtos patalpų apsaugai vidaus sąlygomis: daugiabučio gyvenamojo namo butų, biurų, kasos patalpų ir pan. Šios durys yra padengtos medžio imitacijos LMDP arba MDF plokšte, todėl jų negalima naudoti lauko sąlygomis arba ten, kur didelis drėgnumas. <br/>
                             Šarvuotos vidaus durys <strong>Standartas (LMDP)</strong><br/>
                             Šarvuotos vidaus durys <strong>Laminuotos (MDF)</strong><br/><br/>
                         </div>
-                        <button class="more-info">Daugiau informacijos</button>
+                        <div class="home-card-data" v-show="$i18n.locale == 'en'">
+                            Armored interior doors - designed for indoor protection in internal conditions: apartments in residential buildings, offices, cashier rooms, and so on. These doors are covered with wood imitation LMDP or MDF panels, so they cannot be used in outdoor conditions or where there is high humidity. <br/>
+                            Armored interior doors <strong>Standard (LMDP)</strong><br/>
+                            Armored interior doors <strong>Laminated (MDF)</strong><br/><br/>
+                        </div>
+                        <router-link to="/inside_doors" tag="button" class="more-info">{{$i18n.locale == 'lt' ? 'Daugiau informacijos' : 'More information'}}</router-link>
                     </div>
                 </div>
             </div>
@@ -66,6 +78,7 @@ export default {
 <style>
     .home {
         display: block;
+        padding-bottom: 20vh;
     }
     .main-page-image {
         width: 100%;

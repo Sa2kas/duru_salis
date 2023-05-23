@@ -119,3 +119,6 @@ Route::get('/params', [ParameterController::class, 'index']);
     Route::delete('/statuses/{id}', [StatusController::class, 'destroy']);
 
 Route::post('/login', [LoginController::class, 'authenticate']);
+
+
+Route::post('/register',  [UserController::class, 'store']);

@@ -2,16 +2,16 @@
     <div class="outside-door">
         <div class="outside-header"></div>
         <div class="outside-title">
-            Šarvuotos buto durys
+            {{$i18n.locale == 'lt' ? 'Šarvuotos buto durys' : 'Armored apartment door'}}
         </div>
         <div class="outside-door-body">
             <div class="outside-item">
                 <div class="home-card-title">
-                    Standartas
+                    {{$i18n.locale == 'lt' ? 'Standartas' : 'Standart'}}
                 </div>
                 <div class="body-item">
                     <div class="body-item-left">
-                        <div class="home-card-data">
+                        <div class="home-card-data" v-show="$i18n.locale == 'lt'">
                             Durys pagamintos naudojant laminuotą medžio drožlių plokštę LMDP. Laminuotas paviršius atsparus drėgmei ir aukštesnei temperatūrai.
                             <br>
                             Šios durys standartiškai komplektuojamos su pagrindine Dorma 712 ir seifine ISEO 66360 spynomis, bet galima rinktis ir kitas spynas.
@@ -21,6 +21,17 @@
                             Durų varčia 66 mm apšiltinta akmens vata.
                             <br>
                             Komplektacijoje nerūdijančio plieno slenktis ir durų apvadai.
+                        </div>
+                        <div class="home-card-data" v-show="$i18n.locale == 'en'">
+                            The doors are made using laminated wood chipboard LMDP. The laminated surface is resistant to moisture and high temperature.
+                            <br>
+                            These doors are standardly equipped with the main Dorma 712 lock and the safe ISEO 66360 lock, but other locks can also be chosen.
+                            <br>
+                            The door frame is 80 mm insulated with a combination of mineral wool and foam polystyrene.
+                            <br>
+                            The door leaf is 66 mm insulated with mineral wool.
+                            <br>
+                            Stainless steel threshold and door trims are included in the package.
                         </div>
                     </div>
                     <!-- <div class="body-item-right">
@@ -39,11 +50,11 @@
             
             <div class="outside-item">
                 <div class="home-card-title">
-                    Laminuotos
+                    {{$i18n.locale == 'lt' ? 'Laminuotos' : 'Laminated'}}
                 </div>
                 <div class="body-item">
                     <div class="body-item-left">
-                        <div class="home-card-data">
+                        <div class="home-card-data" v-show="$i18n.locale == 'lt'">
                             Tokios durys gaminamos iš medžio drožlių plokštės,vėliau plokštė užlaminuojama drėgmei atsparia PVC plėvele. Ši apdaila turi kietą paviršių, gerą estetinį vaizdą, duris lengva prižiūrėti, neblunka, atspari mechaniniams pažeidimams.
                             <br>
                             Šios durys standartiškai komplektuojamos su pagrindine Dorma 712 ir seifine ISEO 66360 spynomis, bet galima rinktis ir kitas spynas. Taip pat gali būti su akute ar be jos.
@@ -51,6 +62,15 @@
                             Durų stakta 80 mm apšiltinta kombinuotai – akmens vata ir putų polistirolu.
                             <br>
                             Durų varčia 66 mm apšiltinta akmens vata.
+                        </div>
+                        <div class="home-card-data" v-show="$i18n.locale == 'en'">
+                            These doors are made of wood chipboard, and the board is laminated with a moisture-resistant PVC film. This finish has a solid surface, a good aesthetic appearance, the doors are easy to maintain, do not fade, and are resistant to mechanical damage.
+                            <br>
+                            These doors are standardly equipped with the main Dorma 712 lock and the safe ISEO 66360 lock, but other locks can also be chosen. They can also be with or without an eyepiece.
+                            <br>
+                            The door frame is 80 mm insulated with a combination of mineral wool and foam polystyrene.
+                            <br>
+                            The door leaf is 66 mm insulated with mineral wool.
                         </div>
                     </div>
                     <!-- <div class="body-item-right">

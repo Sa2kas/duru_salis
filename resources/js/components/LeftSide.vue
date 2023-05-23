@@ -3,78 +3,78 @@
     <div class="left-menu-side"/>
     <div class="right-menu-side">
       <div class="tab-title">
-          Meniu
+          {{$i18n.locale == 'lt' ? 'Meniu' : 'Menu'}}
       </div>
-      <div class="right-side-title">
+      <div class="right-side-title" @click="close">
           <router-link :to="'/'">
             <div class="right-side-title">
-              Pagrindinis
+              {{$i18n.locale == 'lt' ? 'Pagrindinis' : 'Home'}}
             </div>
           </router-link>
       </div>
-      <div v-if="!authenticated" class="right-side-title">
+      <div v-if="!authenticated" class="right-side-title" @click="close">
           <router-link :to="'/calculate_price'">
-            Apskaičiuoti užsakymo kainą
+            {{$i18n.locale == 'lt' ? 'Apskaičiuoti užsakymo kainą' : 'Calculate the order price'}}
           </router-link>
       </div>
-      <div v-if="!authenticated" class="right-side-title">
+      <div v-if="!authenticated" class="right-side-title" @click="close">
           <router-link :to="'/check_order'">
-            Tikrinti užsakymo būseną
+            {{$i18n.locale == 'lt' ? 'Tikrinti užsakymo būseną' : 'Check order status'}}
           </router-link>
       </div>
-      <div v-if="!authenticated" class="right-side-title">
+      <div v-if="!authenticated" class="right-side-title" @click="close">
           <router-link :to="'/inside_doors'">
-            Vidaus durys
+            {{$i18n.locale == 'lt' ? 'Šarvuotos buto durys' : 'Armored apartment door'}}
           </router-link>
       </div>
-      <div v-if="!authenticated" class="right-side-title">
+      <div v-if="!authenticated" class="right-side-title" @click="close">
           <router-link :to="'/outside_doors'">
-            Lauko durys
+            {{$i18n.locale == 'lt' ? 'Šarvuotos lauko durys' : 'Armored front door'}}
           </router-link>
       </div>
-      <div v-if="!authenticated" class="right-side-title">
+      <div v-if="!authenticated" class="right-side-title" @click="close">
           <router-link :to="'/locks'">
-            Spynos
+            {{$i18n.locale == 'lt' ? 'Spynos' : 'Locks'}}
           </router-link>
       </div>
-      <div class="right-side-title" v-if="userRole == 1">
+      <div class="right-side-title" v-if="userRole == 1" @click="close">
           <router-link :to="'/dashboard'">
-            Admin dashboard
+            {{$i18n.locale == 'lt' ? 'Administratoriaus puslapis' : 'Admin dashboard'}}
           </router-link>
       </div>
-      <div class="right-side-title" v-if="userRole == 2">
+      <div class="right-side-title" v-if="userRole == 2" @click="close">
           <router-link :to="'/dashboard2'">
-            Manager dashboard
+            {{$i18n.locale == 'lt' ? 'Vadybininko puslapis' : 'Manager dashboard'}}
           </router-link>
       </div>
-      <div class="right-side-title" v-if="userRole == 3">
+      <div class="right-side-title" v-if="userRole == 3" @click="close">
           <router-link :to="'/dashboard3'">
-            Product manager dashboard
+            {{$i18n.locale == 'lt' ? 'Produktų vadybininko puslapis' : 'Product manager dashboard'}}
           </router-link>
       </div>
-      <div class="right-side-title" v-if="authenticated">
+      <div class="right-side-title" v-if="authenticated" @click="close">
           <router-link :to="'/orders'">
-            Užsakymai
+            {{$i18n.locale == 'lt' ? 'Užsakymai' : 'Orders'}}
           </router-link>
       </div>
-      <div class="right-side-title" v-if="userRole == 1">
+      <div class="right-side-title" v-if="userRole == 1" @click="close">
           <router-link :to="'/users'">
-            Naudotojai
+            {{$i18n.locale == 'lt' ? 'Naudotojai' : 'Users'}}
           </router-link>
       </div>
-      <div v-if="!authenticated" class="right-side-title">
+      <div v-if="!authenticated" class="right-side-title" @click="close">
           <router-link :to="'/contacts'">
-            Kontaktai
+            {{$i18n.locale == 'lt' ? 'Kontaktai' : 'Contacts'}}
           </router-link>
       </div>
-      <div v-if="userRole == 1 || userRole == 2" class="right-side-title">
+      <div v-if="userRole == 1 || userRole == 2" class="right-side-title" @click="close">
           <router-link :to="'/edit_gallery'">
-            Tvarkyti galeriją
+            {{$i18n.locale == 'lt' ? 'Tvarkyti galeriją' : 'Edit gallery'}}
           </router-link>
       </div>
-      <div class="right-side-title">
+      <div class="right-side-title" @click="close">
           <router-link :to="'/comments'">
-            Atsiliepimai
+            {{$i18n.locale == 'lt' ? 'Atsiliepimai' : 'Comments'}}
           </router-link>
       </div>
     </div>
@@ -106,6 +106,9 @@ export default {
   watch: {
   },
   methods: {
+    close: function () {
+      this.$emit('close')
+    }
   },
 }
 </script>

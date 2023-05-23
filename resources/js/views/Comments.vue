@@ -7,7 +7,7 @@
         <div class="comments-data">
             <div class="add-comment" v-if="!authenticated">
                 <button class="add-comment-btn" @click="showModal();edit = false">
-                    add comment
+                    pridėti komentarą
                 </button>
             </div>
             <div class="comment" v-for="comment in items.comments.data" :key="comment.id">
@@ -22,7 +22,7 @@
                     </div>
                     <div class="comment-name">{{comment.name}}</div>
                 </div>
-                <div class="comment-data">duomenys: {{comment.order_id}}</div>
+                <!-- <div class="comment-data">duomenys: {{comment.order_id}}</div> -->
             </div>
         </div>
         <modal 
@@ -30,16 +30,35 @@
             @close="closeModal()"
             :name="edit == true ? 'Redaguoti' : 'Pridėti'">
             <template>
-                užsakymo numeris <br>
-                <input type="text" v-model="commentForm.order_id"> <br>
-                vardas <br>
-                <input type="text" v-model="commentForm.name"> <br>
-                įvertinimas <br>
-                <input type="text" v-model="commentForm.stars"> <br>
-                <button @click="closeModal">Cancel</button>
-                <button @click="submitItem">Submit</button>
+                <div class="door-form-item">
+                        <div class="door-form-label" style="font-size: 13px">
+                            Užsakymo numeris
+                        </div>
+                        <div class="door-form-data">
+                            <input type="number" style="height: 20px; width: 200px" v-model="commentForm.order_id"  class="door-input">
+                        </div>
+                    </div>
+                    <div class="door-form-item">
+                        <div class="door-form-label" style="font-size: 13px">
+                            Vardas
+                        </div>
+                        <div class="door-form-data">
+                            <input style="height: 20px; width: 200px" v-model="commentForm.name"  class="door-input">
+                        </div>
+                    </div>
+                    <div class="door-form-item">
+                        <div class="door-form-label" style="font-size: 13px">
+                            Įvertinimas
+                        </div>
+                        <div class="door-form-data">
+                            <input type="number" min="1" max="5" style="height: 20px; width: 200px" v-model="commentForm.stars"  class="door-input">
+                        </div>
+                    </div>
+                <button @click="closeModal">Atšaukti</button>
+                <button @click="submitItem">Patvirtinti</button>
             </template>
       </modal>
+      <!-- <pdf-generator></pdf-generator> -->
     </div>
 </template>
 <script>
@@ -190,7 +209,7 @@ export default {
     }
     .comment {
         width: 96%;
-        min-height: 100px;
+        min-height: 60px;
         box-shadow: 0 2px 5px #444;
         margin: 20px auto;
         padding: 10px;

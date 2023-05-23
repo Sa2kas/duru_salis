@@ -1,7 +1,7 @@
 <template>
     <div class="footer">
         <div class="footer-text">
-            © {{currentDate}} | Visos teisės saugomos
+            © {{currentDate}} | {{$i18n.locale == 'lt' ? 'Visos teisės saugomos' : 'All rights reserved'}}
         </div>
     </div>
 </template>

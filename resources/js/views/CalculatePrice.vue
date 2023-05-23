@@ -2,7 +2,7 @@
     <div class="calculate-price">
         <div class="calculate-header"></div>
         <div class="calculate-title">
-            Preliminarios kainos apskaičiavimas
+            {{this.$i18n.locale == 'lt' ? 'Preliminarios kainos apskaičiavimas' : 'Preliminary price calculation'}}
         </div>
         <door-form></door-form>
     </div>
