@@ -113,6 +113,10 @@ export default {
       }
       this.ctx1.putImageData(frame, 0, 0);
     },
+    
+    setUrl(url) {
+      this.url2 = url;
+    },
     onChange(e) {
       const file = e.target.files[0];
       this.url = URL.createObjectURL(file);
@@ -135,9 +139,6 @@ export default {
         
         // console.log(this.showError)
         // console.log(this.order)
-    },
-    setUrl(url) {
-      this.url2 = url;
     },
   },
 //   watch: {

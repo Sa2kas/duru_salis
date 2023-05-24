@@ -2,33 +2,57 @@
     <div class="contacts">
         <div class="contact-header"></div>
         <div class="contact-title">
-            Turite klausimų? Susisiekite
+            {{$i18n.locale == 'lt' ? 'Turite klausimų? Susisiekite' : 'Contact us'}}
         </div>
         <div class="contact-body">
             <div class="body-card">
                 <div class="card-title">
-                    UAB Durų šalis
+                    UAB "Durų šalis"
                 </div>
-                <div class="card-data">
-                    <strong>PVM kodas:</strong> LT100008314016 <br/>
-                    <strong>Įmonės kodas:</strong> 303224483 <br/>
-                    <strong>A/s</strong> LT94 7300 0101 5166 3393, “Swedbank”, AB
-                </div>
-                <div class="card-data">
-                    <strong>Adresas:</strong> Žiemgalių g. 8, Kaunas LT-48230
-                </div>
-                <div class="card-data">
-                    <strong>El.paštas:</strong> info@durusalis.lt
-                </div>
-                <div class="card-data">
-                    <strong>Darbo laikas:</strong> <br/>
-                    Pirm - Penkt: 9:00 iki 18:00 <br/>
-                    Šeštadienį: NEDIRBAME <br/>
-                    Sekmadienį: NEDIRBAME <br/>
-                </div>
-                <div>
-                    
-                </div>
+                <span v-show="$i18n.locale == 'lt'">
+                    <div class="card-data">
+                        <strong>PVM kodas:</strong> LT100008314016 <br/>
+                        <strong>Įmonės kodas:</strong> 303224483 <br/>
+                        <strong>A/s</strong> LT94 7300 0101 5166 3393, “Swedbank”, AB
+                    </div>
+                    <div class="card-data">
+                        <strong>Adresas:</strong> Žiemgalių g. 8, Kaunas LT-48230
+                    </div>
+                    <div class="card-data">
+                        <strong>El.paštas:</strong>
+                        <span @click="openEmail()" style="cursor:pointer; text-decoration: underline">
+                            info@durusalis.lt
+                        </span>
+                    </div>
+                    <div class="card-data">
+                        <strong>Darbo laikas:</strong> <br/>
+                        Pirm - Penkt: 9:00 iki 18:00 <br/>
+                        Šeštadienį: NEDIRBAME <br/>
+                        Sekmadienį: NEDIRBAME <br/>
+                    </div>
+                </span>
+                <span v-show="$i18n.locale == 'en'">
+                    <div class="card-data">
+                        <strong>VAT code:</strong> LT100008314016 <br/>
+                        <strong>Company code:</strong> 303224483 <br/>
+                        <strong>Bank account:</strong> LT94 7300 0101 5166 3393, "Swedbank", AB
+                    </div>
+                    <div class="card-data">
+                        <strong>Address:</strong> Žiemgalių g. 8, Kaunas LT-48230
+                    </div>
+                    <div class="card-data">
+                        <strong>Email:</strong>
+                        <span @click="openEmail()" style="cursor:pointer; text-decoration: underline">
+                            info@durusalis.lt
+                        </span>
+                    </div>
+                    <div class="card-data">
+                        <strong>Working hours:</strong> <br/>
+                        Monday - Friday: 9:00 to 18:00 <br/>
+                        Saturday: CLOSED <br/>
+                        Sunday: CLOSED <br/>
+                    </div>
+                </span>
             </div>
             <div class="body-card">
                 <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2292.681551564004!2d23.87505521600804!3d54.92606006291441!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x46e71f4f4705cfd9%3A0xe9567e4168c50550!2s%C5%BDiemgali%C5%B3+g.+8%2C+Kaunas+48230!5e0!3m2!1sen!2slt!4v1560949332303!5m2!1sen!2slt" width="100%" height="100%" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
@@ -38,13 +62,17 @@
 </template>
 <script>
 export default {
-    
+    methods: {
+    openEmail() {
+      window.location.href = 'mailto:info@durusalis.lt';
+    }
+  }
 }
 </script>
 <style>
     .contacts {
         display: block;
-        padding-bottom: 5vh;
+        padding-bottom: 10vh;
     }
     .contact-header {
         background-image: url('/images/contact.jpg');

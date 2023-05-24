@@ -103,7 +103,7 @@
                             {{$i18n.locale == 'lt' ? 'Raštas' : 'Pattern'}}
                         </div>
                         <div class="door-form-data">
-                            <select v-if="availablePatterns != 0" style="height: 28px" v-model="doorForm.pattern_id"  class="door-input">
+                            <select v-if="availablePatterns != 0" style="height: 28px" v-model="doorForm.pattern_id"  class="door-input" @change="setUrl(doorForm.pattern_id, $event)">
                                 <option v-for="pattern in availablePatterns" :key="pattern.id" :value="pattern.id">{{$i18n.locale == 'lt' ? pattern.title : pattern.title_en}}</option>
                             </select>
                             <select v-else style="height: 28px" class="door-input" disabled></select>
@@ -114,11 +114,9 @@
                             {{$i18n.locale == 'lt' ? 'Spalva' : 'Color'}}
                         </div>
                         <div class="door-form-data">
-                            <select v-if="availableColors != 0" style="height: 28px" v-model="doorForm.color_id"  class="door-input">
-                                <option v-for="color in availableColors" :key="color.id" :value="color.id" >
-                                    <span :style="{ backgroundImage: `url(${color.photo})` }">
-                                        {{$i18n.locale == 'lt' ? color.title : color.title_en}}
-                                    </span>
+                            <select v-if="availableColors != 0" style="height: 28px" v-model="doorForm.color_id"  class="door-input" @change="setUrl2(doorForm.color_id, $event)">
+                                <option v-for="color in availableColors" :key="color.id" :value="color.id">
+                                    {{$i18n.locale == 'lt' ? color.title : color.title_en}}
                                 </option>
                             </select>
                             <select v-else style="height: 28px" class="door-input" disabled></select>
@@ -131,6 +129,14 @@
                         <div class="door-form-data">
                             <input v-model="doorForm.quantity" type="number" class="door-input" min="1">
                         </div>
+                    </div>
+                    <div>
+                        <img v-show="false" id="image" :src="url" width="200px" alt="">
+                        <div class="box">
+                        <img :src="url2" alt="" class="image">
+                        <canvas id="output-canvas"></canvas>
+                        </div>
+                        <br/>
                     </div>
                 </form>
                 <div class="door-form-submit">
@@ -174,6 +180,7 @@
                             </button>
                     </div>
                 </div>
+                
         </div>
     </div>
 </template>
@@ -182,6 +189,8 @@ import emailjs from 'emailjs-com';
 export default {
     data () {
     return {
+        url: '/images/R1.jpg',
+        url2: '/images/none.jpg',
         doorForm: {
             length: 1800,
             width: 900,
@@ -239,6 +248,7 @@ export default {
       availableColors () {
           return this.colors.filter(elem => elem.panel_id == this.doorForm.panel_id && this.doorForm.panel_id != 0)
       },
+      
   },
   created () {
     this.fetchDTData();
@@ -250,6 +260,65 @@ export default {
     this.fetchColorData();
   },
   methods: {
+    initCanvas() {
+      this.image = document.getElementById('image');
+      this.c1 = document.getElementById('output-canvas');
+      this.c1.width = 200;
+      this.c1.height = 200;
+      this.ctx1 = this.c1.getContext('2d');
+
+      this.c_tmp = document.createElement('canvas');
+      this.c_tmp.setAttribute('width', 200);
+      this.c_tmp.setAttribute('height', 200);
+      this.ctx_tmp = this.c_tmp.getContext('2d');
+
+      this.computeFrame();
+    },
+    computeFrame() {
+      let coef = 200 / this.image.naturalWidth;
+    //   this.ctx1.scale(-1, 1);
+      this.ctx_tmp.drawImage(
+        this.image,
+        0,
+        0,
+        this.image.naturalWidth * coef,
+        this.image.naturalHeight * coef
+      );
+      let frame = this.ctx_tmp.getImageData(
+        0,
+        0,
+        this.image.naturalWidth,
+        this.image.naturalHeight
+      );
+
+      for (let i = 0; i < frame.data.length * 4; i += 4) {
+        let r = frame.data[i]; //red
+        let g = frame.data[i + 1]; //green
+        let b = frame.data[i + 2]; //blue
+        let a = frame.data[i + 3];
+
+        if (r >= 176 && r < 255 && g > 176 && g < 255 && b > 176 && b < 255) {
+          frame.data[i + 3] = a * 0.05;
+        }
+      }
+      this.ctx1.putImageData(frame, 0, 0);
+    },
+    
+    setUrl(id, event) {
+        if (event.target.value) {
+            this.url = this.patterns.filter(elem => elem.id == id)[0].photo ? this.patterns.filter(elem => elem.id == id)[0].photo : "/images/R1.jpg"
+        this.initCanvas()
+        }
+        
+        
+    },
+    setUrl2(id, event) {
+        if (event.target.value) {
+            this.url2 = this.colors.filter(elem => elem.id == id)[0].photo ? this.colors.filter(elem => elem.id == id)[0].photo : '/images/none.jpg'
+        }
+        // this.url2 = this.colors.filter(elem => elem.id == id)[0].photo ? this.colors.filter(elem => elem.id == id)[0].photo : '/images/none.jpg'
+        
+    },
       calculatePrice () {
           try {
             var decoprice = this.availableDecors.filter(elem => elem.id == this.doorForm.decoration_id)[0].price

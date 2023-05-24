@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Photo;
 use Illuminate\Http\Request;
 use App\Http\Resources\Photo as PhotoResource;
+use Illuminate\Support\Facades\Storage;
 
 class PhotoController extends Controller
 {
@@ -98,7 +99,19 @@ class PhotoController extends Controller
     public function destroy($photo)
     {
         //
-        Photo::find($photo)->delete();
-        return PhotoResource::collection(Photo::get());
+        // Photo::find($photo)->delete();
+        // return PhotoResource::collection(Photo::get());
+
+        $photo = Photo::find($photo);
+
+    if (!$photo) {
+        return response()->json(['message' => 'Photo not found'], 404);
+    }
+
+    Storage::delete('public' . $photo->path);
+
+    $photo->delete();
+
+    return PhotoResource::collection(Photo::get());
     }
 }

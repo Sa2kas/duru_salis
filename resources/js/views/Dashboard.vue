@@ -6,7 +6,7 @@
         <vue-table
             :item="items.parameterTypes"
             :index="0"
-            name="Parametrų tipai"
+            :name="$i18n.locale == 'lt' ? 'Parametrų tipai' : 'Parameter types'"
             :showHeader="true"
             @clicked="getSearchedData"
             @delete="deleteType"
@@ -14,9 +14,12 @@
             @refresh="handleClose"
             @submitItem="submitParamType">
             <template v-slot:editItem>
-                <input type="text" v-model="paramTypeForm.title">
-                <input type="text" v-model="paramTypeForm.title_en">
-                <input type="checkbox" v-model="paramTypeForm.allow_many">
+                <div class="modal-form-label">{{$i18n.locale == 'lt' ? 'LT antraštė' : 'LT title'}}</div>
+                <input class="modal-form-input" type="text" v-model="paramTypeForm.title">
+                <div class="modal-form-label">{{$i18n.locale == 'lt' ? 'EN antraštė' : 'EN title'}}</div>
+                <input class="modal-form-input" type="text" v-model="paramTypeForm.title_en">
+                <div class="modal-form-label">{{$i18n.locale == 'lt' ? 'Leisti daug' : 'Allow many'}}</div>
+                <div><input class="modal-form-checkbox" type="checkbox" v-model="paramTypeForm.allow_many"></div>
                 <!-- <button @click="handleClose">Cancel</button>
                 <button @click="submitParamType">Submit</button> -->
             </template>
@@ -25,7 +28,8 @@
             :item="items.parameters"
             :index="1"
             name="Parametrai"
-            :showHeader="false">
+            :showHeader="false"
+            :showAdd="false">
         </vue-table>
     </div>
 </template>
@@ -59,22 +63,22 @@ export default {
             items: {
                 parameterTypes : {
                     columns: [
-                        { dataIndex: 'id', title: '#' },
-                        { dataIndex: 'title', title: 'title' },
-                        { dataIndex: 'title_en', title: 'english title' },
-                        { dataIndex: 'allow_many', title: 'allow many' },
-                        { dataIndex: 'actions', title: 'actions' },
+                        { dataIndex: 'id', title: '#', name: '#'},
+                        { dataIndex: 'title', title: 'title', name: this.$i18n.locale == 'lt' ? 'LT antraštė' : 'LT title' },
+                        { dataIndex: 'title_en', title: 'english title', name: this.$i18n.locale == 'lt' ? 'EN antraštė' : 'EN title' },
+                        { dataIndex: 'allow_many', title: 'allow many', name: this.$i18n.locale == 'lt' ? 'Leisti daug' : 'Allow many' },
+                        { dataIndex: 'actions', title: 'actions', name: this.$i18n.locale == 'lt' ? 'Veiksmai' : 'Actions' },
                     ],
                     data: []
                 },
                 parameters: {
                     columns: [
-                        { dataIndex: 'id', title: '#' },
-                        { dataIndex: 'title', title: 'title' },
-                        { dataIndex: 'title_en', title: 'title_en' },
-                        { dataIndex: 'price', title: 'price' },
-                        { dataIndex: 'parameter_type_id', title: 'parameter type' },
-                        { dataIndex: 'door_type_id', title: 'door type' },
+                        { dataIndex: 'id', title: '#', name: '#' },
+                        { dataIndex: 'title', title: 'title', name: this.$i18n.locale == 'lt' ? 'LT antraštė' : 'LT title' },
+                        { dataIndex: 'title_en', title: 'title_en', name: this.$i18n.locale == 'lt' ? 'EN antraštė' : 'EN title' },
+                        { dataIndex: 'price', title: 'price', name: this.$i18n.locale == 'lt' ? 'Kaina' : 'Price' },
+                        { dataIndex: 'parameter_type_id', title: 'parameter type', name: this.$i18n.locale == 'lt' ? 'Parametrų tipo id' : 'Parameter type id' },
+                        { dataIndex: 'door_type_id', title: 'door type', name: this.$i18n.locale == 'lt' ? 'Durų tipo id' : 'Door type id' },
                     ],
                     data: []
                 }
@@ -155,5 +159,31 @@ export default {
 <style>
     .dashboard {
         padding: 53px 1vw 0 1vw;
+    }
+    .modal-form-label {
+        font-size: min(3.5vw, 16px);
+        font-family: "Oswald", sans-serif;
+        color: #432310;
+        margin: 1rem 0 0.2rem 0;
+    }
+    .modal-form-input {
+        width: 100%;
+        max-width: 175px;
+        border: 1px solid #afafaf;
+        border-radius: 7px;
+        transition: border .2s linear,box-shadow .2s linear;
+        font-size: 11px;
+        padding: 0.3em 1em;
+        height: 22px;
+    }
+    .modal-form-checkbox {
+        border: 1px solid #afafaf;
+        border-radius: 4px;
+        transition: border .2s linear,box-shadow .2s linear;
+        display: flex;
+        float: left;
+        font-size: 11px;
+        height: 14px;
+        margin-left: -1px;
     }
 </style>

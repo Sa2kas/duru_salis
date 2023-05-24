@@ -4,7 +4,7 @@
       <div class="table-header" :style="[showHeader ? {'display': 'flex'} : {'display': 'none'}]">
         <div class="set-records-number">
           <div class="records-number-title">
-            Records per page
+            {{$i18n.locale == 'lt' ? 'Įrašų puslapyje' : 'Records per page'}}
           </div>
           <div id="records" class="records-number">
             <input class="choose-records-number" v-model="perPage">
@@ -20,15 +20,15 @@
           </div>
         </div>
         <div class="search">
-          <input @keyup="searchData" @keydown="searchData" type="text" class="search" placeholder="Search..." v-model="search">
+          <input @keyup="searchData" @keydown="searchData" type="text" class="search" :placeholder="$i18n.locale == 'lt' ? 'Ieškoti...' : 'Search...'" v-model="search">
         </div>
       </div>
-      <div class="empty-table" v-if="splitedArray.length == 0">This section contains no values yet</div>
+      <div class="empty-table" v-if="splitedArray.length == 0">{{$i18n.locale == 'lt' ? 'Įrašų nėra' : 'This section contains no values yet'}}</div>
       <table id="table" class="data-table" v-else>
         <thead>
           <tr>
             <td v-for="(column, indexC) in item.columns" :key="indexC">
-              <th class="th">{{column.title}}</th>
+              <th class="th">{{column.name}}</th>
             </td>
           </tr>
         </thead>
@@ -36,20 +36,34 @@
           <slot name="tableRow">
             <tr class="row-div" v-for="(data, indexD) in splitedArray[currentPage - 1]" :key="indexD">
               <td class="td" v-for="(column, indexC) in item.columns" :key="indexC">
-                <div class="data-header">{{column.title}}</div>
+                <div class="data-header">{{column.name}}</div>
                 <slot name="tableData" v-bind:data="data" v-bind:column="column">
                   <div v-if="column.dataIndex == 'allow_many'" class="table-data">
                     <span v-if="data[column.dataIndex] == 0">
-                      Not allowed
+                      {{$i18n.locale == 'lt' ? 'Neleista' : 'Not allowed'}}
                     </span>
                     <span v-if="data[column.dataIndex] == 1">
-                      Allowed
+                      {{$i18n.locale == 'lt' ? 'Leista' : 'Allowed'}}
+                    </span>
+                  </div>
+                  <div v-if="column.dataIndex == 'role_id'" class="table-data">
+                    <span v-if="data[column.dataIndex] == 1">
+                      {{$i18n.locale == 'lt' ? 'Vadovas' : 'CEO'}}
+                    </span>
+                    <span v-if="data[column.dataIndex] == 2">
+                      {{$i18n.locale == 'lt' ? 'Vadybininkas' : 'Manager'}}
+                    </span>
+                    <span v-if="data[column.dataIndex] == 3">
+                      {{$i18n.locale == 'lt' ? 'Produkcijos vadybininkas' : 'PM'}}
                     </span>
                   </div>
                   <div v-else class="table-data">{{data[column.dataIndex]}}</div>
-                  <span v-if="column.dataIndex == 'actions'">
+                  <span v-if="column.dataIndex == 'actions' && !pdf">
                     <button class="iconButton" @click="showModal(data);edit = true"><img src="/images/edit.png" alt=""></button>
                     <button class="iconButton" @click="deleteData(data)"><img src="/images/delete.png" alt=""></button>
+                  </span>
+                  <span v-if="column.dataIndex == 'actions' && pdf">
+                    <button class="iconButton" @click="showPdf(data);edit = true"><img src="/images/generate.svg" alt=""></button>
                   </span>
                 </slot>
               </td>
@@ -65,16 +79,30 @@
           @pagechanged="onPageChange"
           />
       </div>
-      <button class="control-btn" @click="showModal();edit = false">pridėti</button>
+      <button v-show="showAdd" class="control-btn" @click="showModal();edit = false">{{$i18n.locale == 'lt' ? 'Pridėti' : 'Add'}}</button>
       </expand-collapse>
       <modal 
-        v-show="isModalVisible"
+        v-show="isModalVisible && $i18n.locale == 'lt'"
         @close="closeModal()"
         :name="edit == true ? 'Redaguoti' : 'Pridėti'">
         <template>
           <slot name="editItem"></slot>
-          <button @click="closeModal">Cancel</button>
-          <button @click="submitItem">Submit</button>
+          <div class="modal-buttons">
+            <button class="modal-control-btn" @click="closeModal">Atšaukti</button>
+            <button class="modal-control-btn" @click="submitItem">Patvirtinti</button>
+          </div>
+        </template>
+      </modal>
+      <modal 
+        v-show="isModalVisible && $i18n.locale == 'en'"
+        @close="closeModal()"
+        :name="edit == true ? 'Edit' : 'Create'">
+        <template>
+          <slot name="editItem"></slot>
+          <div class="modal-buttons">
+            <button class="modal-control-btn" @click="closeModal">Cancel</button>
+            <button class="modal-control-btn" @click="submitItem">Submit</button>
+          </div>
         </template>
       </modal>
   </div>
@@ -83,11 +111,13 @@
 import ExpandCollapse from './ExpandCollapse.vue'
 import VuciPagination from './Pagination.vue'
 import Modal from './Modal.vue'
+import PdfGenerator from '../components/PdfGeneration.vue'
 export default {
   components: {
     VuciPagination,
     ExpandCollapse,
-    Modal
+    Modal,
+    PdfGenerator
   },
   data () {
     return {
@@ -95,7 +125,9 @@ export default {
       perPage: 10,
       search: '',
       edit: false,
-      isModalVisible: false
+      isModalVisible: false,
+      pdfVisible: false,
+      selectedItem: {}
     }
   },
   props: {
@@ -117,7 +149,17 @@ export default {
       type: Boolean,
       required: false,
       default: false
-    }
+    },
+    showAdd: {
+      type: Boolean,
+      required: false,
+      default: true
+    },
+    pdf: {
+      type: Boolean,
+      required: false,
+      default: false
+    },
   },
   methods: {
     onPageChange (page) {
@@ -141,6 +183,14 @@ export default {
     closeModal () {
       this.refresh()
       this.isModalVisible = false
+    },
+    showPdf (data) {
+      this.pdfVisible = true
+      this.selectedItem = data
+    },
+    closePdf () {
+      this.refresh()
+      this.pdfVisible = false
     },
     deleteData (element) {
       this.$emit('delete', element)
@@ -342,7 +392,7 @@ export default {
   .table-footer {
     display: block;
   }
-  .control-btn {
+  .control-btn, .modal-control-btn {
     background-color: #fff;
     font-family: "Oswald", sans-serif;
     font-size: 14px;
@@ -360,13 +410,18 @@ export default {
     /* float: right; */
     display: block;
   }
-  .control-btn:hover {
+  .control-btn:hover, .modal-control-btn:hover {
     cursor: pointer;
     background-color: #808080;
     color: #fff;
     border: 1px solid #808080;
     transition: 0.5s;
     }
+  .modal-buttons {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+  }
   @media only screen and (max-width: 1100px) {
     thead {
       display: none;

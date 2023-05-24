@@ -40,6 +40,7 @@ class DocumentController extends Controller
         //
         $param = !empty($request->input('id')) ? Document::findOrFail($request->input('id')) : new Document;
         $param->name = $request->input('name');
+        $param->order_id = $request->input('order_id');
         $param->surname = $request->input('surname');
         $param->today = $request->input('today');
         $param->planned_completion_date = $request->input('planned_completion_date');

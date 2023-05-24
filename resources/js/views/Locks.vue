@@ -2,7 +2,7 @@
     <div class="outside-door">
         <div class="outside-header"></div>
         <div class="outside-title">
-            Spynos
+            {{$i18n.locale == 'lt' ? 'Spynos' : 'Locks'}}
         </div>
         <div class="outside-door-body">
             <div class="outside-item">
@@ -11,7 +11,7 @@
                 </div>
                 <div class="body-item">
                     <div class="body-item-left">
-                        <div class="home-card-data">
+                        <div class="home-card-data" v-show="$i18n.locale == 'lt'">
                             Komplektojama su Dorma 712 spynos korpusu
                             <br>
                             Patentuota rakinimo sistema, patentuotas dvigubas rakto profilis (patento galiojimas iki 2026 metų);
@@ -21,6 +21,17 @@
                             Aukščiausia 6-toji saugumo klasė pagal pagrindinį Europos spynų cilindrų saugumą reglamentuojantį standartą EN 1303:2005;
                             <br>
                             Atsparus dėvėjimuisi nikelio sidabro lydinio raktas;
+                        </div>
+                        <div class="home-card-data" v-show="$i18n.locale == 'en'">
+                            Equipped with a Dorma 712 lock cylinder.
+                            <br>
+                            Patented locking system, patented double-profile key (patent valid until 2026);
+                            <br>
+                            Legally, technically, and organizationally protected against illegal copying, key duplication is only done upon presenting the key and identification card;
+                            <br>
+                            Highest security class 6 according to the main European standard EN 1303:2005 for cylinder locks;
+                            <br>
+                            Wear-resistant nickel-silver alloy key.
                         </div>
                     </div>
                     <div class="body-item-right">
@@ -34,7 +45,7 @@
                 </div>
                 <div class="body-item">
                     <div class="body-item-left">
-                        <div class="home-card-data">
+                        <div class="home-card-data" v-show="$i18n.locale == 'lt'">
                             Ši spyna skirta metalinėms durims.
                             <br>
                             Nikeliu chromu priekinė spynos plokštelė.
@@ -42,6 +53,15 @@
                             Pateikiama su poliruoto chromo raktaskylėmis.
                             <br>
                             Rakinasi trim kryptim. Komplekte yra 5 raktai.
+                        </div>
+                        <div class="home-card-data" v-show="$i18n.locale == 'en'">
+                            This lock is designed for metal doors.
+                            <br>
+                            Front lock plate made of nickel-chrome.
+                            <br>
+                            Supplied with polished chrome keys.
+                            <br>
+                            Locks in three directions. Comes with 5 keys in the package.
                         </div>
                     </div>
                     <div class="body-item-right">
@@ -55,8 +75,8 @@
                 </div>
                 <div class="body-item">
                     <div class="body-item-left">
-                        <div class="home-card-data">
-                            cilindrinė krumpliaratinė spyna, skirta aukšto saugumo lygio šarvo durims
+                        <div class="home-card-data" v-show="$i18n.locale == 'lt'">
+                            Cilindrinė krumpliaratinė spyna, skirta aukšto saugumo lygio šarvo durims
                             <br>
                             Unikalus spynos krumpliaratinis rakinimo mechanizmas: spyna rakinama ypač tyliai ir švelniai, mažiau dėvisi cilindras.
                             <br>
@@ -65,6 +85,17 @@
                             Patentuotas, stiprus cilindro tvirtinimas, saugantis nuo cilindro išmušimo ir sulaužymo.
                             <br>
                             Pagrindiniai saugumo parametrai atitinka 7-osios − aukščiausiosio saugumo klasės reikalavimus pagal EN 12209.
+                        </div>
+                        <div class="home-card-data" v-show="$i18n.locale == 'en'">
+                            Cylinder mortise lock designed for high-security level armored doors.
+                            <br>
+                            Unique mortise locking mechanism: the lock is engaged with exceptional quietness and smoothness, resulting in less wear on the cylinder.
+                            <br>
+                            Special construction of the mortise mechanism and hardened steel bars within it protect against picking and drilling.
+                            <br>
+                            Patented, strong cylinder fixation to prevent cylinder punching and breaking.
+                            <br>
+                            The main security parameters meet the requirements of the highest security class 7 according to EN 12209.
                         </div>
                     </div>
                     <div class="body-item-right">
@@ -78,7 +109,7 @@
                 </div>
                 <div class="body-item">
                     <div class="body-item-left">
-                        <div class="home-card-data">
+                        <div class="home-card-data" v-show="$i18n.locale == 'lt'">
                             Plokštelinė (6 plokštelės) seifinė, perkoduojama spyna. Su apsaugine plokštele, keičiama kasete.
                             <br>
                             Apsauga nuo gręžimo, rūgšties, pjovimo, visrakčio. Mechanizmą galima keisti daug kartų be meistro pagalbos.
@@ -86,6 +117,15 @@
                             Teisiškai, techniškai bei organizacine prasme nuo nelegalaus kopijavimo apsaugotas raktas, rakto kopija daroma tik pateikus raktą bei identifikacinę kortelę;
                             <br>
                             Rakina trimis kryptimis. Komplekte 5 dideli raktai įpakuoti dežutėje + 1 statybinis raktas.
+                        </div>
+                        <div class="home-card-data" v-show="$i18n.locale == 'en'">
+                            Plate (6-plate) combination lock, changeable. With a protective plate that can be replaced.
+                            <br>
+                            Protection against drilling, acid, cutting, and master keys. The mechanism can be changed multiple times without the help of a professional.
+                            <br>
+                            Legally, technically, and organizationally protected against illegal copying, key duplication is only done upon presenting the key and identification card.
+                            <br>
+                            Locks in three directions. Comes with 5 large keys packaged in a box + 1 construction key.
                         </div>
                     </div>
                     <div class="body-item-right">
@@ -99,7 +139,7 @@
                 </div>
                 <div class="body-item">
                     <div class="body-item-left">
-                        <div class="home-card-data">
+                        <div class="home-card-data" v-show="$i18n.locale == 'lt'">
                             7-oji, aukščiausioji, spynos saugumo klasė pagal EN 12209 ir priešgaisrinis sertifikatas.
                             <br>
                             Patentuota MOTTURA ANTIDECO II sistema, sauganti nuo atrakinimo visrakčiu.
@@ -109,6 +149,17 @@
                             Standartiškai tiekiama su 2 mm grūdinto manganinio plieno apsauga, kuri saugo svarbiausius spynos taškus nuo pragręžimo.
                             <br>
                             Komplekte yra 5 asimetriniai raktai su ergonomiškomis gumos bei plastiko mišinio galvutėmis, pateikiami sandarioje pakuotėje, kuri atidaroma tik pirkėjui matant.
+                        </div>
+                        <div class="home-card-data" v-show="$i18n.locale == 'en'">
+                            Class 7, the highest security class according to EN 12209, and fire safety certified.
+                            <br>
+                            Patented MOTTURA ANTIDECO II system, preventing unlocking with a master key.
+                            <br>
+                            Five powerful pins withstand up to 1.5 tons (15 kN) of lateral pressure.
+                            <br>
+                            Standardly supplied with a 2mm hardened manganese steel protection, which protects the key points of the lock from drilling.
+                            <br>
+                            Comes with 5 asymmetrical keys with ergonomic rubber and plastic compound heads, presented in a sealed package that can only be opened by the customer.
                         </div>
                     </div>
                     <div class="body-item-right">

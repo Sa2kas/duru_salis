@@ -23,6 +23,8 @@ class CreateDocumentsTable extends Migration
             $table->float('advance');
             $table->string('address');
             $table->string('manager');
+            $table->unsignedBigInteger('order_id')->nullable();
+            $table->foreign('order_id')->references('id')->on('orders');
             $table->timestamps();
         });
     }

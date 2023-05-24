@@ -38,17 +38,15 @@
                             Heat transfer coefficient Uw=1.
                         </div>
                     </div>
-                    <!-- <div class="body-item-right">
+                    <div class="body-item-right">
                         <div class="slideshow-container">
-                            <div v-for="photo in photos3" :key="photo.id">
-                                <div v-if="photo.panel == 3" class="mySlides fade">
-                                    <img class="door-photo" :src="photo.path">
-                                </div>
+                            <div v-for="(photo, index) in photos3" :key="photo.id" class="mySlides" :class="{ active: index === slideIndex3 }">
+                                <img class="door-photo" :src="photo.path">
                             </div>
-                            <a class="prev" @click="plusSlides(-1)">❮</a>
-                            <a class="next" @click="plusSlides(1)">❯</a>
+                            <a class="prev" @click="plusSlides(-1, 3)">❮</a>
+                            <a class="next" @click="plusSlides(1, 3)">❯</a>
                         </div>
-                    </div> -->
+                    </div>
                 </div>
             </div>
             <div class="outside-item">
@@ -84,17 +82,15 @@
                             Stainless steel threshold and door trims are included in the package.
                         </div>
                     </div>
-                    <!-- <div class="body-item-right">
+                    <div class="body-item-right">
                         <div class="slideshow-container">
-                            <div v-for="photo in photos1" :key="photo.id">
-                                <div v-if="photo.panel == 1" class="mySlides fade">
-                                    <img class="door-photo" :src="photo.path">
-                                </div>
+                            <div v-for="(photo, index) in photos1" :key="photo.id" class="mySlides" :class="{ active: index === slideIndex1 }">
+                                <img class="door-photo" :src="photo.path">
                             </div>
-                            <a class="prev" @click="plusSlides(-1)">❮</a>
-                            <a class="next" @click="plusSlides(1)">❯</a>
+                            <a class="prev" @click="plusSlides(-1, 1)">❮</a>
+                            <a class="next" @click="plusSlides(1, 1)">❯</a>
                         </div>
-                    </div> -->
+                    </div>
                 </div>
             </div>
             <div class="outside-item">
@@ -126,17 +122,15 @@
                             Stainless steel threshold and door trims are included in the package.
                         </div>
                     </div>
-                    <!-- <div class="body-item-right">
+                    <div class="body-item-right">
                         <div class="slideshow-container">
-                            <div v-for="photo in photos2" :key="photo.id">
-                                <div v-if="photo.panel == 2" class="mySlides fade">
-                                    <img class="door-photo" :src="photo.path">
-                                </div>
+                            <div v-for="(photo, index) in photos2" :key="photo.id" class="mySlides" :class="{ active: index === slideIndex2 }">
+                                <img class="door-photo" :src="photo.path">
                             </div>
-                            <a class="prev" @click="plusSlides(-1)">❮</a>
-                            <a class="next" @click="plusSlides(1)">❯</a>
+                            <a class="prev" @click="plusSlides(-1, 2)">❮</a>
+                            <a class="next" @click="plusSlides(1, 2)">❯</a>
                         </div>
-                    </div> -->
+                    </div>
                 </div>
             </div>
         </div>
@@ -148,52 +142,50 @@ export default {
     },
     data() {
         return {
-            slideIndex: 1,
+            slideIndex1: 0,
+            slideIndex2: 0,
+            slideIndex3: 0,
             photos1:[],
             photos2:[],
             photos3:[],
         }
     },
-    created(){
-        this.fetchPhotoData();
-        // this.showSlides(this.slideIndex);
+    created() {
+    this.fetchPhotoData();
+  },
+  methods: {
+    async fetchPhotoData() {
+      try {
+        const response = await axios.get('/api/photos');
+        this.photos3 = response.data.data.filter(elem => elem.panel == 3 && elem.door_type == 1);
+        this.photos2 = response.data.data.filter(elem => elem.panel == 2 && elem.door_type == 1);
+        this.photos1 = response.data.data.filter(elem => elem.panel == 1 && elem.door_type == 1);
+        this.showSlides(this.slideIndex3, 3);
+        this.showSlides(this.slideIndex2, 2);
+        this.showSlides(this.slideIndex1, 1);
+      } catch (error) {
+        console.error(error);
+      }
     },
-    mounted() {
-        // this.fetchPhotoData();
-        // this.plusSlides(this.slideIndex)
-        // this.showSlides(this.slideIndex);
+    plusSlides(n, index) {
+      if (index == 1) {
+        this.slideIndex1 = (this.slideIndex1 + n + this.photos1.length) % this.photos1.length;
+      }  else if (index == 2) {
+        this.slideIndex2 = (this.slideIndex2 + n + this.photos1.length) % this.photos2.length;
+      } else if (index == 3) {
+        this.slideIndex3 = (this.slideIndex3 + n + this.photos3.length) % this.photos3.length;
+      }
     },
-    methods: {
-        fetchPhotoData(){
-            axios.get('/api/photos')
-            .then(response => {
-                this.photos1 = response.data.data;
-                this.photos2 = response.data.data;
-                this.photos3 = response.data.data;
-            });
-        }, 
-        plusSlides(n) {
-            this.showSlides(this.slideIndex += n);
-        },
-        currentSlide(n) {
-            this.showSlides(this.slideIndex = n);
-        },
-        showSlides(n) {
-            let i;
-            let slides = document.getElementsByClassName("mySlides");
-            // let dots = document.getElementsByClassName("dot");
-            if (n > slides.length) {this.slideIndex = 1}    
-            if (n < 1) {this.slideIndex = slides.length}
-            for (i = 0; i < slides.length; i++) {
-                slides[i].style.display = "none";  
-            }
-            // for (i = 0; i < dots.length; i++) {
-            //     dots[i].className = dots[i].className.replace(" active", "");
-            // }
-            slides[this.slideIndex-1].style.display = "block";  
-            // dots[this.slideIndex-1].className += " active";
-        }
+    showSlides(n, index) {
+      if (index == 1) {
+        this.slideIndex1 = n;
+      }  else if (index == 2) {
+        this.slideIndex2 = n;
+      } else if (index == 3) {
+        this.slideIndex3 = n;
+      }
     }
+  }
 }
 </script>
 <style>
@@ -281,6 +273,9 @@ export default {
     }
     .mySlides {
         display: none;
+    }
+    .mySlides.active {
+        display: block;
     }
 img {vertical-align: middle;}
 

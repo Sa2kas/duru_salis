@@ -1,167 +1,127 @@
 <template>
-    <div class="pdf">
-        <button class="generate-pdf" @click="getNumberOfPages">
-            generuoti pdf
-        </button>
-        kkk {{number}}
-    </div>
-</template>
-<script>
-import jsPDFInvoiceTemplate from "jspdf-invoice-template";
-// import jsPDFInvoiceTemplate, { OutputType, jsPDF } from "jspdf-invoice-template";
-import emailjs from 'emailjs-com';
-export default {
-    data () {
-        return {
-            order_id: "D20220506",
-            to_name: "Gerb. kažkas",
-            receiver: "vigaile.zygaite@gmail.com",
-            number: 0,
-            props: {
-                // outputType: OutputType.Save,
-                returnJsPDFDocObject: true,
-                fileName: "Invoice 2021",
-                orientationLandscape: false,
-                compress: true,
-                // logo: {
-                //     src: "https://raw.githubusercontent.com/edisonneza/jspdf-invoice-template/demo/images/logo.png",
-                //     width: 53.33, //aspect ratio = width/height
-                //     height: 26.66,
-                //     margin: {
-                //         top: 0, //negative or positive num, from the current position
-                //         left: 0 //negative or positive num, from the current position
-                //     }
-                // },
-                business: {
-                    name: "Durų šalis",
-                    style: {
-                            fontSize: 10 //optional, default 12
-                        },
-                    address: "Žiemgalių g. 8, Kaunas LT-48230, Lietuva",
-                    phone: "+37061603034",
-                    email: "info@durusalis.lt",
-                    website: "	o7il.l.durusalis.lt",
-                },
-                contact: {
-                    label: "Užsakymo forma:",
-                    name: "Client Name",
-                    address: "Albania, Tirane, Astir",
-                    phone: "(+355) 069 22 22 222",
-                    email: "client@website.al",
-                    otherInfo: "www.website.al",
-                },
-                invoice: {
-                    label: "Užsakymas #: ",
-                    num: 19,
-                    invDate: "Apmokėta",
-                    invGenDate: "Invoice Date: 02/02/2021 10:17",
-                    headerBorder: false,
-                    tableBodyBorder: false,
-                    header: [
-                    {
-                        title: "#", 
-                        style: { 
-                        width: 10 
-                        } 
-                    }, 
-                    { 
-                        title: "Title",
-                        style: {
-                        width: 30
-                        } 
-                    }, 
-                    { 
-                        title: "Description",
-                        style: {
-                        width: 80
-                        } 
-                    }, 
-                    { title: "Price"},
-                    { title: "Quantity"},
-                    { title: "Unit"},
-                    { title: "Total"}
-                    ],
-                    table: Array.from(Array(10), (item, index)=>([
-                        index + 1,
-                        "There are many variations ",
-                        "Lorem Ipsum is simply dummy text dummy text ",
-                        200.5,
-                        4.5,
-                        "m2",
-                        400.5
-                    ])),
-                    invTotalLabel: "Total:",
-                    invTotal: "145,250.50",
-                    invCurrency: "ALL",
-                    row1: {
-                        col1: 'VAT:',
-                        col2: '20',
-                        col3: '%',
-                        style: {
-                            fontSize: 10 //optional, default 12
-                        }
-                    },
-                    row2: {
-                        col1: 'SubTotal:',
-                        col2: '116,199.90',
-                        col3: 'ALL',
-                        style: {
-                            fontSize: 10 //optional, default 12
-                        }
-                    },
-                    invDescLabel: "Invoice Note",
-                    invDesc: "There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration in some form, by injected humour, or randomised words which don't look even slightly believable. If you are going to use a passage of Lorem Ipsum, you need to be sure there isn't anything embarrassing hidden in the middle of text. All the Lorem Ipsum generators on the Internet tend to repeat predefined chunks as necessary.",
-                },
-                footer: {
-                    text: "The invoice is created on a computer and is valid without the signature and stamp.",
-                },
-                pageEnable: true,
-                pageLabel: "Page ",
-            }
-        }
-    },
-    methods: {
-        getNumberOfPages() {
-            const jsPDF = jsPDFInvoiceTemplate(this.props)
-            // this.number += 1
-        },
-        sendEmail(e) {
-            try {
-                emailjs.send('service_l2bh374','template_yl7r9y7', {
-                    order_id: this.order_id,
-                    to_name: this.to_name,
-                    receiver: this.receiver,
-                }, 
-                'xOnownoRFQ2QGLw-6'
-                );
-                alert('užsakymo užklausa išsiųsta')
-            } 
-            catch(error) {
-                alert(error)
-            }
-        }
-    }, 
-    watch: {
-        // number(newNumber, oldNumber) {
-        //     if(newNumber == 5) {
-        //         this.sendEmail()
-        //     }
-        // }
-    }
+  <div>
+    <div class="flex flex-row items-center justify-between mb-8">
+      <div>
+        <img src="https://i.postimg.cc/sD88kCxN/logo2-1.png" height="160" width="145">
+      </div>
 
-}
+      <div class="w-2/5">
+        <h1 class="font-bold mb-2 text-4xl">{{ credit ? 'Credit' : invoice }}</h1>
+        <dl class="flex flex-wrap justify-between">
+          <dt class="pr-2 w-3/12">{{ numberLabel }}:</dt>
+          <dd class="w-9/12">{{ invoiceNumber }}</dd>
+
+          <dt class="pr-2 w-3/12">{{ dateTextLabel }}:</dt>
+          <dd class="w-9/12">{{ invoiceDate }}</dd>
+        </dl>
+      </div>
+    </div>
+
+    <div class="items-center flex justify-between mb-8">
+      <div class="border-2 border-blue-600 px-4 py-2 w-1/2">
+        {{ clientName | upcase }}<br>
+        {{ clientEmail | newline_to_br }}<br>
+        {{ clientPhone | newline_to_br }}
+      </div>
+    </div>
+
+    <table class="border-collapse mb-8 numeric-tabular table table-auto w-full">
+      <thead>
+        <tr class="bg-blue-600 text-white">
+          <th class="font-normal text-left" colspan="2">{{ textTitle }}</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr v-for="(item, index) in tableData" :class="cycleClasses[index]" :key="index" >
+          <td class="text-left"><strong>{{ item.label }}</strong></td>
+          <td class="text-left">{{ item.value }}</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="flex mb-8">
+      <dl class="bg-blue-100 flex flex-wrap leading-snug ml-auto numeric-tabular py-2 w-2/5">
+        <dt class="block m-0 p-0 pl-4 w-3/5">{{ text8 }}</dt>
+        <dd class="block m-0 p-0 pr-4 text-right w-2/5">€{{ total }}</dd>
+      </dl>
+    </div>
+
+    <hr>
+
+    <p class="mt-4 text-center">
+      <small>
+        {{ companyInfo }}
+      </small>
+    </p>
+  </div>
+</template>
+
+<script>
+export default {
+  data() {
+    return {
+      credit: false,
+      invoice: '',
+      numberLabel: '',
+      invoiceNumber: '',
+      dateTextLabel: '',
+      invoiceDate: '',
+      clientName: '',
+      clientEmail: '',
+      clientPhone: '',
+      textTitle: '',
+      tableData: [
+        { label: '', value: '' },
+        { label: '', value: '' },
+        { label: '', value: '' },
+        { label: '', value: '' },
+        { label: '', value: '' },
+        { label: '', value: '' },
+        { label: '', value: '' },
+        { label: '', value: '' },
+        { label: '', value: '' },
+        { label: '', value: '' },
+        { label: '', value: '' },
+        { label: '', value: '' },
+        { label: '', value: '' },
+        { label: '', value: '' },
+        { label: '', value: '' },
+        { label: '', value: '' },
+        { label: '', value: '' },
+        { label: '', value: '' },
+        { label: '', value: '' },
+      ],
+      cycleClasses: ['bg-white', 'bg-blue-100'],
+      text8: '',
+      total: '',
+      companyInfo: `UAB "Durų šalis"
+      Žiemgalių g. 8, Kaunas
+      Įm. kodas 303224483
+      A/s LT94 7300 0101 5166 3393
+      AB bankas Swedbank`,
+    };
+  },
+  filters: {
+    upcase(value) {
+      return value.toUpperCase();
+    },
+    newline_to_br(value) {
+      return value.replace(/\n/g, '<br>');
+    },
+  },
+};
 </script>
+
 <style>
-.generate-pdf {
-    background-color: #fff;
-    height: 30px;
-    font-family: "Open Sans", sans-serif;
-    font-size: 14px;
-    letter-spacing: 0.01em;
-    color: #a85727;
-    border: 1px solid #a85727;
-    border-radius: 5px;
-    text-transform: uppercase;
-    padding: 0.25em 0.5em;
+
+.table td,
+.table th {
+  border: 1px solid white;
+  padding: 0.25rem 1rem;
+}
+
+.numeric-tabular {
+  /* Sets the numbers width so that they stay aligned vertically. */
+  font-variant-numeric: tabular-nums;
 }
 </style>

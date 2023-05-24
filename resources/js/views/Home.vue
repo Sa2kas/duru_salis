@@ -62,10 +62,7 @@ export default {
     },
     data(){
         return {    
-            langs: [
-                'ja',
-                'en'
-            ]     
+            data: ''    
         }
     },
     methods: {

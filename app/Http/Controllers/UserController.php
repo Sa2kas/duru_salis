@@ -43,7 +43,7 @@ class UserController extends Controller
         $param->name = $request->input('name');
         $param->email = $request->input('email');
         // $param->role_id = 2;
-        $param->role_id = $request->input('role');
+        $param->role_id = $request->input('role_id');
         $param->password = Hash::make($request->input('password'));
         $param->save();
         return new UserResource($param);
