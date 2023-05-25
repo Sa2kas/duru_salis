@@ -46,7 +46,7 @@
                       {{$i18n.locale == 'lt' ? 'Leista' : 'Allowed'}}
                     </span>
                   </div>
-                  <div v-if="column.dataIndex == 'role_id'" class="table-data">
+                  <div v-else-if="column.dataIndex == 'role_id'" class="table-data">
                     <span v-if="data[column.dataIndex] == 1">
                       {{$i18n.locale == 'lt' ? 'Vadovas' : 'CEO'}}
                     </span>
@@ -105,6 +105,19 @@
           </div>
         </template>
       </modal>
+      <pdf-generator 
+      v-show="pdfVisible"
+      :item="selectedItem"
+      :doors="doors"
+      :colors="colors"
+      :decorations="decorations"
+      :panels="panels"
+      :params="parameters"
+      :patterns="patterns"
+      :types="doorTypes"
+      @close="closePdf()"
+      >
+      </pdf-generator>
   </div>
 </template>
 <script>
@@ -127,7 +140,16 @@ export default {
       edit: false,
       isModalVisible: false,
       pdfVisible: false,
-      selectedItem: {}
+      selectedItem: {},
+      orders: [],
+      doorTypes: [],
+      doors: [],
+      panels: [],
+      decorations: [],
+      parameters: [],
+      patterns: [],
+      colors: [],
+      params: [],
     }
   },
   props: {
@@ -161,7 +183,68 @@ export default {
       default: false
     },
   },
+  created() {
+    this.fetchOrderData();
+    this.fetchDTData();
+    this.fetchPanelData();
+    this.fetchDecorData();
+    this.fetchDoorData();
+    this.fetchParamData();
+    this.fetchPatternData();
+    this.fetchColorData();
+  },
   methods: {
+    fetchDoorData(){
+        axios.get('/api/doors')
+        .then(response => {
+          this.doors = response.data.data
+        });
+    }, 
+    fetchOrderData(){
+        axios.get('/api/orders')
+        .then(response => {
+          this.orders = response.data.data
+        });
+    },
+    fetchDTData(){
+        axios.get('/api/door-types')
+        .then(response => {
+            this.doorTypes = response.data.data;
+        });
+    },
+    
+    fetchPanelData(){
+        axios.get('/api/panels')
+        .then(response => {
+            this.panels = response.data.data;
+        });
+    },
+    
+    fetchDecorData(){
+        axios.get('/api/decorations')
+        .then(response => {
+            this.decorations = response.data.data;
+        });
+    },
+    
+    fetchParamData(){
+        axios.get('/api/params')
+        .then(response => {
+            this.parameters = response.data.data;
+        });
+    },
+    fetchPatternData(){
+        axios.get('/api/patterns')
+        .then(response => {
+            this.patterns = response.data.data;
+        });
+    },
+    fetchColorData(){
+        axios.get('/api/colors')
+        .then(response => {
+            this.colors = response.data.data;
+        });
+    },
     onPageChange (page) {
       this.currentPage = page
     },

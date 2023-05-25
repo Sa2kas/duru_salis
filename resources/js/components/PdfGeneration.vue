@@ -1,112 +1,319 @@
 <template>
-  <div>
-    <div class="flex flex-row items-center justify-between mb-8">
-      <div>
-        <img src="https://i.postimg.cc/sD88kCxN/logo2-1.png" height="160" width="145">
+  <div class="pdf-gen">
+    <div class="pdf-gen-overlay" @click="close"/>
+    <div class="pdf-gen-container">
+      <div class="pdf-gen-body" id="pdf">
+        
+        <div>
+        <div style="display: flex;">
+          <div style="margin-top: 15px; width: 70%;">
+            <img src="/images/logo.jpg" height="60" width="160">
+          </div>
+
+          <div style="margin-top: 2.5em;display: block; text-align: center;">
+            <h1 style="font-weight: bold; margin-bottom: 0.5rem; font-size: 1.5em;">{{ lang ? "Sąskaita" : "Invoice" }}</h1>
+            <dl style="display: block;">
+              <div style="">{{ lang ? "Nr" : "No" }}: {{ item.id }}</div>
+              <br>
+              <div style="display: block; margin-top: -1rem"> {{ lang ? "Data" : "Date" }}: {{ currentDate }}</div>
+            </dl>
+          </div>
+        </div>
+
+        <div style="display: flex; justify-content: space-between; margin-bottom: 2rem; align-items: center;">
+          <div style="border: 2px solid #104c8d; padding: 0.3rem; width: 45%;">
+            {{ item.customer }}<br>
+            {{ item.email }}<br>
+            {{ item.phone }}
+          </div>
+        </div>
+
+        <table style="border-collapse: collapse; margin-bottom: 2rem; width: 100%;">
+          <thead>
+            <tr style="background-color: #104c8d; color: white;">
+              <th style="font-weight: normal; text-align: left;" colspan="2">{{ lang ? "Užsakymas:" : "Order:" }}</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr style="border: 1px solid #104c8d">
+              <td style="text-align: left;"><strong>{{ lang ? "Durų tipas" : "Door type" }}</strong></td>
+              <td style="text-align: left;">{{ type || '' }}</td>
+            </tr>
+            <tr style="border: 1px solid #104c8d">
+              <td style="text-align: left;"><strong>{{ lang ? "Aukštis (mm)" : "Height (mm)"}}</strong></td>
+              <td style="text-align: left;">{{ door.length || '' }}</td>
+            </tr>
+            <tr style="border: 1px solid #104c8d">
+              <td style="text-align: left;"><strong>{{ lang ? "Plotis (mm)" : "Width (mm)"}}</strong></td>
+              <td style="text-align: left;">{{ door.width || '' }}</td>
+            </tr>
+            <tr style="border: 1px solid #104c8d">
+              <td style="text-align: left;"><strong>{{ lang ? "Rankena" : "Handle" }}</strong></td>
+              <td style="text-align: left;">{{ handle || '' }}</td>
+            </tr>
+            <tr style="border: 1px solid #104c8d">
+              <td style="text-align: left;"><strong>{{ lang ? "Plokštės tipas" : "Panel type" }}</strong></td>
+              <td style="text-align: left;">{{ panel }}</td>
+            </tr>
+            <tr style="border: 1px solid #104c8d">
+              <td style="text-align: left;"><strong>{{ lang ? "Apdaila" : "Decoration" }}</strong></td>
+              <td style="text-align: left;">{{ decoration }}</td>
+            </tr>
+            <tr style="border: 1px solid #104c8d">
+              <td style="text-align: left;"><strong>{{ lang ? "Pagrindinė spyna" : "Main lock" }}</strong></td>
+              <td style="text-align: left;">{{ mainLock }}</td>
+            </tr>
+            <tr style="border: 1px solid #104c8d">
+              <td style="text-align: left;"><strong>{{ lang ? "Seifinė spyna" : "Safe lock" }}</strong></td>
+              <td style="text-align: left;">{{ safeLock }}</td>
+            </tr>
+            <tr style="border: 1px solid #104c8d">
+              <td style="text-align: left;"><strong>{{ lang ? "Raštas" : "Pattern" }}</strong></td>
+              <td style="text-align: left;">{{ pattern || '' }}</td>
+            </tr>
+            <tr style="border: 1px solid #104c8d">
+              <td style="text-align: left;"><strong>{{ lang ? "Spalva" : "Color" }}</strong></td>
+              <td style="text-align: left;">{{ color || '' }}</td>
+            </tr>
+            <tr style="border: 1px solid #104c8d">
+              <td style="text-align: left;"><strong>{{ lang ? "Kiekis" : "Quantity" }}</strong></td>
+              <td style="text-align: left;">{{ door.quantity || '' }}</td>
+            </tr>
+            <tr style="border: 1px solid #104c8d">
+              <td style="text-align: left;"><strong>{{ lang ? "Montavimas" : "Installation" }}</strong></td>
+              <td style="text-align: left;">{{ job || '' }}</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <div style="display: flex; margin-bottom: 2rem;">
+          <dl style="background-color: #cce5fe; display: flex; flex-wrap: wrap; margin-left: auto; padding: 0.5rem; width: 40%;">
+            <div style="display: block; margin: 0; padding: 0; padding-left: 1rem; width: 60%;">{{ lang ? "Viso:" : "Total:" }} €{{ door.price }}</div>
+          </dl>
+        </div>
+        <hr>
+        <p style="margin-top: 1rem; text-align: center;">
+          <small style="text-align: center">
+            {{ companyInfo }}
+          </small>
+        </p>
+        </div>
       </div>
-
-      <div class="w-2/5">
-        <h1 class="font-bold mb-2 text-4xl">{{ credit ? 'Credit' : invoice }}</h1>
-        <dl class="flex flex-wrap justify-between">
-          <dt class="pr-2 w-3/12">{{ numberLabel }}:</dt>
-          <dd class="w-9/12">{{ invoiceNumber }}</dd>
-
-          <dt class="pr-2 w-3/12">{{ dateTextLabel }}:</dt>
-          <dd class="w-9/12">{{ invoiceDate }}</dd>
-        </dl>
-      </div>
+      
+      <button @click="generate" class="pdf-btn">{{ lang ? "Generuoti PDF" : "Generate PDF" }}</button>
     </div>
-
-    <div class="items-center flex justify-between mb-8">
-      <div class="border-2 border-blue-600 px-4 py-2 w-1/2">
-        {{ clientName | upcase }}<br>
-        {{ clientEmail | newline_to_br }}<br>
-        {{ clientPhone | newline_to_br }}
-      </div>
-    </div>
-
-    <table class="border-collapse mb-8 numeric-tabular table table-auto w-full">
-      <thead>
-        <tr class="bg-blue-600 text-white">
-          <th class="font-normal text-left" colspan="2">{{ textTitle }}</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr v-for="(item, index) in tableData" :class="cycleClasses[index]" :key="index" >
-          <td class="text-left"><strong>{{ item.label }}</strong></td>
-          <td class="text-left">{{ item.value }}</td>
-        </tr>
-      </tbody>
-    </table>
-
-    <div class="flex mb-8">
-      <dl class="bg-blue-100 flex flex-wrap leading-snug ml-auto numeric-tabular py-2 w-2/5">
-        <dt class="block m-0 p-0 pl-4 w-3/5">{{ text8 }}</dt>
-        <dd class="block m-0 p-0 pr-4 text-right w-2/5">€{{ total }}</dd>
-      </dl>
-    </div>
-
-    <hr>
-
-    <p class="mt-4 text-center">
-      <small>
-        {{ companyInfo }}
-      </small>
-    </p>
   </div>
+  
 </template>
 
 <script>
+import axios from 'axios';
+import html2pdf from "html2pdf.js";
 export default {
   data() {
     return {
-      credit: false,
-      invoice: '',
-      numberLabel: '',
-      invoiceNumber: '',
-      dateTextLabel: '',
-      invoiceDate: '',
-      clientName: '',
-      clientEmail: '',
-      clientPhone: '',
-      textTitle: '',
-      tableData: [
-        { label: '', value: '' },
-        { label: '', value: '' },
-        { label: '', value: '' },
-        { label: '', value: '' },
-        { label: '', value: '' },
-        { label: '', value: '' },
-        { label: '', value: '' },
-        { label: '', value: '' },
-        { label: '', value: '' },
-        { label: '', value: '' },
-        { label: '', value: '' },
-        { label: '', value: '' },
-        { label: '', value: '' },
-        { label: '', value: '' },
-        { label: '', value: '' },
-        { label: '', value: '' },
-        { label: '', value: '' },
-        { label: '', value: '' },
-        { label: '', value: '' },
-      ],
+      // lang: this.$i18n.locale == 'lt',
+      // orders: [],
+      // doorTypes: [],
+      // doors: [],
+      // panels: [],
+      // decorations: [],
+      // parameters: [],
+      // patterns: [],
+      // colors: [],
+      // params: [],
+      gaidys: 100006,
       cycleClasses: ['bg-white', 'bg-blue-100'],
-      text8: '',
-      total: '',
       companyInfo: `UAB "Durų šalis"
       Žiemgalių g. 8, Kaunas
       Įm. kodas 303224483
       A/s LT94 7300 0101 5166 3393
       AB bankas Swedbank`,
+      // currentDate: '',
+      // job: '',
+      // mainLock: '',
+      // safeLock: '',
+      // order: '',
+      // door: '',
+      // color: '',
+      // panel: '',
+      // decoration: '',
+      // pattern: '',
+      // type: '',
+      // handle: ''
     };
   },
-  filters: {
-    upcase(value) {
-      return value.toUpperCase();
+  props: {
+    item: {
+      type: Object,
+      require: true
     },
-    newline_to_br(value) {
-      return value.replace(/\n/g, '<br>');
+    doors: {
+      type: Array,
+      require: true
+    },
+    types: {
+      type: Array,
+      require: true
+    },
+    colors: {
+      type: Array,
+      require: true
+    },
+    patterns: {
+      type: Array,
+      require: true
+    },
+    params: {
+      type: Array,
+      require: true
+    },
+    decorations: {
+      type: Array,
+      require: true
+    },
+    panels: {
+      type: Array,
+      require: true
+    },
+    
+  },
+  computed: {
+      lang () {
+        return this.$i18n.locale == 'lt'
+      },
+      mainLock () {
+        let lock = this.params.find(elem => elem.title == this.door.main_lock)
+        return (this.lang ? lock.title : lock.title_en) || ''
+      },
+      safeLock () {
+          let lock = this.params.find(elem => elem.title == this.door.safe_lock)
+        return (this.lang ? lock.title : lock.title_en) || ''
+      },
+      job () {
+        let job = this.params.find(elem => elem.title == this.door.installation)
+        console.log(job)
+          return (this.lang ? job.title : job.title_en) || ''
+      },
+      order () {
+        return this.orders.find(elem => elem.id == this.gaidys) || {}
+      },
+      door () {
+        let door = this.doors
+        return door.find(elem => elem.order_id == this.item.id) || {}
+      },
+      color () {
+        let color = this.colors.find(elem => elem.id == this.door.color_id)
+        return (this.lang ? color.title : color.title_en) || ''
+      },
+      panel () {
+        let panel = this.panels.find(elem => elem.id == this.door.panel_id)
+        return (this.lang ? panel.title : panel.title_en) || ''
+      },
+      decoration () {
+        let decor = this.decorations.find(elem => elem.id == this.door.decoration_id)
+        return (this.lang ? decor.title : decor.title_en) || ''
+      },
+      pattern () {
+        let pattern = this.patterns.find(elem => elem.id == this.door.pattern_id)
+        return (this.lang ? pattern.title : pattern.title_en) || ''
+      },
+      type () {
+        let type = this.types.find(elem => elem.id == this.door.door_type_id)
+        return (this.lang == 'lt' ? type.title : type.title_en) || ''
+      },
+      handle () {
+        let x = this.door.left
+        let y = this.lang
+        return ((x == 1 && y == 'lt') ? "Kairėje" : (x == 1 && y == 'en') ? "On the left" : (x == 0 && y == 'lt') ? "Dešinėje" : "On the right") || ''
+      },
+      currentDate() {
+        return new Date().toISOString().split('T')[0]
+      }
+  },
+  created() {
+    // this.fetchOrderData();
+    // this.fetchDTData();
+    // this.fetchPanelData();
+    // this.fetchDecorData();
+    // this.fetchDoorData();
+    // this.fetchParamData();
+    // this.fetchPatternData();
+    // this.fetchColorData();
+  },
+  mounted() {
+    // this.fetchOrderData();
+    // this.fetchDTData();
+    // this.fetchPanelData();
+    // this.fetchDecorData();
+    // this.fetchDoorData();
+    // this.fetchParamData();
+    // this.fetchPatternData();
+    // this.fetchColorData();
+  },
+  methods: {
+    close: function () {
+      this.$emit('close')
+    },
+    generate() {
+        let pdfDiv = document.getElementById('pdf');
+        let prevHeight = pdfDiv.style.height;
+        pdfDiv.style.height = 'auto'; // Set height to auto to include all content
+
+        html2pdf().from(pdfDiv).toPdf().save('invoice.pdf').then(() => {
+            pdfDiv.style.height = prevHeight; // Reset the height to the previous value once PDF is saved
+        });
+    },
+    fetchDoorData(){
+        axios.get('/api/doors')
+        .then(response => {
+          this.doors = response.data.data
+        });
+    }, 
+    fetchOrderData(){
+        axios.get('/api/orders')
+        .then(response => {
+          this.orders = response.data.data
+        });
+    },
+    fetchDTData(){
+        axios.get('/api/door-types')
+        .then(response => {
+            this.doorTypes = response.data.data;
+        });
+    },
+    
+    fetchPanelData(){
+        axios.get('/api/panels')
+        .then(response => {
+            this.panels = response.data.data;
+        });
+    },
+    
+    fetchDecorData(){
+        axios.get('/api/decorations')
+        .then(response => {
+            this.decorations = response.data.data;
+        });
+    },
+    
+    fetchParamData(){
+        axios.get('/api/params')
+        .then(response => {
+            this.parameters = response.data.data;
+        });
+    },
+    fetchPatternData(){
+        axios.get('/api/patterns')
+        .then(response => {
+            this.patterns = response.data.data;
+        });
+    },
+    fetchColorData(){
+        axios.get('/api/colors')
+        .then(response => {
+            this.colors = response.data.data;
+        });
     },
   },
 };
@@ -123,5 +330,123 @@ export default {
 .numeric-tabular {
   /* Sets the numbers width so that they stay aligned vertically. */
   font-variant-numeric: tabular-nums;
+}
+.pdf-btn {
+    background-color: #fff;
+    font-family: "Oswald", sans-serif;
+    font-size: 16px;
+    font-weight: 300;
+    border: 1px solid #723B1B;
+    letter-spacing: 0.05em;
+    border-radius: 5px;
+    padding: 0.5em 1em;
+    float: center;
+    margin: 0.25em 39%;
+    color: #723B1B;
+    transition: 0.5s;
+    text-transform: uppercase;
+    letter-spacing: -0.01em;
+}
+.pdf-btn:hover {
+    cursor: pointer;
+    background-color: #723B1B;
+    color: #fff;
+    border: 1px solid #fff;
+    transition: 0.5s;
+}
+.pdf-gen {
+  position: fixed;
+  left: 50%;
+  top: 70px;
+  z-index: 1;
+  display: block;
+  transition: all 1s ease-in;
+}
+.pdf-gen-overlay {
+  cursor: auto;
+  display: flex;
+  position: fixed;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  width: 100%;
+  background-color: rgba(0, 0, 0, 0.25);
+  top: 0;
+  left: 0;
+  z-index: 1;
+  transition: opacity .15s linear;
+}
+.pdf-gen-container {
+  left: -50%;
+  /* min-width: 80vw; */
+  cursor: auto;
+  width: 50vw;
+  max-width: 1000px;
+  position: relative;
+  border-radius: 7px;
+  z-index: 2;
+  background: #fff;
+  /* max-height: 80vh; */
+  height: 83vh;
+  padding: 7px 15px 7px 15px;
+  transition: scale .2s ease-in;
+  display: block;
+  border: solid 1px rgba(0, 0, 0, 0.25);
+}
+.pdf-gen-header {
+  position: relative;
+  height: 30px;
+  margin-right: 15;
+  margin-top: 12px;
+  display: block;
+}
+.pdf-gen-close {
+  width: 20px;
+  height: 20px;
+  margin-left: auto;
+  display: block;
+}
+.pdf-gen-close-button {
+  position: absolute;
+  right: 0;
+  top: 0;
+  width: 9px;
+  height: 15px;
+  display: block;
+}
+.pdf-gen-close-button::before {
+  transition-duration: .3s;
+  content: " ";
+  background-color: #444;
+  position: absolute;
+  height: 17px;
+  width: 2px;
+  right: 9px;
+  transform: rotate(-45deg);
+}
+.pdf-gen-close-button::after {
+  transition-duration: .3s;
+  content: " ";
+  background-color: #444;
+  position: absolute;
+  height: 17px;
+  width: 2px;
+  right: 9px;
+  transform: rotate(45deg);
+}
+.pdf-gen-close-button:hover::before,
+.pdf-gen-close-button:hover::after {
+  background-color: #0054a6;
+  cursor: pointer;
+}
+.pdf-gen-body {
+  /* min-height: calc(80vh - 116px); */
+  overflow: auto;
+  height: 68vh;
+  /* border: 1px solid #e4e4e4;
+  border-radius: unset;
+  border-bottom-right-radius: 7px;
+  border-bottom-left-radius: 7px; */
+  padding: 0 38px 60px 38px;
 }
 </style>

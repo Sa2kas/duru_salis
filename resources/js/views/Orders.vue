@@ -30,6 +30,7 @@ export default {
     },
     data () {
         return {
+            lang: this.$i18n.locale,
             currentUser: '',
             doorForm: {
                 length: 1800,
@@ -68,31 +69,31 @@ export default {
                 doors : {
                     columns: [
                         { dataIndex: 'id', title: '#', name: '#' },
-                        { dataIndex: 'customer', title: 'klientas', name: this.$i18n.locale == 'lt' ? 'Klientas' : 'Customer' },
-                        { dataIndex: 'email', title: 'email', name: this.$i18n.locale == 'lt' ? 'El. paštas' : 'Email' },
-                        { dataIndex: 'phone', title: 'phone', name: this.$i18n.locale == 'lt' ? 'Tel. numeris' : 'Phone' },
-                        { dataIndex: 'status_id', title: 'statusas', name: this.$i18n.locale == 'lt' ? 'Statusas' : 'Status' },
+                        { dataIndex: 'customer', title: 'klientas', name: this.lang == 'lt' ? 'Klientas' : 'Customer' },
+                        { dataIndex: 'email', title: 'email', name: this.lang == 'lt' ? 'El. paštas' : 'Email' },
+                        { dataIndex: 'phone', title: 'phone', name: this.lang == 'lt' ? 'Tel. numeris' : 'Phone' },
+                        { dataIndex: 'status_id', title: 'statusas', name: this.lang == 'lt' ? 'Statusas' : 'Status' },
                     ],
                     data: []
                 },
                 orders : {
                     columns: [
                         { dataIndex: 'id', title: '#', name: '#' },
-                        { dataIndex: 'customer', title: 'klientas', name: this.$i18n.locale == 'lt' ? 'Klientas' : 'Customer' },
-                        { dataIndex: 'email', title: 'email', name: this.$i18n.locale == 'lt' ? 'El. paštas' : 'Email' },
-                        { dataIndex: 'phone', title: 'phone', name: this.$i18n.locale == 'lt' ? 'Tel. numeris' : 'Phone' },
-                        { dataIndex: 'status_id', title: 'statusas', name: this.$i18n.locale == 'lt' ? 'Statusas' : 'Status' },
-                        { dataIndex: 'actions', title: 'actions', name: this.$i18n.locale == 'lt' ? 'Veiksmai' : 'Actions' },
+                        { dataIndex: 'customer', title: 'klientas', name: this.lang == 'lt' ? 'Klientas' : 'Customer' },
+                        { dataIndex: 'email', title: 'email', name: this.lang == 'lt' ? 'El. paštas' : 'Email' },
+                        { dataIndex: 'phone', title: 'phone', name: this.lang == 'lt' ? 'Tel. numeris' : 'Phone' },
+                        { dataIndex: 'status_id', title: 'statusas', name: this.lang == 'lt' ? 'Statusas' : 'Status' },
+                        { dataIndex: 'actions', title: 'actions', name: this.lang == 'lt' ? 'Veiksmai' : 'Actions' },
                     ],
                     data: []
                 },
                 norders : {
                     columns: [
                         { dataIndex: 'id', title: '#', name: '#' },
-                        { dataIndex: 'customer', title: 'klientas', name: this.$i18n.locale == 'lt' ? 'Klientas' : 'Customer' },
-                        { dataIndex: 'email', title: 'email', name: this.$i18n.locale == 'lt' ? 'El. paštas' : 'Email' },
-                        { dataIndex: 'phone', title: 'phone', name: this.$i18n.locale == 'lt' ? 'Tel. numeris' : 'Phone' },
-                        { dataIndex: 'status_id', title: 'statusas', name: this.$i18n.locale == 'lt' ? 'Statusas' : 'Status' },
+                        { dataIndex: 'customer', title: 'klientas', name: this.lang == 'lt' ? 'Klientas' : 'Customer' },
+                        { dataIndex: 'email', title: 'email', name: this.lang == 'lt' ? 'El. paštas' : 'Email' },
+                        { dataIndex: 'phone', title: 'phone', name: this.lang == 'lt' ? 'Tel. numeris' : 'Phone' },
+                        { dataIndex: 'status_id', title: 'statusas', name: this.lang == 'lt' ? 'Statusas' : 'Status' },
                         
                     ],
                     data: []
@@ -142,6 +143,6 @@ export default {
 <style>
     .orders {
         display: block;
-        padding: 70px 1vw 0 1vw;
+        padding: 70px 1vw 15vh 1vw;
     }
 </style>

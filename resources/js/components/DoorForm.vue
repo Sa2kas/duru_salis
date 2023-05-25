@@ -343,11 +343,13 @@ export default {
               document.getElementById("error1").textContent = 'Įvesti ne visi duomenys';
           }
       },
-      sendEmail(e) {
+      sendEmail(id) {
             try {
                 let x = this.doorForm.left;
                 let y = this.$i18n.locale;
                 emailjs.send("service_l2bh374","uzsakymo_pateikimas",{
+                    id: id,
+                    text_id:this.$i18n.locale == 'lt' ? 'Jūsų užsakymo numeris: ' : 'Your order id: ',
                     height: this.doorForm.length,
                     width: this.doorForm.width,
                     door_type: this.$i18n.locale == 'lt' ? this.doorTypes.filter(elem => elem.id == this.doorForm.door_type_id)[0].title : this.doorTypes.filter(elem => elem.id == this.doorForm.door_type_id)[0].title_en,
