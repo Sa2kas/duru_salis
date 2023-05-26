@@ -404,6 +404,7 @@ export default {
                     // this.doors.push(response.data.data)
                     // alert(response.data.data.id)
                     this.sendEmail()
+                    alert(this.$i18n.locale === 'lt'? 'Duomenys apie užsakymą buvo išsiųsti' : '')
                 // this.handleClose();
             })
         })
