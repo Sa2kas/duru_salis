@@ -131,9 +131,9 @@
                         </div>
                     </div>
                     <div>
-                        <img v-show="false" id="image" :src="url" width="200px" alt="">
-                        <div class="box">
-                        <img :src="url2" alt="" class="image">
+                        <img v-show="false" id="image" :src="url" width="200px" alt="" style="box-shadow: none">
+                        <div class="box" style="box-shadow: none">
+                        <img :src="url2" alt="" class="image" style="box-shadow: none">
                         <canvas id="output-canvas"></canvas>
                         </div>
                         <br/>
@@ -306,7 +306,7 @@ export default {
     
     setUrl(id, event) {
         if (event.target.value) {
-            this.url = this.patterns.filter(elem => elem.id == id)[0].photo ? this.patterns.filter(elem => elem.id == id)[0].photo : "/images/R1.jpg"
+            this.url = this.patterns.find(elem => elem.id == this.doorForm.pattern_id).photo ? this.patterns.find(elem => elem.id == this.doorForm.pattern_id).photo : "/images/R1.jpg"
         this.initCanvas()
         }
         
@@ -535,5 +535,8 @@ export default {
         color: #FF0000;
         /* float: right; */
         /* margin-bottom: 25px; */
+    }
+    .box #output-canvas {
+        box-shadow: none !important;
     }
 </style>
