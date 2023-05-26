@@ -17,6 +17,7 @@ class CreateCommentsTable extends Migration
             $table->id();
             $table->string('name');
             $table->integer('stars');
+            $table->string('opinion');
             $table->unsignedBigInteger('order_id');
             $table->foreign('order_id')->references('id')->on('orders');
             $table->timestamps();

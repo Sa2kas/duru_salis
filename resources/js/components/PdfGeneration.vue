@@ -31,57 +31,69 @@
         <table style="border-collapse: collapse; margin-bottom: 2rem; width: 100%;">
           <thead>
             <tr style="background-color: #104c8d; color: white;">
-              <th style="font-weight: normal; text-align: left;" colspan="2">{{ lang ? "Užsakymas:" : "Order:" }}</th>
+              <th style="font-weight: normal; text-align: left;" colspan="3">{{ lang ? "Užsakymas:" : "Order:" }}</th>
             </tr>
           </thead>
           <tbody>
             <tr style="border: 1px solid #104c8d">
               <td style="text-align: left;"><strong>{{ lang ? "Durų tipas" : "Door type" }}</strong></td>
               <td style="text-align: left;">{{ type || '' }}</td>
+              <td style="text-align: left;">0€</td>
             </tr>
             <tr style="border: 1px solid #104c8d">
               <td style="text-align: left;"><strong>{{ lang ? "Aukštis (mm)" : "Height (mm)"}}</strong></td>
               <td style="text-align: left;">{{ door.length || '' }}</td>
+              <td style="text-align: left;">0€</td>
             </tr>
             <tr style="border: 1px solid #104c8d">
               <td style="text-align: left;"><strong>{{ lang ? "Plotis (mm)" : "Width (mm)"}}</strong></td>
               <td style="text-align: left;">{{ door.width || '' }}</td>
+              <td style="text-align: left;">0€</td>
             </tr>
             <tr style="border: 1px solid #104c8d">
               <td style="text-align: left;"><strong>{{ lang ? "Rankena" : "Handle" }}</strong></td>
               <td style="text-align: left;">{{ handle || '' }}</td>
+              <td style="text-align: left;">0€</td>
             </tr>
             <tr style="border: 1px solid #104c8d">
               <td style="text-align: left;"><strong>{{ lang ? "Plokštės tipas" : "Panel type" }}</strong></td>
               <td style="text-align: left;">{{ panel }}</td>
+              <td style="text-align: left;">0€</td>
             </tr>
             <tr style="border: 1px solid #104c8d">
               <td style="text-align: left;"><strong>{{ lang ? "Apdaila" : "Decoration" }}</strong></td>
-              <td style="text-align: left;">{{ decoration }}</td>
+              <td style="text-align: left;">{{ decoration.split('-')[0] }}</td>
+              <td style="text-align: left;">{{ decoration.split('-')[1] }}</td>
             </tr>
             <tr style="border: 1px solid #104c8d">
               <td style="text-align: left;"><strong>{{ lang ? "Pagrindinė spyna" : "Main lock" }}</strong></td>
-              <td style="text-align: left;">{{ mainLock }}</td>
+              <td style="text-align: left;">{{ mainLock.split('-')[0] }}</td>
+              <td style="text-align: left;">{{ mainLock.split('-')[1] }}</td>
             </tr>
             <tr style="border: 1px solid #104c8d">
               <td style="text-align: left;"><strong>{{ lang ? "Seifinė spyna" : "Safe lock" }}</strong></td>
-              <td style="text-align: left;">{{ safeLock }}</td>
+              <td style="text-align: left;">{{ safeLock.split('-')[0] }}</td>
+              <td style="text-align: left;">{{ safeLock.split('-')[1] }}</td>
             </tr>
             <tr style="border: 1px solid #104c8d">
               <td style="text-align: left;"><strong>{{ lang ? "Raštas" : "Pattern" }}</strong></td>
               <td style="text-align: left;">{{ pattern || '' }}</td>
+              <td style="text-align: left;">0€</td>
             </tr>
             <tr style="border: 1px solid #104c8d">
               <td style="text-align: left;"><strong>{{ lang ? "Spalva" : "Color" }}</strong></td>
               <td style="text-align: left;">{{ color || '' }}</td>
+              <td style="text-align: left;">0€</td>
             </tr>
             <tr style="border: 1px solid #104c8d">
               <td style="text-align: left;"><strong>{{ lang ? "Kiekis" : "Quantity" }}</strong></td>
               <td style="text-align: left;">{{ door.quantity || '' }}</td>
+              <td style="text-align: left;">-</td>
             </tr>
             <tr style="border: 1px solid #104c8d">
               <td style="text-align: left;"><strong>{{ lang ? "Montavimas" : "Installation" }}</strong></td>
-              <td style="text-align: left;">{{ job || '' }}</td>
+              <td style="text-align: left;">{{ job.split('-')[0] || '' }}</td>
+              <td style="text-align: left;">{{ job.split('-')[1] || '' }}</td>
             </tr>
           </tbody>
         </table>
@@ -184,16 +196,16 @@ export default {
       },
       mainLock () {
         let lock = this.params.find(elem => elem.title == this.door.main_lock)
-        return (this.lang ? lock.title : lock.title_en) || ''
+        return (this.lang ? lock.title : lock.title_en) + `-${lock.price} €` || '' 
       },
       safeLock () {
           let lock = this.params.find(elem => elem.title == this.door.safe_lock)
-        return (this.lang ? lock.title : lock.title_en) || ''
+        return (this.lang ? lock.title : lock.title_en) + `-${lock.price} €` || ''
       },
       job () {
         let job = this.params.find(elem => elem.title == this.door.installation)
         console.log(job)
-          return (this.lang ? job.title : job.title_en) || ''
+          return (this.lang ? job.title : job.title_en) + `-${job.price} €` || ''
       },
       order () {
         return this.orders.find(elem => elem.id == this.gaidys) || {}
@@ -212,7 +224,7 @@ export default {
       },
       decoration () {
         let decor = this.decorations.find(elem => elem.id == this.door.decoration_id)
-        return (this.lang ? decor.title : decor.title_en) || ''
+        return (this.lang ? decor.title : decor.title_en) + `-${decor.price} €` || ''
       },
       pattern () {
         let pattern = this.patterns.find(elem => elem.id == this.door.pattern_id)

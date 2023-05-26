@@ -15,7 +15,7 @@
     <li class="button" v-if="currentPage > 6 && totalPages > 9">...</li>
     <!-- prasukamas for viduriniam puslapiam matyt -->
     <li class="button" v-for="page in pages" :key="page.name">
-      <button :class="{ active: isPageActive(page.name) }" type="button" @click="onClickPage(page.name)" :disabled="page.isDisabled">
+      <button :class="{ active_pg: isPageActive(page.name) }" type="button" @click="onClickPage(page.name)" :disabled="page.isDisabled">
         {{ page.name }}
       </button>
     </li>
@@ -188,10 +188,11 @@ export default {
     background: none;
     cursor: pointer;
   }
-  .active {
+  .active_pg {
     font-family: "Open Sans", sans-serif;
     font-weight: 600;
     font-size: 15px;
     color: #723B1B;
+    background-color: rgba(114, 59, 27, 0.05);
 }
 </style>

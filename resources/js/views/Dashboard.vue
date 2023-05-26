@@ -7,8 +7,8 @@
             :item="items.parameterTypes"
             :index="0"
             :name="$i18n.locale == 'lt' ? 'Parametrų tipai' : 'Parameter types'"
-            :showHeader="true"
-            @clicked="getSearchedData"
+            :showHeader="false"
+
             @delete="deleteType"
             @edit="editParamType"
             @refresh="handleClose"
@@ -25,10 +25,11 @@
             </template>
         </vue-table>
         <vue-table
+            @clicked="getSearchedData2"
             :item="items.parameters"
             :index="1"
             name="Parametrai"
-            :showHeader="false"
+            :showHeader="true"
             :showAdd="false">
         </vue-table>
     </div>
@@ -88,7 +89,10 @@ export default {
     computed: {
         dataSource () {
             return this.paramTypes.filter(elem => !this.search || elem.title.toLowerCase().includes(this.search.toLowerCase()) || elem.title_en.includes(this.search))
-        }
+        },
+        dataSource2 () {
+            return this.params.filter(elem => !this.search || elem.title.toLowerCase().includes(this.search.toLowerCase()) || elem.title_en.includes(this.search))
+        },
     },
     created(){
         this.fetchPTData();
@@ -100,6 +104,10 @@ export default {
         getSearchedData (search) {
             this.search = search
             this.items.parameterTypes.data = this.dataSource
+        },
+        getSearchedData2 (search) {
+            this.search = search
+            this.items.parameters.data = this.dataSource2
         },
         fetchDoorData(){
             axios.get('/api/doors')
@@ -128,6 +136,9 @@ export default {
                 let index = this.paramTypes.indexOf(item)
                 this.paramTypes.splice(index, 1);
             })
+            .catch(function (err) {
+                    alert(this.$i18n == 'lt' ? 'Elementas negali būti pašalintas' : "Element cannot be removed")
+                });
         },
         editParamType(type){
             this.paramTypeForm = type;

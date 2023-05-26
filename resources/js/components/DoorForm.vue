@@ -251,10 +251,10 @@ export default {
       
   },
   created () {
+    this.fetchDoorData();
     this.fetchDTData();
     this.fetchPanelData();
     this.fetchDecorData();
-    this.fetchDoorData();
     this.fetchParamData();
     this.fetchPatternData();
     this.fetchColorData();

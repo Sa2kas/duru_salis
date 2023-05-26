@@ -41,6 +41,7 @@ class CommentController extends Controller
         $param = !empty($request->input('id')) ? Comment::findOrFail($request->input('id')) : new Comment;
         $param->name = $request->input('name');
         $param->stars = $request->input('stars');
+        $param->opinion = $request->input('opinion');
         $param->order_id = $request->input('order_id');
         $param->save();
         return new CommentResource($param);

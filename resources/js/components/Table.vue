@@ -59,7 +59,7 @@
                   </div>
                   <div v-else class="table-data">{{data[column.dataIndex]}}</div>
                   <span v-if="column.dataIndex == 'actions' && !pdf">
-                    <button class="iconButton" @click="showModal(data);edit = true"><img src="/images/edit.png" alt=""></button>
+                    <button class="iconButton" v-if="!status" @click="showModal(data);edit = true"><img src="/images/edit.png" alt=""></button>
                     <button class="iconButton" @click="deleteData(data)"><img src="/images/delete.png" alt=""></button>
                   </span>
                   <span v-if="column.dataIndex == 'actions' && pdf">
@@ -178,6 +178,11 @@ export default {
       default: true
     },
     pdf: {
+      type: Boolean,
+      required: false,
+      default: false
+    },
+    status: {
       type: Boolean,
       required: false,
       default: false

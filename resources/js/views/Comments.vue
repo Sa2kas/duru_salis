@@ -2,12 +2,12 @@
     <div class="comments">
         <div class="comments-header"></div>
         <div class="comments-title">
-            Klientų atsiliepimai
+            {{$i18n.locale == 'lt' ? 'Klientų atsiliepimai' : 'Customer reviews'}}
         </div>
         <div class="comments-data">
             <div class="add-comment" v-if="!authenticated">
                 <button class="add-comment-btn" @click="showModal();edit = false">
-                    pridėti komentarą
+                    {{$i18n.locale == 'lt' ? 'Pateikti atsiliepimai' : 'Add review'}}
                 </button>
             </div>
             <div class="comment" v-for="comment in items.comments.data" :key="comment.id">
@@ -22,7 +22,7 @@
                     </div>
                     <div class="comment-name">{{comment.name}}</div>
                 </div>
-                <!-- <div class="comment-data">duomenys: {{comment.order_id}}</div> -->
+                <div class="comment-data">{{comment.opinion}}</div>
             </div>
         </div>
         <modal 
@@ -32,7 +32,7 @@
             <template>
                 <div class="door-form-item">
                         <div class="door-form-label" style="font-size: 13px">
-                            Užsakymo numeris
+                            {{$i18n.locale == 'lt' ? 'Užsakymo numeris' : 'Customer reviews'}}
                         </div>
                         <div class="door-form-data">
                             <input type="number" style="height: 20px; width: 200px" v-model="commentForm.order_id"  class="door-input">
@@ -40,22 +40,30 @@
                     </div>
                     <div class="door-form-item">
                         <div class="door-form-label" style="font-size: 13px">
-                            Vardas
+                            {{$i18n.locale == 'lt' ? 'Vardas' : 'Name'}}
                         </div>
                         <div class="door-form-data">
-                            <input style="height: 20px; width: 200px" v-model="commentForm.name"  class="door-input">
+                            <input type="text" style="height: 20px; width: 200px" v-model="commentForm.name"  class="door-input">
                         </div>
                     </div>
                     <div class="door-form-item">
                         <div class="door-form-label" style="font-size: 13px">
-                            Įvertinimas
+                            {{$i18n.locale == 'lt' ? 'Komentaras' : 'Comment'}}
+                        </div>
+                        <div class="door-form-data">
+                            <input type="text" min="1" max="5" style="height: 20px; width: 200px" v-model="commentForm.opinion"  class="door-input">
+                        </div>
+                    </div>
+                    <div class="door-form-item">
+                        <div class="door-form-label" style="font-size: 13px">
+                            {{$i18n.locale == 'lt' ? 'Įvertinimas' : 'Rating'}}
                         </div>
                         <div class="door-form-data">
                             <input type="number" min="1" max="5" style="height: 20px; width: 200px" v-model="commentForm.stars"  class="door-input">
                         </div>
                     </div>
-                <button @click="closeModal">Atšaukti</button>
-                <button @click="submitItem">Patvirtinti</button>
+                <button @click="closeModal" class="comment-button">{{$i18n.locale == 'lt' ? 'Atšaukti' : 'Cancel'}}</button>
+                <button @click="submitItem" class="comment-button">{{$i18n.locale == 'lt' ? 'Patvirtinti' : 'Confirm'}}</button>
             </template>
       </modal>
       <!-- <pdf-generator></pdf-generator> -->
@@ -76,15 +84,17 @@ export default {
             commentForm: {
                 name: '',
                 stars: 1,
-                order_id: 1,
+                order_id: 0,
+                opinion: '',
             },
             comments: [],
             items: {
                 comments : {
                     columns: [
                         { dataIndex: 'name', title: 'Vardas' },
-                        { dataIndex: 'stars', title: 'zvaigzdes' },
-                        { dataIndex: 'order_id', title: 'OrderId' },
+                        { dataIndex: 'stars', title: 'Įvertinimas' },
+                        { dataIndex: 'opinion', title: 'Nuomonė' },
+                        { dataIndex: 'order_id', title: 'Užsakymo nr' },
                     ],
                     data: []
                 },
@@ -111,6 +121,7 @@ export default {
         closeModal () {
             this.refresh()
             this.isModalVisible = false
+
         },
         deleteData(comment){
             axios.delete('/api/comments/' + comment.id)
@@ -119,6 +130,9 @@ export default {
                 let index = this.items.comments.data.indexOf(item)
                 this.items.comments.data.splice(index, 1);
             })
+            .catch.catch(function (err) {
+                    existingObj.output = err;
+                });
         },
         submitItem(){
             axios.post('/api/comments', this.commentForm)
@@ -133,6 +147,7 @@ export default {
                 // }
                 this.refresh();
             })
+            
             this.isModalVisible = false
         },
         refresh() {
@@ -256,6 +271,23 @@ export default {
     }
     .comments-data {
         padding: min(8vh, 8vw) 1vw;
+    }
+    .comment-button {
+        border: 1.5px solid rgba(114, 59, 27, 0.5);
+        border-radius: 5px;
+        margin: 0 0.2em;
+        padding: 0.2em 0.5em;
+        text-transform: uppercase;
+        color: #723B1B;
+        background-color: #fff;
+        font-size: 14px;
+        font-family: "Oswald", sans-serif;
+        font-weight: 300;
+        letter-spacing: 0.02em;
+    }
+    .comment-button:hover {
+        border: 1.5px solid rgba(114, 59, 27, 0.7);
+        box-shadow: 0 0 5px rgba(114, 59, 27, 0.2);
     }
     @media (max-width: 1400px) {
     }
