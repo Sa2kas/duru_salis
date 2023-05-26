@@ -117,6 +117,7 @@ export default {
                     e.target.reset();
                     this.selectedFileName = '';
                     this.fetchPhotosData()
+                    window.location.reload();
                 })
                 .catch(function (err) {
                     existingObj.output = err;
