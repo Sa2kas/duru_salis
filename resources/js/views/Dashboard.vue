@@ -1,7 +1,7 @@
 <template>
     <div class="dashboard">
-        <h2 style="padding-top: 0px, margin-top: 0px">
-            Admin dashboard
+        <h2 style="padding-top: 0px, margin-top: 20px">
+            
         </h2>
         <vue-table
             :item="items.parameterTypes"
