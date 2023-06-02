@@ -387,7 +387,7 @@ export default {
     fetchStatuses(){
         axios.get('/api/statuses')
         .then(response => {
-            this.statuses =  response.data.data.filter(elem => elem.id != 1 && elem.id != 3 && elem.id != 6 );
+            this.statuses =  response.data.data.filter(elem => elem.id != 1 && elem.id != 3 );
         });
     },
         getCurrentUser() {
