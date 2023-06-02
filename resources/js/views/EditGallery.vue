@@ -43,7 +43,7 @@
                         </div>
                     </div>
                     <div style="display: flex; align-items: right; flex-direction: row-reverse; mergin-right: 1rem">
-                        <button class="header-button" @click="setImage">
+                        <button class="header-button" @click="setImage()">
                             {{$i18n.locale == 'lt' ? 'Įkelti' : "Upload"}}
                         </button>
                     </div>
