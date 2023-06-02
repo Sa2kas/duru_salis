@@ -11,7 +11,7 @@
                 </button>
             </div>
             <div class="comment" v-for="comment in items.comments.data" :key="comment.id">
-                <div class="comment-delete" v-if="authenticated">
+                <div class="comment-delete" v-if="userRole == 1 || userRole == 2">
                     <button class="comment-delete-btn" @click="deleteData(comment)">
                         x
                     </button>
@@ -32,7 +32,7 @@
             <template>
                 <div class="door-form-item">
                         <div class="door-form-label" style="font-size: 13px">
-                            {{$i18n.locale == 'lt' ? 'Užsakymo numeris' : 'Customer reviews'}}
+                            {{$i18n.locale == 'lt' ? 'Užsakymo numeris' : 'Order ID'}}
                         </div>
                         <div class="door-form-data">
                             <input type="number" style="height: 20px; width: 200px" v-model="commentForm.order_id"  class="door-input">
@@ -70,100 +70,111 @@
     </div>
 </template>
 <script>
-import VueTable from '../components/Table.vue'
-import PdfGenerator from '../components/PdfGeneration.vue'
-import Modal from '../components/Modal.vue'
-export default {
+    import VueTable from '../components/Table.vue';
+    import PdfGenerator from '../components/PdfGeneration.vue';
+    import Modal from '../components/Modal.vue';
+
+    export default {
     components: {
         VueTable,
         PdfGenerator,
-        Modal
+        Modal,
     },
     data() {
         return {
-            commentForm: {
-                name: '',
-                stars: 1,
-                order_id: 0,
-                opinion: '',
+        commentForm: {
+            name: '',
+            stars: 5,
+            order_id: '',
+            opinion: '',
+        },
+        items: {
+            comments: {
+            columns: [
+                { dataIndex: 'name', title: 'Vardas' },
+                { dataIndex: 'stars', title: 'Įvertinimas' },
+                { dataIndex: 'opinion', title: 'Nuomonė' },
+                { dataIndex: 'order_id', title: 'Užsakymo nr' },
+            ],
+            data: [],
             },
-            comments: [],
-            items: {
-                comments : {
-                    columns: [
-                        { dataIndex: 'name', title: 'Vardas' },
-                        { dataIndex: 'stars', title: 'Įvertinimas' },
-                        { dataIndex: 'opinion', title: 'Nuomonė' },
-                        { dataIndex: 'order_id', title: 'Užsakymo nr' },
-                    ],
-                    data: []
-                },
-            },
-            edit: false,
-            isModalVisible: false,
-            origCommentForm: {},
-        }
+        },
+        edit: false,
+        isModalVisible: false,
+        origCommentForm: {},
+        orders: [],
+        };
     },
     created() {
-        this.origCommentForm = _.cloneDeep(this.commentForm);
-        this.fetchCommentData()
+        this.origCommentForm = { ...this.commentForm };
+        this.fetchCommentData();
+        this.fetchOrdersData();
     },
     methods: {
-        fetchCommentData(){
-            axios.get('/api/comments')
-            .then(response => {
-                this.items.comments.data = response.data.data;
-            });
-        }, 
-        showModal (modalData) {
-            this.isModalVisible = true
+        fetchCommentData() {
+        axios.get('/api/comments').then((response) => {
+            this.items.comments.data = response.data.data || [];
+        });
         },
-        closeModal () {
-            this.refresh()
-            this.isModalVisible = false
-
+        fetchOrdersData() {
+        axios.get('/api/orders').then((response) => {
+            this.orders = response.data.data || [];
+        });
         },
-        deleteData(comment){
-            axios.delete('/api/comments/' + comment.id)
+        showModal(modalData) {
+        this.isModalVisible = true;
+        },
+        closeModal() {
+        this.refresh();
+        this.isModalVisible = false;
+        },
+        deleteData(comment) {
+        axios
+            .delete('/api/comments/' + comment.id)
             .then((response) => {
-                let item = this.items.comments.data.find(el => el.id == comment.id)
-                let index = this.items.comments.data.indexOf(item)
-                this.items.comments.data.splice(index, 1);
+            const itemIndex = this.items.comments.data.findIndex((el) => el.id === comment.id);
+            if (itemIndex !== -1) {
+                this.items.comments.data.splice(itemIndex, 1);
+            }
             })
-            .catch.catch(function (err) {
-                    existingObj.output = err;
-                });
+            .catch((error) => {
+            console.error(error);
+            });
         },
-        submitItem(){
-            axios.post('/api/comments', this.commentForm)
-            .then(response => {
-                // if(this.commentsForm.id){
-                //     let item = this.paramTypes.find(el => el.id == response.data.data.id)
-                //     let index = this.paramTypes.indexOf(item);
-                //     // this.paramTypes[index] = response.data.data <= taip nedaryti
-                //     this.$set(this.paramTypes, index, response.data.data)
-                // }else{
-                    this.items.comments.data.push(response.data.data)
-                // }
-                this.refresh();
+        submitItem() {
+        const order = this.orders.find((elem) => elem.order_id === this.commentForm.order_id);
+        if (!order) {
+            alert(this.$i18n.locale === 'lt' ? 'Užsakymo numeris neegzistuoja' : 'The order number does not exist');
+        } else if (order.status_id === 6) {
+            axios
+            .post('/api/comments', this.commentForm)
+            .then((response) => {
+                this.items.comments.data.push(response.data.data);
             })
-            
-            this.isModalVisible = false
+            .catch((error) => {
+                console.error(error);
+            });
+        } else {
+            alert(this.$i18n.locale === 'lt' ? 'Užsakymas dar nebaigtas' : 'The order has not yet been completed');
+        }
+
+        this.refresh();
+        this.isModalVisible = false;
         },
         refresh() {
-            this.commentForm = _.cloneDeep(this.origCommentForm);
-            this.fetchCommentData();
-        }
+        this.commentForm = { ...this.origCommentForm };
+        this.fetchCommentData();
+        },
     },
     computed: {
-        authenticated(){
-            return this.$store.getters['auth/authenticated'];
+        authenticated() {
+        return this.$store.getters['auth/authenticated'];
         },
-        user(){
-            return this.$store.getters['auth/user'];
+        user() {
+        return this.$store.getters['auth/user'];
         },
-        userRole(){
-            return this.user ? this.user.role_id : 0
+        userRole() {
+        return this.user ? this.user.role_id : 0;
         },
     },
 }

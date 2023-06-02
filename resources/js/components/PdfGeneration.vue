@@ -194,45 +194,26 @@ export default {
       lang () {
         return this.$i18n.locale == 'lt'
       },
-      mainLock () {
-        let lock = this.params.find(elem => elem.title == this.door.main_lock)
-        return (this.lang ? lock.title : lock.title_en) + `-${lock.price} €` || '' 
-      },
-      safeLock () {
-          let lock = this.params.find(elem => elem.title == this.door.safe_lock)
-        return (this.lang ? lock.title : lock.title_en) + `-${lock.price} €` || ''
-      },
-      job () {
-        let job = this.params.find(elem => elem.title == this.door.installation)
-        console.log(job)
-          return (this.lang ? job.title : job.title_en) + `-${job.price} €` || ''
-      },
-      order () {
-        return this.orders.find(elem => elem.id == this.gaidys) || {}
-      },
-      door () {
-        let door = this.doors
-        return door.find(elem => elem.order_id == this.item.id) || {}
-      },
-      color () {
-        let color = this.colors.find(elem => elem.id == this.door.color_id)
-        return (this.lang ? color.title : color.title_en) || ''
-      },
-      panel () {
-        let panel = this.panels.find(elem => elem.id == this.door.panel_id)
-        return (this.lang ? panel.title : panel.title_en) || ''
-      },
-      decoration () {
-        let decor = this.decorations.find(elem => elem.id == this.door.decoration_id)
-        return (this.lang ? decor.title : decor.title_en) + `-${decor.price} €` || ''
-      },
-      pattern () {
-        let pattern = this.patterns.find(elem => elem.id == this.door.pattern_id)
-        return (this.lang ? pattern.title : pattern.title_en) || ''
-      },
+      mainLock() { return (this.params.find(elem => elem.title == this.door.main_lock)?.[this.lang ? 'title' : 'title_en']) + `-${(this.params.find(elem => elem.title == this.door.main_lock)?.price || '')} €` || ''; },
+
+      safeLock() { return (this.params.find(elem => elem.title == this.door.safe_lock)?.[this.lang ? 'title' : 'title_en']) + `-${(this.params.find(elem => elem.title == this.door.safe_lock)?.price || '')} €` || ''; },
+
+      job() { return (this.params.find(elem => elem.title == this.door.installation)?.[this.lang ? 'title' : 'title_en']) + `-${(this.params.find(elem => elem.title == this.door.installation)?.price || '')} €` || ''; },
+
+      order() { return this.orders.find(elem => elem.id == this.gaidys) || {}; },
+
+      door() { return this.doors.find(elem => elem.order_id == this.item.id) || {}; },
+
+      color() { return (this.colors.find(elem => elem.id == this.door.color_id)?.[this.lang ? 'title' : 'title_en']) || ''; },
+
+      panel() { return (this.panels.find(elem => elem.id == this.door.panel_id)?.[this.lang ? 'title' : 'title_en']) || ''; },
+
+      decoration() { return (this.decorations.find(elem => elem.id == this.door.decoration_id)?.[this.lang ? 'title' : 'title_en']) + `-${(this.decorations.find(elem => elem.id == this.door.decoration_id)?.price || '')} €` || ''; },
+
+      pattern() { return (this.patterns.find(elem => elem.id == this.door.pattern_id)?.[this.lang ? 'title' : 'title_en']) || ''; },
+
       type () {
-        let type = this.types.find(elem => elem.id == this.door.door_type_id)
-        return (this.lang == 'lt' ? type.title : type.title_en) || ''
+        return (this.types.find(elem => elem.id == this.door.door_type_id)?.[this.lang == 'lt' ? 'title' : 'title_en']) ?? '';
       },
       handle () {
         let x = this.door.left

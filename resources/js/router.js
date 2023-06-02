@@ -100,7 +100,7 @@ const router = new VueRouter({
             component: Orders,
             meta:{
                 title:`Orders`,
-                middleware:"worker"
+                middleware:"admin"
             }
         },
         {

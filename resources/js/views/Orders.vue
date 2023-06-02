@@ -5,122 +5,175 @@
             <vue-table
                 :item="items.norders"
                 :index="0"
-                name="Nepatvirtinti užsakymai"
+                :name="$i18n.locale == 'lt' ? 'Nepatvirtinti užsakymai' : 'Unconfirmed orders'"
                 :showHeader="false"
                 :pdf="false"
                 @delete="deleteOrder"
                 @edit="editDoorOrder"
                 @refresh="handleClose"
                 @submitItem="postDoor"
-                :status="true">
+                @getOrder="getOrder"
+                :status="false"
+                :doors="doors"
+                :document="true">
                 <template v-slot:editItem>
-                    <div class="modal-form-label">{{$i18n.locale == 'lt' ? 'Aukštis' : 'Height'}}</div>
-                    <input class="modal-form-input" type="number" v-model="doorForm.length">
+                    <span v-if="!showDocument">
+                        <div class="modal-form-label">{{$i18n.locale == 'lt' ? 'Aukštis' : 'Height'}}</div>
+                        <input v-if="doorForm" class="modal-form-input" type="number" v-model="doorForm.length">
 
-                    <div class="modal-form-label">{{$i18n.locale == 'lt' ? 'Plotis' : 'Width'}}</div>
-                    <input class="modal-form-input" type="number" v-model="doorForm.width">
+                        <div class="modal-form-label">{{$i18n.locale == 'lt' ? 'Plotis' : 'Width'}}</div>
+                        <input v-if="doorForm" class="modal-form-input" type="number" v-model="doorForm.width">
 
-                    <div class="modal-form-label">{{$i18n.locale == 'lt' ? 'Rankena' : 'Handle'}}</div>
-                    <select style="height: 28px" v-model="doorForm.left" class="modal-form-input">
-                        <option :value="1">{{$i18n.locale == 'lt' ? 'Kairėje' : 'On the left'}}</option>
-                        <option :value="0">{{$i18n.locale == 'lt' ? 'Dešinėje' : 'On the right'}}</option>
-                    </select>
+                        <div class="modal-form-label">{{$i18n.locale == 'lt' ? 'Rankena' : 'Handle'}}</div>
+                        <select v-if="doorForm" style="height: 28px" v-model="doorForm.left" class="modal-form-input">
+                            <option :value="1">{{$i18n.locale == 'lt' ? 'Kairėje' : 'On the left'}}</option>
+                            <option :value="0">{{$i18n.locale == 'lt' ? 'Dešinėje' : 'On the right'}}</option>
+                        </select>
 
-                    <div class="modal-form-label">{{$i18n.locale == 'lt' ? 'Durų tipas' : 'Door type'}}</div>
-                    <select style="height: 28px" v-model="doorForm.door_type_id" class="modal-form-input">
-                        <option v-for="doorType in doorTypes" :key="doorType.id" :value="doorType.id">
-                            {{$i18n.locale == 'lt' ? doorType.title : doorType.title_en}}
-                        </option>
-                    </select>
+                        <div class="modal-form-label">{{$i18n.locale == 'lt' ? 'Durų tipas' : 'Door type'}}</div>
+                        <select v-if="doorForm" style="height: 28px" v-model="doorForm.door_type_id" class="modal-form-input">
+                            <option v-for="doorType in doorTypes" :key="doorType.id" :value="doorType.id">
+                                {{$i18n.locale == 'lt' ? doorType.title : doorType.title_en}}
+                            </option>
+                        </select>
 
-                    <div class="modal-form-label">{{$i18n.locale == 'lt' ? 'Plokštės tipas' : 'Panel type'}}</div>
-                    <select v-if="availablePanels.length != 0" style="height: 28px" v-model="doorForm.panel_id" class="modal-form-input">
-                        <option v-for="panel in availablePanels" :key="panel.id" :value="panel.id">
-                            {{$i18n.locale == 'lt' ? panel.title : panel.title_en}}
-                        </option>
-                    </select>
-                    <select v-else style="height: 28px" class="modal-form-input" disabled></select>
+                        <div class="modal-form-label">{{$i18n.locale == 'lt' ? 'Plokštės tipas' : 'Panel type'}}</div>
+                        <select v-if="availablePanels.length != 0  && doorForm" style="height: 28px" v-model="doorForm.panel_id" class="modal-form-input">
+                            <option v-for="panel in availablePanels" :key="panel.id" :value="panel.id">
+                                {{$i18n.locale == 'lt' ? panel.title : panel.title_en}}
+                            </option>
+                        </select>
+                        <select v-else style="height: 28px" class="modal-form-input" disabled></select>
 
-                    <div class="modal-form-label">{{$i18n.locale == 'lt' ? 'Apdaila' : 'Decoration'}}</div>
-                    <select v-if="availableDecors.length != 0" style="height: 28px" v-model="doorForm.decoration_id" class="modal-form-input">
-                        <option v-for="decor in availableDecors" :key="decor.id" :value="decor.id">
-                            {{$i18n.locale == 'lt' ? decor.title : decor.title_en}}
-                        </option>
-                    </select>
-                    <select v-else style="height: 28px" class="modal-form-input" disabled></select>
+                        <div class="modal-form-label">{{$i18n.locale == 'lt' ? 'Apdaila' : 'Decoration'}}</div>
+                        <select v-if="availableDecors.length != 0 && doorForm" style="height: 28px" v-model="doorForm.decoration_id" class="modal-form-input">
+                            <option v-for="decor in availableDecors" :key="decor.id" :value="decor.id">
+                                {{$i18n.locale == 'lt' ? decor.title : decor.title_en}}
+                            </option>
+                        </select>
+                        <select v-else style="height: 28px" class="modal-form-input" disabled></select>
 
-                    <div class="modal-form-label">{{$i18n.locale == 'lt' ? 'Pagrindinė spyna' : 'Main lock'}}</div>
-                    <select v-if="mainLocks.length != 0" style="height: 28px" v-model="doorForm.main_lock" class="modal-form-input">
-                        <option v-for="param in mainLocks" :key="param.id" :value="param.title">
-                            {{$i18n.locale == 'lt' ? param.title : param.title_en}}
-                        </option>
-                    </select>
-                    <select v-else style="height: 28px" class="modal-form-input" disabled></select>
+                        <div class="modal-form-label">{{$i18n.locale == 'lt' ? 'Pagrindinė spyna' : 'Main lock'}}</div>
+                        <select v-if="mainLocks.length != 0 && doorForm" style="height: 28px" v-model="doorForm.main_lock" class="modal-form-input">
+                            <option v-for="param in mainLocks" :key="param.id" :value="param.title">
+                                {{$i18n.locale == 'lt' ? param.title : param.title_en}}
+                            </option>
+                        </select>
+                        <select v-else style="height: 28px" class="modal-form-input" disabled></select>
 
-                    <div class="modal-form-label">{{$i18n.locale == 'lt' ? 'Seifinė spyna' : 'Safe lock'}}</div>
-                    <select v-if="safeLocks.length != 0" style="height: 28px" v-model="doorForm.safe_lock" class="modal-form-input">
-                        <option v-for="param in safeLocks" :key="param.id" :value="param.title">
-                            {{$i18n.locale == 'lt' ? param.title : param.title_en}}
-                        </option>
-                    </select>
-                    <select v-else style="height: 28px" class="modal-form-input" disabled></select>
+                        <div class="modal-form-label">{{$i18n.locale == 'lt' ? 'Seifinė spyna' : 'Safe lock'}}</div>
+                        <select v-if="safeLocks.length != 0 && doorForm" style="height: 28px" v-model="doorForm.safe_lock" class="modal-form-input">
+                            <option v-for="param in safeLocks" :key="param.id" :value="param.title">
+                                {{$i18n.locale == 'lt' ? param.title : param.title_en}}
+                            </option>
+                        </select>
+                        <select v-else style="height: 28px" class="modal-form-input" disabled></select>
 
-                    <div class="modal-form-label">{{$i18n.locale == 'lt' ? 'Montavimas' : 'Installation'}}</div>
-                    <select v-if="jobs.length != 0" style="height: 28px" v-model="doorForm.installation" class="modal-form-input">
-                        <option v-for="param in jobs" :key="param.id" :value="param.title">
-                            {{$i18n.locale == 'lt' ? param.title : param.title_en}}
-                        </option>
-                    </select>
-                    <select v-else style="height: 28px" class="modal-form-input" disabled></select>
+                        <div class="modal-form-label">{{$i18n.locale == 'lt' ? 'Montavimas' : 'Installation'}}</div>
+                        <select v-if="jobs.length != 0 && doorForm" style="height: 28px" v-model="doorForm.installation" class="modal-form-input">
+                            <option v-for="param in jobs" :key="param.id" :value="param.title">
+                                {{$i18n.locale == 'lt' ? param.title : param.title_en}}
+                            </option>
+                        </select>
+                        <select v-else style="height: 28px" class="modal-form-input" disabled></select>
 
-                    <div class="modal-form-label">{{$i18n.locale == 'lt' ? 'Raštas' : 'Pattern'}}</div>
-                    <select v-if="availablePatterns.length != 0" style="height: 28px" v-model="doorForm.pattern_id" class="modal-form-input">
-                        <option v-for="pattern in availablePatterns" :key="pattern.id" :value="pattern.id">
-                            {{$i18n.locale == 'lt' ? pattern.title : pattern.title_en}}
-                        </option>
-                    </select>
-                    <select v-else style="height: 28px" class="modal-form-input" disabled></select>
+                        <div class="modal-form-label">{{$i18n.locale == 'lt' ? 'Raštas' : 'Pattern'}}</div>
+                        <select v-if="availablePatterns.length != 0 && doorForm" style="height: 28px" v-model="doorForm.pattern_id" class="modal-form-input">
+                            <option v-for="pattern in availablePatterns" :key="pattern.id" :value="pattern.id">
+                                {{$i18n.locale == 'lt' ? pattern.title : pattern.title_en}}
+                            </option>
+                        </select>
+                        <select v-else style="height: 28px" class="modal-form-input" disabled></select>
 
-                    <div class="modal-form-label">{{$i18n.locale == 'lt' ? 'Spalva' : 'Color'}}</div>
-                    <select v-if="availableColors.length != 0" style="height: 28px" v-model="doorForm.color_id" class="modal-form-input">
-                        <option v-for="color in availableColors" :key="color.id" :value="color.id">
-                            {{$i18n.locale == 'lt' ? color.title : color.title_en}}
-                        </option>
-                    </select>
-                    <select v-else style="height: 28px" class="modal-form-input" disabled></select>
+                        <div class="modal-form-label">{{$i18n.locale == 'lt' ? 'Spalva' : 'Color'}}</div>
+                        <select v-if="availableColors.length != 0 && doorForm" style="height: 28px" v-model="doorForm.color_id" class="modal-form-input">
+                            <option v-for="color in availableColors" :key="color.id" :value="color.id">
+                                {{$i18n.locale == 'lt' ? color.title : color.title_en}}
+                            </option>
+                        </select>
+                        <select v-else style="height: 28px" class="modal-form-input" disabled></select>
 
-                    <div class="modal-form-label">{{$i18n.locale == 'lt' ? 'Kiekis' : 'Quantity'}}</div>
-                    <input v-model="doorForm.quantity" type="number" class="modal-form-input" min="1">
+                        <div class="modal-form-label">{{$i18n.locale == 'lt' ? 'Kiekis' : 'Quantity'}}</div>
+                        <input v-if="doorForm" v-model="doorForm.quantity" type="number" class="modal-form-input" min="1">
 
-                    <div class="modal-form-item">
-                        <div class="modal-form-label">{{$i18n.locale == 'lt' ? 'Vardas, pavardė' : 'Name, surname'}}</div>
-                        <div class="modal-form-data">
-                            <input type="text" v-model="orderForm.customer" class="modal-form-input">
+                        <div class="modal-form-item">
+                            <div class="modal-form-label">{{$i18n.locale == 'lt' ? 'Vardas, pavardė' : 'Name, surname'}}</div>
+                            <div class="modal-form-data">
+                                <input type="text" v-model="orderForm.customer" class="modal-form-input">
+                            </div>
                         </div>
-                    </div>
 
-                    <div class="modal-form-item">
-                        <div class="modal-form-label">{{$i18n.locale == 'lt' ? 'Telefono nr.' : 'Phone number'}}</div>
-                        <div class="modal-form-data">
-                            <input type="text" v-model="orderForm.phone" class="modal-form-input">
+                        <div class="modal-form-item">
+                            <div class="modal-form-label">{{$i18n.locale == 'lt' ? 'Telefono nr.' : 'Phone number'}}</div>
+                            <div class="modal-form-data">
+                                <input type="text" v-model="orderForm.phone" class="modal-form-input">
+                            </div>
                         </div>
-                    </div>
 
-                    <div class="modal-form-item">
-                        <div class="modal-form-label">{{$i18n.locale == 'lt' ? 'El. paštas' : 'Email'}}</div>
-                        <div class="modal-form-data">
-                            <input type="text" v-model="orderForm.email" class="modal-form-input">
+                        <div class="modal-form-item">
+                            <div class="modal-form-label">{{$i18n.locale == 'lt' ? 'El. paštas' : 'Email'}}</div>
+                            <div class="modal-form-data">
+                                <input type="text" v-model="orderForm.email" class="modal-form-input">
+                            </div>
                         </div>
-                    </div>
+                        
+                        <!-- <button @click="handleClose">Cancel</button>
+                        <button @click="submitParamType">Submit</button> -->
+                    </span>
+                    <span v-else>
+                        <div class="modal-form-item">
+                            <div class="modal-form-label">{{$i18n.locale == 'lt' ? 'Vardas, pavardė' : 'Name, surname'}}</div>
+                            <div class="modal-form-data">
+                                <input disabled type="text" v-model="orderForm.customer" class="modal-form-input">
+                            </div>
+                        </div>
 
-                    <!-- <button @click="handleClose">Cancel</button>
-                    <button @click="submitParamType">Submit</button> -->
+                        <div class="modal-form-item">
+                            <div class="modal-form-label">{{$i18n.locale == 'lt' ? 'Telefono nr.' : 'Phone number'}}</div>
+                            <div class="modal-form-data">
+                                <input disabled type="text" v-model="orderForm.phone" class="modal-form-input">
+                            </div>
+                        </div>
+
+                        <div class="modal-form-item">
+                            <div class="modal-form-label">{{$i18n.locale == 'lt' ? 'El. paštas' : 'Email'}}</div>
+                            <div class="modal-form-data">
+                                <input disabled type="text" v-model="orderForm.email" class="modal-form-input">
+                            </div>
+                        </div>
+                        <div class="modal-form-item">
+                            <div class="modal-form-label">{{$i18n.locale == 'lt' ? 'Adresas' : 'Address'}}</div>
+                            <div class="modal-form-data">
+                                <input type="text" v-model="orderForm.address" class="modal-form-input">
+                            </div>
+                        </div>
+
+                        <div class="modal-form-item">
+                            <div class="modal-form-label">{{$i18n.locale == 'lt' ? 'Avansas' : 'Addvance'}}</div>
+                            <div class="modal-form-data">
+                                <input type="number" v-model="orderForm.advance" class="modal-form-input">
+                            </div>
+                        </div>
+
+                        <div class="modal-form-item">
+                            <div class="modal-form-label">{{$i18n.locale == 'lt' ? 'Numatoma užsakymo data' : 'Estimated order date'}}</div>
+                            <div class="modal-form-data">
+                                <input disabled type="text" v-model="orderForm.order_date" class="modal-form-input">
+                            </div>
+                        </div>
+                        <div class="modal-form-item">
+                            <div class="modal-form-label">{{$i18n.locale == 'lt' ? 'Pasirašė' : 'Signed by'}}</div>
+                            <div class="modal-form-data">
+                                <input disabled type="text" v-model="orderForm.signed_by" class="modal-form-input">
+                            </div>
+                        </div>
+                    </span>
                 </template>
             </vue-table>
             <vue-table
                 :item="items.orders"
                 :index="0"
-                name="Patvirtinti užsakymai"
+                :name="$i18n.locale == 'lt' ? 'Patvirtinti užsakymai' : 'Confirmed orders'"
                 :showHeader="false"
                 :showAdd="false"
                 :pdf="true">
@@ -203,7 +256,6 @@ export default {
                         { dataIndex: 'customer', title: 'klientas', name: this.lang == 'lt' ? 'Klientas' : 'Customer' },
                         { dataIndex: 'email', title: 'email', name: this.lang == 'lt' ? 'El. paštas' : 'Email' },
                         { dataIndex: 'phone', title: 'phone', name: this.lang == 'lt' ? 'Tel. numeris' : 'Phone' },
-                        { dataIndex: 'status_id', title: 'statusas', name: this.lang == 'lt' ? 'Statusas' : 'Status' },
                         { dataIndex: 'actions', title: 'actions', name: this.lang == 'lt' ? 'Veiksmai' : 'Actions' },
                     ],
                     data: []
@@ -220,37 +272,78 @@ export default {
             showPrice: false,
             showCustomer: false,
             newDoors: [],
+            documentOrder: 0,
+            showDocument: false,
         }
     },
     computed: {
-        dataSource () {
-            return this.items.orders.filter(elem => elem.status_id == 1)
+        dataSource() {
+            return this.items.orders.filter((elem) => elem.status_id == 1);
         },
-        availablePanels () {
-          return this.panels.filter(elem => elem.door_type_id == this.doorForm.door_type_id && this.doorForm.door_type_id != 0)
+        availablePanels() {
+            if (this.doorForm && this.doorForm.door_type_id !== 0) {
+            return this.panels.filter((elem) => elem.door_type_id == this.doorForm.door_type_id);
+            }
+            return [];
         },
-        availableDecors () {
-            return this.decorations.filter(elem => elem.panel_id == this.doorForm.panel_id && this.doorForm.panel_id != 0)
+        availableDecors() {
+            if (this.doorForm && this.doorForm.panel_id !== 0) {
+            return this.decorations.filter((elem) => elem.panel_id == this.doorForm.panel_id);
+            }
+            return [];
         },
-        mainLocks () {
-            return this.parameters.filter(elem => elem.parameter_type_id == 1 && elem.door_type_id == this.doorForm.door_type_id)
+        mainLocks() {
+            if (this.doorForm && this.doorForm.door_type_id !== 0) {
+            return this.parameters.filter(
+                (elem) => elem.parameter_type_id == 1 && elem.door_type_id == this.doorForm.door_type_id
+            );
+            }
+            return [];
         },
-        safeLocks () {
-            return this.parameters.filter(elem => elem.parameter_type_id == 2 && elem.door_type_id == this.doorForm.door_type_id)
+        safeLocks() {
+            if (this.doorForm && this.doorForm.door_type_id !== 0) {
+            return this.parameters.filter(
+                (elem) => elem.parameter_type_id == 2 && elem.door_type_id == this.doorForm.door_type_id
+            );
+            }
+            return [];
         },
-        jobs () {
-            return this.parameters.filter(elem => elem.parameter_type_id == 4 && elem.door_type_id == this.doorForm.door_type_id)
+        jobs() {
+            if (this.doorForm && this.doorForm.door_type_id !== 0) {
+            return this.parameters.filter(
+                (elem) => elem.parameter_type_id == 4 && elem.door_type_id == this.doorForm.door_type_id
+            );
+            }
+            return [];
         },
-        availablePatterns () {
-            return this.patterns.filter(elem => elem.panel_id == this.doorForm.panel_id && this.doorForm.panel_id != 0)
+        availablePatterns() {
+            if (this.doorForm && this.doorForm.panel_id !== 0) {
+            return this.patterns.filter((elem) => elem.panel_id == this.doorForm.panel_id);
+            }
+            return [];
         },
-        availableColors () {
-            return this.colors.filter(elem => elem.panel_id == this.doorForm.panel_id && this.doorForm.panel_id != 0)
+        availableColors() {
+            if (this.doorForm && this.doorForm.panel_id !== 0) {
+            return this.colors.filter((elem) => elem.panel_id == this.doorForm.panel_id);
+            }
+            return [];
         },
     },
+
     created () {
         this.origDoor = _.cloneDeep(this.doorForm);
         this.origOrder = _.cloneDeep(this.orderForm);
+        // this.fetchOrderData();
+        // this.fetchDoorData();
+        // this.fetchDTData();
+        // this.fetchPanelData();
+        // this.fetchDecorData();
+        // this.fetchParamData();
+        // this.fetchPatternData();
+        // this.fetchColorData();
+    },
+    mounted() {
+        this.getCurrentUser()
         this.fetchOrderData();
         this.fetchDoorData();
         this.fetchDTData();
@@ -260,35 +353,52 @@ export default {
         this.fetchPatternData();
         this.fetchColorData();
     },
-    mounted() {
-        this.getCurrentUser()
-    },
     methods: {
-        deleteOrder(order){
-            let door = this.doors.find(elem => elem.order_id == order.id);
+        deleteOrder(order) {
+  let door = this.doors.find(elem => elem.order_id == order.id);
 
-        if (door) {
-            axios.delete('/api/doors/' + door.id)
-            .then((response) => {
-                let index = this.doors.indexOf(door);
-                this.doors.splice(index, 1);
-            })
-            .catch((err) => {
-                // alert(this.$i18n.locale == 'lt' ? 'Elementas negali būti pašalintas' : 'Element cannot be removed');
-            });
+  if (door) {
+    axios
+      .delete('/api/doors/' + door.id)
+      .then((response) => {
+        let index = this.doors.indexOf(door);
+        if (index !== -1) {
+          this.doors.splice(index, 1);
         }
+        this.deleteOrderRequest(order);
+        // window.location.reload();
+      })
+      .catch((err) => {
+        console.error(err);
+        // Handle error
+      });
+  } else {
+    this.deleteOrderRequest(order);
+    // window.location.reload();
+  }
+},
 
-        axios.delete('/api/orders/' + order.id)
-            .then((response) => {
-            let index2 = this.orders.indexOf(order);
-            this.orders.splice(index2, 1);
-            })
-            .catch((err) => {
-            alert(this.$i18n.locale == 'lt' ? 'Elementas negali būti pašalintas' : 'Element cannot be removed');
-            });
+deleteOrderRequest(order) {
+  if (order && order.id) {
+    axios
+      .delete('/api/orders/' + order.id)
+      .then((response) => {
+        let index = this.orders.indexOf(order);
+        if (index !== -1) {
+          this.orders.splice(index, 1);
+        }
+      })
+      .catch((err) => {
+        //console.error(err);
+        //alert(this.$i18n.locale == 'lt' ? 'Elementas negali būti pašalintas' : 'Element cannot be removed');
+        this.fetchOrderData()
+      });
+  } else {
+    console.error('Invalid order');
+  }
+},
 
-            window.location.reload();
-        },
+
         calculatePrice () {
           try {
             var decoprice = this.availableDecors.find(elem => elem.id == this.doorForm.decoration_id).price
@@ -307,24 +417,63 @@ export default {
         axios.post('/api/orders', this.orderForm)
         .then(response => {
             this.doorForm.order_id = response.data.data.id
-            this.orders.push(response.data.data)
+            // this.orders.push(response.data.data)
+            this.fetchOrderData()
             axios.post('/api/doors', this.doorForm)
             .then(response => {
                 console.log(response.data)
+                this.handleClose();
+                this.fetchDoorData()
                     // this.doors.push(response.data.data)
                     // alert(response.data.data.id)
                     //this.sendEmail()
-                // this.handleClose();
+                
             })
         })
       },
-      editDoorOrder(order){
-            this.orderForm = order;
+      getOrder(order) {
+        this.documentOrder = order.id
+      },
+      editDoorOrder(order, document) {
+        this.orderForm = order;
+        this.showDocument = document
+        if (document) {
+            this.orderForm.status_id = 2
+            this.orderForm.signed_by = this.currentUser.name
+            this.orderForm.order_date = new Date(new Date().setMonth(new Date().getMonth() + 3)).toISOString().split('T')[0]
+            // console.log(this.currentUser)
+            // this.orderForm.
+        }
+        this.fetchDoorData()
+            .then(() => {
+            // console.log(order.id);
+            this.doorForm = this.doors.find(elem => elem.order_id == order.id);
+            // console.log(this.doors);
+            })
+            .catch(error => {
+            // console.error(error);
+            // Handle error
+            });
+        },
+
+        async fetchDoorData() {
+        try {
+            const response = await axios.get('/api/doors');
+            this.items.doors.data = response.data.data;
+            this.doors = response.data.data;
+        } catch (error) {
+            // console.error(error);
+            // Handle error
+            throw error;
+        }
         },
       handleClose() {
-            this.paramOrderForm = _.cloneDeep(this.origOrder);
-            this.paramDoorForm = _.cloneDeep(this.origDoor);
-            this.fetchOrderData();
+            this.orderForm = _.cloneDeep(this.origOrder);
+            this.doorForm = _.cloneDeep(this.origDoor);
+            // console.log(this.doorForm)
+
+            // this.fetchOrderData();
+            // this.fetchDoorData()
         },
       fetchDTData(){
         axios.get('/api/door-types')
@@ -375,12 +524,18 @@ export default {
                 console.error(error);
             });
         },
-        fetchDoorData(){
-            axios.get('/api/doors')
-            .then(response => {
-                this.items.doors.data = response.data.data;
-            });
-        }, 
+        // fetchDoorData(callback) {
+        // axios.get('/api/doors')
+        //     .then(response => {
+        //     this.items.doors.data = response.data.data;
+        //     this.doors = response.data.data;
+        //     callback(); // Invoke the callback function after fetching the data
+        //     })
+        //     .catch(error => {
+        //     console.error(error);
+        //     // Handle error
+        //     });
+        // },
         fetchOrderData(){
             axios.get('/api/orders')
             .then(response => {

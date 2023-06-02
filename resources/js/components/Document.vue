@@ -1,16 +1,15 @@
 <template>
-  <div class="modal">
-    <div class="modal-overlay" @click="close"/>
-    <div class="modal-container">
-      <div class="modal-header">
-        <div class="modal-close">
-          <div class="modal-close-button" @click="close"/>
+  <div class="document">
+    <div class="document-overlay" @click="close"/>
+    <div class="document-container">
+      <div class="document-header">
+        <div class="document-close">
+          <div class="document-close-button" @click="close"/>
         </div>
       </div>
-      <div class="modal-body">
+      <div class="document-body">
         <h3 class="table-title">
-          <span v-if="!approve">{{name}}</span>
-          <span v-if="approve">{{$i18n.locale == 'lt' ? 'Patvirtinti' : 'Approve'}}</span>
+          {{name}}
         </h3>
         <slot></slot>
       </div>
@@ -29,11 +28,6 @@ export default {
     }
   },
   props: {
-    approve: {
-      type: Boolean,
-      required: false,
-      default: false
-    },
     index: {
       type: Number,
       required: false,
@@ -51,7 +45,7 @@ export default {
 }
 </script>
 <style>
-.modal {
+.document {
   position: fixed;
   left: 50%;
   top: 15vh;
@@ -59,7 +53,7 @@ export default {
   display: block;
   transition: all 1s ease-in;
 }
-.modal-overlay {
+.document-overlay {
   cursor: auto;
   display: flex;
   position: fixed;
@@ -73,7 +67,7 @@ export default {
   z-index: 1;
   transition: opacity .15s linear;
 }
-.modal-container {
+.document-container {
   left: -50%;
   /* min-width: 80vw; */
   cursor: auto;
@@ -88,20 +82,20 @@ export default {
   transition: scale .2s ease-in;
   display: block;
 }
-.modal-header {
+.document-header {
   position: relative;
   height: 30px;
   margin-right: 15;
   margin-top: 12px;
   display: block;
 }
-.modal-close {
+.document-close {
   width: 20px;
   height: 20px;
   margin-left: auto;
   display: block;
 }
-.modal-close-button {
+.document-close-button {
   position: absolute;
   right: 0;
   top: 0;
@@ -109,7 +103,7 @@ export default {
   height: 15px;
   display: block;
 }
-.modal-close-button::before {
+.document-close-button::before {
   transition-duration: .3s;
   content: " ";
   background-color: #444;
@@ -119,7 +113,7 @@ export default {
   right: 9px;
   transform: rotate(-45deg);
 }
-.modal-close-button::after {
+.document-close-button::after {
   transition-duration: .3s;
   content: " ";
   background-color: #444;
@@ -129,12 +123,12 @@ export default {
   right: 9px;
   transform: rotate(45deg);
 }
-.modal-close-button:hover::before,
-.modal-close-button:hover::after {
+.document-close-button:hover::before,
+.document-close-button:hover::after {
   background-color: #0054a6;
   cursor: pointer;
 }
-.modal-body {
+.document-body {
   height: calc(80vh - 116px);
   overflow: auto;
   max-height: calc(80vh - 56px);
@@ -145,7 +139,7 @@ export default {
   padding: 0 38px 60px 38px;
 }
 @media (max-width: 700px) {
-  .modal-container {
+  .document-container {
     width: 85vw;
   }
 }

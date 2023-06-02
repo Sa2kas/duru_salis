@@ -28,7 +28,7 @@
             @clicked="getSearchedData2"
             :item="items.parameters"
             :index="1"
-            name="Parametrai"
+            :name="$i18n.locale == 'lt' ? 'Parametrai' : 'Parameters'"
             :showHeader="true"
             :showAdd="false">
         </vue-table>

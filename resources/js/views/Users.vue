@@ -22,7 +22,7 @@
                     </option>
                 </select>
                 <div class="modal-form-label">{{$i18n.locale == 'lt' ? 'Slaptažodis' : 'Password'}}</div>
-                <input class="modal-form-input" type="text" v-model="userForm.password">
+                <input class="modal-form-input" type="password" v-model="userForm.password">
             </template>
         </vue-table>
         </h2>

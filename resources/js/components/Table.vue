@@ -57,10 +57,28 @@
                       {{$i18n.locale == 'lt' ? 'Produkcijos vadybininkas' : 'PM'}}
                     </span>
                   </div>
+                  <div v-else-if="column.dataIndex == 'status_id'" class="table-data">
+                    <span v-for="status in statuses" :key="status.id">
+                      <span v-if="status.id == data[column.dataIndex]">{{$i18n.locale == 'lt' ? status.title : status.title_en}}</span>
+                    </span>
+                  </div>
+                  <div v-else-if="column.dataIndex == 'parameter_type_id'" class="table-data">
+                    <span v-for="param in parameters" :key="param.id">
+                      <span v-if="param.id == data[column.dataIndex]">{{$i18n.locale == 'lt' ? param.title : param.title_en}}</span>
+                    </span>
+                  </div>
+                  <div v-else-if="column.dataIndex == 'door_type_id'" class="table-data">
+                    <span v-for="type in doorTypes" :key="type.id">
+                      <span v-if="type.id == data[column.dataIndex]">{{$i18n.locale == 'lt' ? type.title : type.title_en}}</span>
+                    </span>
+                  </div>
                   <div v-else class="table-data">{{data[column.dataIndex]}}</div>
                   <span v-if="column.dataIndex == 'actions' && !pdf">
-                    <button class="iconButton" v-if="!status" @click="showModal(data);edit = true"><img src="/images/edit.png" alt=""></button>
-                    <button class="iconButton" @click="deleteData(data)"><img src="/images/delete.png" alt=""></button>
+                    <button class="iconButton" v-if="!status" @click="showModal(data, false);edit = true"><img src="/images/edit.png" alt=""></button>
+                    <button v-if="allowDelete" class="iconButton" @click="deleteData(data)"><img src="/images/delete.png" alt=""></button>
+                    <span v-if="column.dataIndex == 'actions' && document">
+                      <button class="iconButton" @click="showModal(data, true);edit = false"><img src="/images/approve.png" alt=""></button>
+                    </span>
                   </span>
                   <span v-if="column.dataIndex == 'actions' && pdf">
                     <button class="iconButton" @click="showPdf(data);edit = true"><img src="/images/generate.svg" alt=""></button>
@@ -84,9 +102,11 @@
       <modal 
         v-show="isModalVisible && $i18n.locale == 'lt'"
         @close="closeModal()"
-        :name="edit == true ? 'Redaguoti' : 'Pridėti'">
+        :name="edit == true ? 'Redaguoti' : 'Pridėti'"
+        :approve="approve">
         <template>
           <slot name="editItem"></slot>
+          <slot name="editOrder"></slot>
           <div class="modal-buttons">
             <button class="modal-control-btn" @click="closeModal">Atšaukti</button>
             <button class="modal-control-btn" @click="submitItem">Patvirtinti</button>
@@ -96,15 +116,41 @@
       <modal 
         v-show="isModalVisible && $i18n.locale == 'en'"
         @close="closeModal()"
-        :name="edit == true ? 'Edit' : 'Create'">
+        :name="edit == true ? 'Edit' : 'Create'"
+        :approve="approve">
         <template>
           <slot name="editItem"></slot>
+          <slot name="editOrder"></slot>
           <div class="modal-buttons">
             <button class="modal-control-btn" @click="closeModal">Cancel</button>
             <button class="modal-control-btn" @click="submitItem">Submit</button>
           </div>
         </template>
       </modal>
+      <!-- <document 
+        v-show="isModalVisible && $i18n.locale == 'lt'"
+        @close="closeModal()"
+        :name="edit == true ? 'Redaguoti' : 'Pridėti'">
+        <template>
+          <slot name="editDocument"></slot>
+          <div class="modal-buttons">
+            <button class="modal-control-btn" @click="closeModal">Atšaukti</button>
+            <button class="modal-control-btn" @click="submitItem">Patvirtinti</button>
+          </div>
+        </template>
+      </document>
+      <document 
+        v-show="isModalVisible && $i18n.locale == 'en'"
+        @close="closeModal()"
+        :name="edit == true ? 'Edit' : 'Create'">
+        <template>
+          <slot name="editDocument"></slot>
+          <div class="modal-buttons">
+            <button class="modal-control-btn" @click="closeModal">Cancel</button>
+            <button class="modal-control-btn" @click="submitItem">Submit</button>
+          </div>
+        </template>
+      </document> -->
       <pdf-generator 
       v-show="pdfVisible"
       :item="selectedItem"
@@ -124,12 +170,14 @@
 import ExpandCollapse from './ExpandCollapse.vue'
 import VuciPagination from './Pagination.vue'
 import Modal from './Modal.vue'
+import Document from './Document.vue'
 import PdfGenerator from '../components/PdfGeneration.vue'
 export default {
   components: {
     VuciPagination,
     ExpandCollapse,
     Modal,
+    Document,
     PdfGenerator
   },
   data () {
@@ -150,6 +198,8 @@ export default {
       patterns: [],
       colors: [],
       params: [],
+      statuses: [],
+      approve: false,
     }
   },
   props: {
@@ -166,6 +216,16 @@ export default {
       type: String,
       required: false,
       default: 'lentele'
+    },
+    document: {
+      type: Boolean,
+      required: false,
+      default: false
+    },
+    allowDelete: {
+      type: Boolean,
+      required: false,
+      default: true
     },
     showHeader: {
       type: Boolean,
@@ -189,16 +249,34 @@ export default {
     },
   },
   created() {
+    // this.fetchOrderData();
+    
+    // this.fetchDTData();
+    // this.fetchPanelData();
+    // this.fetchDecorData();
+    // this.fetchParamData();
+    // this.fetchPatternData();
+    // this.fetchColorData();
+    // this.fetchDoorData();
+  },
+  mounted() {
     this.fetchOrderData();
+    this.fetchStatuses();
     this.fetchDTData();
     this.fetchPanelData();
     this.fetchDecorData();
-    this.fetchDoorData();
     this.fetchParamData();
     this.fetchPatternData();
     this.fetchColorData();
+    this.fetchDoorData();
   },
   methods: {
+    fetchStatuses(){
+        axios.get('/api/statuses')
+        .then(response => {
+          this.statuses = response.data.data
+        });
+    }, 
     fetchDoorData(){
         axios.get('/api/doors')
         .then(response => {
@@ -262,14 +340,22 @@ export default {
     searchData () {
       this.$emit('clicked', this.search)
     },
-    showModal (modalData) {
+    showDocument (modalData, document) {
+      console.log(modalData)
+      this.$emit('getOrder', modalData, document)
       this.isModalVisible = true
+    },
+    showModal (modalData, document) {
+      console.log(modalData)
+      this.approve = document
       if (modalData) {
-        this.editData(modalData)
+        this.editData(modalData, document)
       }
+      this.isModalVisible = true
     },
     closeModal () {
       this.refresh()
+      this.approve = false
       this.isModalVisible = false
     },
     showPdf (data) {
@@ -283,8 +369,8 @@ export default {
     deleteData (element) {
       this.$emit('delete', element)
     },
-    editData (element) {
-      this.$emit('edit', element)
+    editData (element, document) {
+      this.$emit('edit', element, document)
     },
     refresh () {
       this.$emit('refresh')

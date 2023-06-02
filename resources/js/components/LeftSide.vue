@@ -52,7 +52,7 @@
             {{$i18n.locale == 'lt' ? 'Produktų vadybininko puslapis' : 'Product manager dashboard'}}
           </router-link>
       </div>
-      <div class="right-side-title" v-if="authenticated" @click="close">
+      <div class="right-side-title" v-if="userRole == 1" @click="close">
           <router-link :to="'/orders'">
             {{$i18n.locale == 'lt' ? 'Užsakymai' : 'Orders'}}
           </router-link>
