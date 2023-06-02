@@ -132,7 +132,7 @@
         axios
             .delete('/api/comments/' + comment.id)
             .then((response) => {
-            const itemIndex = this.items.comments.data.findIndex((el) => el.id === comment.id);
+            const itemIndex = this.items.comments.data.findIndex((el) => el.id == comment.id);
             if (itemIndex !== -1) {
                 this.items.comments.data.splice(itemIndex, 1);
             }
@@ -142,10 +142,10 @@
             });
         },
         submitItem() {
-        const order = this.orders.find((elem) => elem.order_id === this.commentForm.order_id);
+        const order = this.orders.find((elem) => elem.order_id == this.commentForm.order_id);
         if (!order) {
-            alert(this.$i18n.locale === 'lt' ? 'Užsakymo numeris neegzistuoja' : 'The order number does not exist');
-        } else if (order.status_id === 6) {
+            alert(this.$i18n.locale == 'lt' ? 'Užsakymo numeris neegzistuoja' : 'The order number does not exist');
+        } else if (order.status_id == 6) {
             axios
             .post('/api/comments', this.commentForm)
             .then((response) => {
@@ -155,7 +155,7 @@
                 console.error(error);
             });
         } else {
-            alert(this.$i18n.locale === 'lt' ? 'Užsakymas dar nebaigtas' : 'The order has not yet been completed');
+            alert(this.$i18n.locale == 'lt' ? 'Užsakymas dar nebaigtas' : 'The order has not yet been completed');
         }
 
         this.refresh();
