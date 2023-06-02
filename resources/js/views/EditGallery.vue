@@ -43,7 +43,7 @@
                         </div>
                     </div>
                     <div style="display: flex; align-items: right; flex-direction: row-reverse; mergin-right: 1rem">
-                        <button class="header-button">
+                        <button class="header-button" @click="formSubmit">
                             {{$i18n.locale == 'lt' ? 'Įkelti' : "Upload"}}
                         </button>
                     </div>
@@ -117,7 +117,7 @@ export default {
                     e.target.reset();
                     this.selectedFileName = '';
                     this.fetchPhotosData()
-                    window.location.reload();
+                    //window.location.reload();
                 })
                 .catch(function (err) {
                     existingObj.output = err;
