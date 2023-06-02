@@ -43,7 +43,7 @@
                         </div>
                     </div>
                     <div style="display: flex; align-items: right; flex-direction: row-reverse; mergin-right: 1rem">
-                        <button class="header-button" @click="formSubmit">
+                        <button class="header-button" @click="setImage">
                             {{$i18n.locale == 'lt' ? 'Įkelti' : "Upload"}}
                         </button>
                     </div>
@@ -128,6 +128,7 @@ export default {
         //     this.url = URL.createObjectURL(file)
         // },
         setImage() {
+            window.location.reload();
         },
         fetchDTData(){
             axios.get('/api/door-types')
