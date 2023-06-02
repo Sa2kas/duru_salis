@@ -403,7 +403,7 @@ export default {
                 console.log(response.data)
                     // this.doors.push(response.data.data)
                     // alert(response.data.data.id)
-                    this.sendEmail()
+                    this.sendEmail(response.data.data.id)
                     alert(this.$i18n.locale === 'lt'? 'Duomenys apie užsakymą buvo išsiųsti' : '')
                 // this.handleClose();
             })
