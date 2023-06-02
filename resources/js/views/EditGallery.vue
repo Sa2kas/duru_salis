@@ -128,7 +128,7 @@ export default {
         //     this.url = URL.createObjectURL(file)
         // },
         setImage() {
-            window.location.reload();
+            //window.location.reload();
         },
         fetchDTData(){
             axios.get('/api/door-types')
