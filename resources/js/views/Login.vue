@@ -46,6 +46,7 @@ export default {
       axios.get('/api/sanctum/csrf-cookie').then(response => {
         axios.post('/login', this.form)
         .then(response => {
+          axios.defaults.withCredentials = true;
           axios.defaults.headers.common['Authorization'] = response.data.token;
           this.signIn()
         })
