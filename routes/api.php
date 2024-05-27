@@ -122,7 +122,3 @@ Route::post('/login', [LoginController::class, 'authenticate']);
 
 
 Route::post('/register',  [UserController::class, 'store']);
-
- Route::get('/users', [UserController::class, 'index']);
-    Route::post('/users', [UserController::class, 'store']);
-    Route::delete('/users/{id}', [UserController::class, 'destroy']);
