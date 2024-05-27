@@ -122,3 +122,11 @@ Route::post('/login', [LoginController::class, 'authenticate']);
 
 
 Route::post('/register',  [UserController::class, 'store']);
+
+ Route::get('/users', [UserController::class, 'index']);
+    Route::post('/users', [UserController::class, 'store']);
+    Route::delete('/users/{id}', [UserController::class, 'destroy']);
+
+     Route::get('/roles', [RoleController::class, 'index']);
+    Route::post('/roles', [RoleController::class, 'store']);
+    Route::delete('/roles/{id}', [RoleController::class, 'destroy']);
