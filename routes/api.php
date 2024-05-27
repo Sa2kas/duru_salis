@@ -51,8 +51,8 @@ Route::middleware('auth:sanctum')->group(function() {
     Route::post('/params', [ParameterController::class, 'store']);
     Route::delete('/params/{id}', [ParameterController::class, 'destroy']);
 });
-Route::get('/param-types', [ParameterTypeController::class, 'index']);
-Route::get('/params', [ParameterController::class, 'index']);
+    Route::get('/param-types', [ParameterTypeController::class, 'index']);
+    Route::get('/params', [ParameterController::class, 'index']);
 
     Route::get('/additional-params', [AdditionalParamController::class, 'index']);
     Route::post('/additional-params', [AdditionalParamController::class, 'store']);
@@ -126,7 +126,3 @@ Route::post('/register',  [UserController::class, 'store']);
  Route::get('/users', [UserController::class, 'index']);
     Route::post('/users', [UserController::class, 'store']);
     Route::delete('/users/{id}', [UserController::class, 'destroy']);
-
-     Route::get('/roles', [RoleController::class, 'index']);
-    Route::post('/roles', [RoleController::class, 'store']);
-    Route::delete('/roles/{id}', [RoleController::class, 'destroy']);
