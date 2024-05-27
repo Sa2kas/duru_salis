@@ -347,7 +347,7 @@ export default {
             try {
                 let x = this.doorForm.left;
                 let y = this.$i18n.locale;
-                emailjs.send("service_l2bh374","uzsakymo_pateikimas",{
+                emailjs.send("service_4dqaodp","uzsakymo_pateikimas",{
                     id: id,
                     text_id:this.$i18n.locale == 'lt' ? 'Jūsų užsakymo numeris: ' : 'Your order id: ',
                     height: this.doorForm.length,
@@ -388,7 +388,7 @@ export default {
                     total: this.doorForm.price,
                     subject: (this.$i18n.locale === 'lt') ? 'UAB "Durų šalis" užsakymo užklausa' : 'UAB "Durų šalis" order request',
                 }, 'xOnownoRFQ2QGLw-6');
-                alert('užsakymo užklausa išsiųsta')
+                //alert('užsakymo užklausa išsiųsta')
             } 
             catch(error) {
                 alert(error)
@@ -403,8 +403,8 @@ export default {
                 console.log(response.data)
                     // this.doors.push(response.data.data)
                     // alert(response.data.data.id)
-                    this.sendEmail(response.data.data.id)
-                    alert(this.$i18n.locale === 'lt'? 'Duomenys apie užsakymą buvo išsiųsti' : '')
+                    this.sendEmail(response.data.data.order_id)
+                    alert(this.$i18n.locale === 'lt'? 'Duomenys apie užsakymą buvo išsiųsti' : 'Order details have been sent')
                 // this.handleClose();
             })
         })

@@ -204,7 +204,7 @@ export default {
                 let info_en = "We would like to inform you that your order in the system has been marked as completed. " +
                 "Our staff will contact you within 1-3 business days for further actions, or you can reach out to us using the contact information provided in the system"
                 
-                emailjs.send("service_l2bh374","baigtas_uzsakymas", {
+                emailjs.send("service_4dqaodp","baigtas_uzsakymas", {
                     subject: this.$i18n.locale == 'lt' ? "Jūsų užsakymas buvo pagamintas!" : "Your order has been made!",
                     hi_text: this.$i18n.locale == 'lt' ? "Sveiki" : "Hello",
                     info_text: this.$i18n.locale == 'lt' ? info_lt : info_en,
