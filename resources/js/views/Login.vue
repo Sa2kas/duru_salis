@@ -47,7 +47,7 @@ export default {
         axios.post('/login', this.form)
         .then(response => {
           axios.defaults.withCredentials = true;
-          axios.defaults.headers.common['Authorization'] = response.data.token;
+          axios.defaults.headers.common['Authorization'] = `Bearer ${response.data.token}`;
           this.signIn()
         })
         .catch(({response:{data}})=>{
