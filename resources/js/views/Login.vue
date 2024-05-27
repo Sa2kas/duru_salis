@@ -44,13 +44,15 @@ export default {
     }),
     handleLogin(){      
       axios.get('/api/sanctum/csrf-cookie').then(response => {
-        axios.post('/login', this.form).catch(({response:{data}})=>{
-          alert(data.message)
-        }).then(({data})=>{
+        axios.post('/login', this.form)
+        .then(response => {
+          axios.defaults.headers.common['Authorization'] = response.data.token;
           this.signIn()
-        }).catch(({response:{data}})=>{
+        })
+        .catch(({response:{data}})=>{
           alert(data.message)
-        })/*.finally(()=>{
+        })
+        /*.finally(()=>{
           this.processing = false
         })*/
       });

@@ -22,8 +22,9 @@ class LoginController extends Controller
 
         if (Auth::attempt($credentials)) {
             $request->session()->regenerate();
- 
-            return Auth::user();
+            $user = Auth::user();
+            $token = $user->createToken('site_token');
+            return ['token' => $token->plainTextToken, ...$user->attributesToArray()];
         }
 
         return "Error";
