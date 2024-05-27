@@ -27,7 +27,7 @@ class LoginController extends Controller
             return ['token' => $token->plainTextToken, ...$user->attributesToArray()];
         }
 
-        return "Error";
+        abort(500, 'Credentials don\'t match');
  
         return back()->withErrors([
             'email' => 'The provided credentials do not match our records.',
