@@ -118,7 +118,7 @@ const router = new VueRouter({
             component: Users,
             meta:{
                 title:`Users`,
-                middleware:"guest"
+                middleware:"admin"
             }
         },
         {
