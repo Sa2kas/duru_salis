@@ -473,6 +473,7 @@ export default {
         display: flex;
         justify-content: space-between;
         margin: 8px;
+        max-width: 600px;
     }
     .door-form-label {
         font-family: "Open Sans", sans-serif;
