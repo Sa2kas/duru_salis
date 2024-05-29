@@ -478,6 +478,7 @@ export default {
         font-family: "Open Sans", sans-serif;
         color: #432310;
         letter-spacing: -0.02em;
+        max-width: 600px;
     }
     .door-input {
         padding: 0.3em 1em 0.3em 0.5em;
