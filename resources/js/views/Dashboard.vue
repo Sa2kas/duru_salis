@@ -31,6 +31,24 @@
             :name="$i18n.locale == 'lt' ? 'Parametrai' : 'Parameters'"
             :showHeader="true"
             :showAdd="false">
+            <template v-slot:editItem>
+                <div class="modal-form-label">{{$i18n.locale == 'lt' ? 'LT antraštė' : 'LT title'}}</div>
+                <input class="modal-form-input" type="text" v-model="paramTypeForm.title">
+                <div class="modal-form-label">{{$i18n.locale == 'lt' ? 'EN antraštė' : 'EN title'}}</div>
+                <input class="modal-form-input" type="text" v-model="paramTypeForm.title_en">
+                <div class="modal-form-label">{{$i18n.locale == 'lt' ? 'Parametro tipas' : 'Parameter type'}}</div>
+                <select style="height: 28px" v-model="paramForm.parameter_type_id"  class="modal-form-input">
+                    <option v-for="type in paramTypes" :key="type.id" :value="type.id" >
+                        {{$i18n.locale == 'lt' ? type.title : type.title_en}}
+                    </option>
+                </select>
+                <div class="modal-form-label">{{$i18n.locale == 'lt' ? 'Durų tipas' : 'Door type'}}</div>
+                <select style="height: 28px" v-model="paramForm.parameter_type_id"  class="modal-form-input">
+                    <option v-for="type in doorTypes" :key="type.id" :value="type.id" >
+                        {{$i18n.locale == 'lt' ? type.title : type.title_en}}
+                    </option>
+                </select>
+            </template>
         </vue-table>
     </div>
 </template>
@@ -96,6 +114,7 @@ export default {
     },
     created(){
         this.fetchPTData();
+        this.fetchDTData();
         this.fetchPData();
         this.fetchDoorData();
         this.origPTForm = _.cloneDeep(this.paramTypeForm);
@@ -127,6 +146,12 @@ export default {
             .then(response => {
                 this.params = response.data.data;
                 this.items.parameters.data = response.data.data;
+            });
+        },
+        fetchDTData(){
+            axios.get('/api/door-types')
+            .then(response => {
+                this.doorTypes = response.data.data;
             });
         },
         deleteType(type){
