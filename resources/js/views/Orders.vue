@@ -19,10 +19,10 @@
                 <template v-slot:editItem>
                     <span v-if="!showDocument">
                         <div class="modal-form-label">{{$i18n.locale == 'lt' ? 'Aukštis' : 'Height'}}</div>
-                        <input v-if="doorForm" class="modal-form-input" type="number" v-model="doorForm.length">
+                        <input v-if="doorForm" class="modal-form-input" type="number" v-model="doorForm.length" min="0" oninput="this.value = Math.abs(this.value)">
 
                         <div class="modal-form-label">{{$i18n.locale == 'lt' ? 'Plotis' : 'Width'}}</div>
-                        <input v-if="doorForm" class="modal-form-input" type="number" v-model="doorForm.width">
+                        <input v-if="doorForm" class="modal-form-input" type="number" v-model="doorForm.width" min="0" oninput="this.value = Math.abs(this.value)">
 
                         <div class="modal-form-label">{{$i18n.locale == 'lt' ? 'Rankena' : 'Handle'}}</div>
                         <select v-if="doorForm" style="height: 28px" v-model="doorForm.left" class="modal-form-input">
@@ -94,7 +94,7 @@
                         <select v-else style="height: 28px" class="modal-form-input" disabled></select>
 
                         <div class="modal-form-label">{{$i18n.locale == 'lt' ? 'Kiekis' : 'Quantity'}}</div>
-                        <input v-if="doorForm" v-model="doorForm.quantity" type="number" class="modal-form-input" min="1">
+                        <input v-if="doorForm" v-model="doorForm.quantity" type="number" class="modal-form-input" min="1" oninput="this.value = Math.abs(this.value)">
 
                         <div class="modal-form-item">
                             <div class="modal-form-label">{{$i18n.locale == 'lt' ? 'Vardas, pavardė' : 'Name, surname'}}</div>
@@ -151,7 +151,7 @@
                         <div class="modal-form-item">
                             <div class="modal-form-label">{{$i18n.locale == 'lt' ? 'Avansas' : 'Addvance'}}</div>
                             <div class="modal-form-data">
-                                <input type="number" v-model="orderForm.advance" class="modal-form-input">
+                                <input type="number" v-model="orderForm.advance" class="modal-form-input" min="0" oninput="this.value = Math.abs(this.value)">
                             </div>
                         </div>
 

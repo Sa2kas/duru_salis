@@ -8,7 +8,7 @@
                             {{$i18n.locale == 'lt' ? 'Aukštis (mm)' : 'Height (mm)'}}
                         </div>
                         <div class="door-form-data">
-                            <input type="number" min="1800" v-model="doorForm.length" class="door-input">
+                            <input type="number" min="1800" v-model="doorForm.length" class="door-input" oninput="this.value = Math.abs(this.value)">
                         </div>
                     </div>
                     <div class="door-form-item">
@@ -16,7 +16,7 @@
                             {{$i18n.locale == 'lt' ? 'Plotis (mm)' : 'Width (mm)'}}
                         </div>
                         <div class="door-form-data">
-                            <input type="number" min="900" v-model="doorForm.width" class="door-input">
+                            <input type="number" min="900" v-model="doorForm.width" class="door-input" oninput="this.value = Math.abs(this.value)">
                         </div>
                     </div>
                     <div class="door-form-item">
@@ -128,7 +128,7 @@
                             {{$i18n.locale == 'lt' ? 'Kiekis' : 'Quantity'}}
                         </div>
                         <div class="door-form-data">
-                            <input v-model="doorForm.quantity" type="number" class="door-input" min="1">
+                            <input v-model="doorForm.quantity" type="number" class="door-input" min="1" oninput="this.value = Math.abs(this.value)">
                         </div>
                     </div>
                    </div> 
