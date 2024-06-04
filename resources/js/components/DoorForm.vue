@@ -5,7 +5,7 @@
                     <div  style="width:50%">
                     <div class="door-form-item">
                         <div class="door-form-label">
-                            {{$i18n.locale == 'lt' ? 'Aukštis (mm)' : 'Height (mm)'}}
+                            {{$i18n.locale == 'lt' ? 'Aukštis (mm)' : 'Height (mm)'}}*
                         </div>
                         <div class="door-form-data">
                             <input type="number" min="1800" v-model="doorForm.length" class="door-input" oninput="this.value = Math.abs(this.value)">
@@ -13,7 +13,7 @@
                     </div>
                     <div class="door-form-item">
                         <div class="door-form-label">
-                            {{$i18n.locale == 'lt' ? 'Plotis (mm)' : 'Width (mm)'}}
+                            {{$i18n.locale == 'lt' ? 'Plotis (mm)' : 'Width (mm)'}}*
                         </div>
                         <div class="door-form-data">
                             <input type="number" min="900" v-model="doorForm.width" class="door-input" oninput="this.value = Math.abs(this.value)">
@@ -21,7 +21,7 @@
                     </div>
                     <div class="door-form-item">
                         <div class="door-form-label">
-                            {{$i18n.locale == 'lt' ? 'Rankena' : 'Handle'}}
+                            {{$i18n.locale == 'lt' ? 'Rankena' : 'Handle'}}*
                         </div>
                         <div class="door-form-data">
                             <select style="height: 28px" v-model="doorForm.left"  class="door-input">
@@ -32,7 +32,18 @@
                     </div>
                     <div class="door-form-item">
                         <div class="door-form-label">
-                            {{$i18n.locale == 'lt' ? 'Durų tipas' : 'Door type'}}
+                            {{$i18n.locale == 'lt' ? 'Durų varčia' : 'Door leaf'}}*
+                        </div>
+                        <div class="door-form-data">
+                            <select style="height: 28px" v-model="doorForm.door_leaf"  class="door-input">
+                                <option v-if="doorForm.left == 0" :value="1">{{($i18n.locale == 'lt') ? 'Kairėje' : 'On the left'}}</option>
+                                <option v-if="doorForm.left == 1" :value="0">{{($i18n.locale == 'lt') ? 'Dešinėje' : 'On the right'}}</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="door-form-item">
+                        <div class="door-form-label">
+                            {{$i18n.locale == 'lt' ? 'Durų tipas' : 'Door type'}}*
                         </div>
                         <div class="door-form-data">
                             <select style="height: 28px" v-model="doorForm.door_type_id"  class="door-input">
@@ -42,7 +53,7 @@
                     </div>
                     <div class="door-form-item">
                         <div class="door-form-label">
-                            {{$i18n.locale == 'lt' ? 'Plokštės tipas' : 'Panel type'}}
+                            {{$i18n.locale == 'lt' ? 'Plokštės tipas' : 'Panel type'}}*
                         </div>
                         <div class="door-form-data">
                             <select v-if="availablePanels.length != 0" style="height: 28px" v-model="doorForm.panel_id"  class="door-input">
@@ -53,7 +64,7 @@
                     </div>
                     <div class="door-form-item">
                         <div class="door-form-label">
-                            {{$i18n.locale == 'lt' ? 'Apdaila' : 'Decoration'}}
+                            {{$i18n.locale == 'lt' ? 'Apdaila' : 'Decoration'}}*
                         </div>
                         <div class="door-form-data">
                             <select v-if="availableDecors.length != 0" style="height: 28px" v-model="doorForm.decoration_id"  class="door-input">
@@ -66,7 +77,7 @@
                     </div>
                     <div class="door-form-item">
                         <div class="door-form-label">
-                            {{$i18n.locale == 'lt' ? 'Pagrindinė spyna' : 'Main lock'}}
+                            {{$i18n.locale == 'lt' ? 'Pagrindinė spyna' : 'Main lock'}}*
                         </div>
                         <div class="door-form-data">
                             <select v-if="mainLocks != 0" style="height: 28px" v-model="doorForm.main_lock"  class="door-input">
@@ -79,7 +90,7 @@
                     </div>
                     <div class="door-form-item">
                         <div class="door-form-label">
-                            {{$i18n.locale == 'lt' ? 'Seifinė spyna' : 'Safe lock'}}
+                            {{$i18n.locale == 'lt' ? 'Seifinė spyna' : 'Safe lock'}}*
                         </div>
                         <div class="door-form-data">
                             <select v-if="safeLocks != 0" style="height: 28px" v-model="doorForm.safe_lock"  class="door-input">
@@ -90,7 +101,7 @@
                     </div>
                     <div class="door-form-item">
                         <div class="door-form-label">
-                            {{$i18n.locale == 'lt' ? 'Montavimas' : 'Installation'}}
+                            {{$i18n.locale == 'lt' ? 'Montavimas' : 'Installation'}}*
                         </div>
                         <div class="door-form-data">
                             <select v-if="jobs != 0" style="height: 28px" v-model="doorForm.installation"  class="door-input">
@@ -101,7 +112,7 @@
                     </div>
                     <div class="door-form-item">
                         <div class="door-form-label">
-                            {{$i18n.locale == 'lt' ? 'Raštas' : 'Pattern'}}
+                            {{$i18n.locale == 'lt' ? 'Raštas' : 'Pattern'}}*
                         </div>
                         <div class="door-form-data">
                             <select v-if="availablePatterns != 0" style="height: 28px" v-model="doorForm.pattern_id"  class="door-input" @change="setUrl(doorForm.pattern_id, $event)">
@@ -112,7 +123,7 @@
                     </div>
                     <div class="door-form-item">
                         <div class="door-form-label">
-                            {{$i18n.locale == 'lt' ? 'Spalva' : 'Color'}}
+                            {{$i18n.locale == 'lt' ? 'Spalva' : 'Color'}}*
                         </div>
                         <div class="door-form-data">
                             <select v-if="availableColors != 0" style="height: 28px" v-model="doorForm.color_id"  class="door-input" @change="setUrl2(doorForm.color_id, $event)">
@@ -125,7 +136,7 @@
                     </div>
                     <div class="door-form-item">
                         <div class="door-form-label">
-                            {{$i18n.locale == 'lt' ? 'Kiekis' : 'Quantity'}}
+                            {{$i18n.locale == 'lt' ? 'Kiekis' : 'Quantity'}}*
                         </div>
                         <div class="door-form-data">
                             <input v-model="doorForm.quantity" type="number" class="door-input" min="1" oninput="this.value = Math.abs(this.value)">
@@ -207,7 +218,8 @@ export default {
             color_id: 0,
             quantity: 1,
             price: 0,
-            order_id: 0
+            order_id: 0,
+            door_leaf: 0
         },
         orderForm: {
             customer: '',
