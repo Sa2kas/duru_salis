@@ -1,7 +1,8 @@
 <template>
     <div class="door-component">
         <div class="border">
-                <form class="door-form" v-on:submit.prevent>
+                <form class="door-form" v-on:submit.prevent style="display:flex">
+                    <div  style="width:50%">
                     <div class="door-form-item">
                         <div class="door-form-label">
                             {{$i18n.locale == 'lt' ? 'Aukštis (mm)' : 'Height (mm)'}}
@@ -130,8 +131,9 @@
                             <input v-model="doorForm.quantity" type="number" class="door-input" min="1">
                         </div>
                     </div>
-                    <div>
-                        <img v-show="false" id="image" :src="url" width="200px" alt="" style="box-shadow: none">
+                   </div> 
+                   <div style="width:50%">
+                        <img v-show="false" id="image" :src="url" width="400px" alt="" style="box-shadow: none">
                         <div class="box" style="box-shadow: none">
                         <img :src="url2" alt="" class="image" style="box-shadow: none">
                         <canvas id="output-canvas"></canvas>
@@ -263,20 +265,19 @@ export default {
     initCanvas() {
       this.image = document.getElementById('image');
       this.c1 = document.getElementById('output-canvas');
-      this.c1.width = 200;
-      this.c1.height = 200;
+      this.c1.width = 400; // Set new width
+      this.c1.height = 400; // Set new height
       this.ctx1 = this.c1.getContext('2d');
 
       this.c_tmp = document.createElement('canvas');
-      this.c_tmp.setAttribute('width', 200);
-      this.c_tmp.setAttribute('height', 200);
+      this.c_tmp.setAttribute('width', 400); // Set new width
+      this.c_tmp.setAttribute('height', 400); // Set new height
       this.ctx_tmp = this.c_tmp.getContext('2d');
 
       this.computeFrame();
     },
     computeFrame() {
-      let coef = 200 / this.image.naturalWidth;
-    //   this.ctx1.scale(-1, 1);
+      let coef = 400 / this.image.naturalWidth; // Adjust the scaling factor
       this.ctx_tmp.drawImage(
         this.image,
         0,
@@ -303,21 +304,16 @@ export default {
       }
       this.ctx1.putImageData(frame, 0, 0);
     },
-    
     setUrl(id, event) {
         if (event.target.value) {
             this.url = this.patterns.find(elem => elem.id == this.doorForm.pattern_id).photo ? this.patterns.find(elem => elem.id == this.doorForm.pattern_id).photo : "/images/R1.jpg"
         this.initCanvas()
         }
-        
-        
     },
     setUrl2(id, event) {
         if (event.target.value) {
             this.url2 = this.colors.filter(elem => elem.id == id)[0].photo ? this.colors.filter(elem => elem.id == id)[0].photo : '/images/none.jpg'
         }
-        // this.url2 = this.colors.filter(elem => elem.id == id)[0].photo ? this.colors.filter(elem => elem.id == id)[0].photo : '/images/none.jpg'
-        
     },
       calculatePrice () {
           try {
@@ -541,5 +537,8 @@ export default {
     }
     .box #output-canvas {
         box-shadow: none !important;
+        width: 400px; /* Set new width */
+        height: 400px; /* Set new height */
     }
+
 </style>
